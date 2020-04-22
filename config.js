@@ -5,7 +5,7 @@ dotenv.config();
 let config = {
     token: process.env.BOTTOKEN,
     mongodb: process.env.MONGODB,
-    webhookAuth: process.end.WEBHOOKAUTH,
+    webhookAuth: process.env.WEBHOOKAUTH,
     dblToken: process.env.DBLTOKEN,
     domain: process.env.DOMAIN,
 

@@ -31,7 +31,7 @@ client.clean = async (client, text) => {
 
 client.throw = async (message,errorType ,errorMessage) => {
     let embed = new Discord.MessageEmbed()
-        .setTitle(`${config.emojis.error} ${errorType}`)
+        .setTitle(`❌ | ${errorType}`)
         .setDescription(errorMessage)
         .setColor("RED")
         .setTimestamp();
