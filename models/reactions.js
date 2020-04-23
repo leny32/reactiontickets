@@ -5,10 +5,11 @@ const reactSchema = new mongoose.Schema({
     channelID: String,
     messageID: String,
     supportID: String,
+    categoryID: String,
+    logID: String,
     ticket: { type: Number, default: 0 },
-    newTicket: { type: String, default: "You've opened a ticket." },
     prefix: { type: String, default: "rt!" },
-    transcriptID: String
+    pingOnTicket: Boolean
 });
 
 module.exports = mongoose.model("reactions", reactSchema);

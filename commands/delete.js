@@ -14,11 +14,12 @@ exports.run = async (client, guild, message, args) => {
     });
 
     if (reactions && !message.member.roles.cache.get(reactions.supportID)) return;
+    message.channel.send(`Ticket forcefully deleted by ${message.author.tag}.`);
     message.channel.messages.fetch({ limit: 100 }).then(async (fetched) => {
         fetched = fetched.array().reverse();
         const mapped = fetched.map(m => `${m.author.tag}: ${m.content}`).join('\n');
         const att = new Discord.MessageAttachment(Buffer.from(mapped), `Transcript-${ticket.userID}.txt`);
-        let logChannel = message.guild.channels.cache.get(reactions.transcriptID);
+        let logChannel = message.guild.channels.cache.get(reactions.logID);
         if (logChannel) logChannel.send(att);
     }).then(async () => {
         await Tickets.findOneAndDelete({
@@ -33,7 +34,7 @@ module.exports.help = {
     aliases: ["d"],
     usage: "delete",
     description: "Delete a ticket",
-    perms: 0
+    perms: 3
 };
 
 module.exports.limits = {
