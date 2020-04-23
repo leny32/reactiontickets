@@ -3,7 +3,7 @@ const Reactions = require("../models/reactions");
 
 exports.run = async (client, guild, message, args) => {
 
-    let reactions = await Reactions({
+    let reactions = await Reactions.findOne({
         guildID: message.guild.id
     });
 
