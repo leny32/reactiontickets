@@ -186,7 +186,7 @@ exports.run = async (client, guild, message, args) => {
                                                                     message.channel.send(embed).then(async () => {
                                                                         const embed = new Discord.MessageEmbed()
                                                                             .setTitle("Open Ticket")
-                                                                            .setDescription(openTicket)
+                                                                            .setDescription(`${openTicket}\n\nBy opening a ticket, you agree that your conversation will be recorded for legal and quality purposes.`)
                                                                             .setFooter(footer);
                                                                         await channel.send(embed).then(m => {
                                                                             messageID = m.id;
