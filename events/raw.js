@@ -93,7 +93,7 @@ exports.run = async (client, event) => {
                         if (user.id !== client.user.id) {
                             let staff = msg.guild.members.cache.get(user.id);
                             let ticketOwner = msg.guild.members.cache.get(ticket.userID);
-                            msg.reactions.cache.get("🔒").users.remove(memberObj);
+                            msg.reactions.cache.get("🔒").users.remove(staff);
 
                             channel.updateOverwrite(ticket.userID, {
                                 VIEW_CHANNEL: false

@@ -183,7 +183,9 @@ exports.run = async (client, guild, message, args) => {
                                                                             message.channel.send(`What would you like the **close** ticket message to be? (default/message)
                                                         
 {member} = Username + discriminator
-{username} = Username`)
+{username} = Username
+{executor} = Username + discriminator
+{executorusername} = Username`)
                                                                             .then(async (tsg) => {
                                                                                 message.channel.awaitMessages(filter, { max: 1 })
                                                                                 .then(res => {
@@ -199,7 +201,9 @@ exports.run = async (client, guild, message, args) => {
                                                                                     message.channel.send(`What would you like the **reopen** ticket message to be? (default/message)
                                                         
 {member} = Username + discriminator
-{username} = Username`)
+{username} = Username
+{executor} = Username + discriminator
+{executorusername} = Username`)
                                                                                     .then(async (tsg) => {
                                                                                         message.channel.awaitMessages(filter, { max: 1 })
                                                                                         .then(res => {
@@ -215,7 +219,9 @@ exports.run = async (client, guild, message, args) => {
                                                                                             message.channel.send(`What would you like the **delete** ticket message to be? (default/message)
                                                         
 {member} = Username + discriminator
-{username} = Username`)
+{username} = Username
+{executor} = Username + discriminator
+{executorusername} = Username`)
                                                                                             .then(async (tsg) => {
                                                                                                 message.channel.awaitMessages(filter, { max: 1 })
                                                                                                 .then(res => {
@@ -231,7 +237,9 @@ exports.run = async (client, guild, message, args) => {
                                                                                                     message.channel.send(`What would you like the **forcefully deleted** ticket message to be? (default/message)
 
 {member} = Username + discriminator
-{username} = Username`)
+{username} = Username
+{executor} = Username + discriminator
+{executorusername} = Username`)
                                                                                                     .then(async (tsg) => {
                                                                                                         message.channel.awaitMessages(filter, { max: 1 })
                                                                                                         .then(res => {
