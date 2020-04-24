@@ -63,6 +63,7 @@ exports.run = async (client, event) => {
                                 c.send(pingMsg).then(() => {
                                     const embed = new Discord.MessageEmbed()
                                         .setTitle("New Ticket")
+                                        .setFooter(reactions.footer)
                                         .setDescription(reactions.newTicket);
                                     c.send(embed).then(async (m) => {
                                             tickets = new Tickets({
@@ -107,6 +108,7 @@ exports.run = async (client, event) => {
                                     .setDescription(`**Save transcript**: 📑
 **Reopen ticket**: 🔓
 **Delete ticket**: ⛔`)
+                                    .setFooter(reactions.footer)
                                 channel.send(embed).then(async (m) => {
                                     await Tickets.findOne({
                                         guildID: msg.guild.id,
@@ -193,6 +195,8 @@ exports.run = async (client, event) => {
                             let reactions = await Reactions.findOne({
                                 guildID: msg.guild.id
                             });
+
+                            console.log(memberObj)
 
                             channel.send(reactions.deleteMsg.replace('{member}', memberObj.user.tag).replace('{username}', memberObj.user.username)).then(() => {
                                 channel.messages.fetch({ limit: 100 }).then(async (fetched) => {
