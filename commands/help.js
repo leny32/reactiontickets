@@ -9,7 +9,8 @@ exports.run = async (client, guild, message, args) => {
 
     const embed = new Discord.MessageEmbed()
     .setTitle("Help | Prefix " + reactions.prefix)
-    .addField("Commands", "``help``, ``setup``, ``delete``")
+    .addField("General", "``help``, ``premium``, ``claim``")
+    .addField("Staff", "``setup``, ``forcedelete``, ``prefix``")
     .setFooter(reactions.footer)
     message.channel.send(embed);
 }

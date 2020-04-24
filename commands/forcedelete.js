@@ -30,8 +30,8 @@ exports.run = async (client, guild, message, args) => {
 }
 
 module.exports.help = {
-    name: "delete",
-    aliases: ["d"],
+    name: "forcedelete",
+    aliases: ["delete", "d"],
     usage: "delete",
     description: "Delete a ticket",
     perms: 2
