@@ -103,7 +103,7 @@ exports.run = async (client, event) => {
                                 guildID: msg.guild.id
                             });
 
-                            channel.send(reactions.closeMsg.replace('{executor}', staff.user.tag).replace('{executorusername}', staff.username).replace('{member}', ticketOwner.user.tag).replace('{username}', ticketOwner.username)).then(()=> {
+                            channel.send(reactions.closeMsg.replace('{executor}', staff.user.tag).replace('{executorusername}', staff.user.username).replace('{member}', ticketOwner.user.tag).replace('{username}', ticketOwner.user.username)).then(()=> {
                                 const embed = new Discord.MessageEmbed()
                                     .setTitle("Staff Tool")
                                     .setDescription(`**Save transcript**: 📑
@@ -161,7 +161,7 @@ exports.run = async (client, event) => {
                                 guildID: msg.guild.id
                             });
 
-                            channel.send(reactions.reopenMsg.replace('{executor}', staff.user.tag).replace('{executorusername}', staff.username).replace('{member}', ticketOwner.user.tag).replace('{username}', ticketOwner.username));
+                            channel.send(reactions.reopenMsg.replace('{executor}', staff.user.tag).replace('{executorusername}', staff.user.username).replace('{member}', ticketOwner.user.tag).replace('{username}', ticketOwner.user.username));
                         };
                     });
                 } else if (event.d.emoji.name == "📑") {
@@ -199,7 +199,7 @@ exports.run = async (client, event) => {
                                 guildID: msg.guild.id
                             });
 
-                            channel.send(reactions.deleteMsg.replace('{executor}', staff.user.tag).replace('{executorusername}', staff.username).replace('{member}', ticketOwner.user.tag).replace('{username}', ticketOwner.username)).then(() => {
+                            channel.send(reactions.deleteMsg.replace('{executor}', staff.user.tag).replace('{executorusername}', staff.user.username).replace('{member}', ticketOwner.user.tag).replace('{username}', ticketOwner.user.username)).then(() => {
                                 channel.messages.fetch({ limit: 100 }).then(async (fetched) => {
                                     fetched = fetched.array().reverse();
                                     const mapped = fetched.map(m => `${m.author.tag}: ${m.content}`).join('\n');
