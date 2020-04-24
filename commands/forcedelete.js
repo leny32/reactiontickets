@@ -16,7 +16,7 @@ exports.run = async (client, guild, message, args) => {
     if (!ticket) return;
 
     if (reactions && !message.member.roles.cache.get(reactions.supportID)) return;
-    message.channel.send(reactions.forcedeleteMsg).then(() => {
+    message.channel.send(reactions.forcedeleteMsg.replace('{member}', message.author.tag).replace('{username}', message.author.username)).then(() => {
         message.channel.messages.fetch({ limit: 100 }).then(async (fetched) => {
             fetched = fetched.array().reverse();
             const mapped = fetched.map(m => `${m.author.tag}: ${m.content}`).join('\n');

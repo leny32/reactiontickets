@@ -19,9 +19,9 @@ exports.run = async (client, guild, message, args) => {
     await channel.messages.fetch(ticket.messageID).then(async (msg) => {
         let user = message.guild.members.cache.get(message.author.id);
         if (user.id !== client.user.id) {
-            let memberObj = message.guild.members.cache.get(user.id);
+            let memberObj = message.guild.members.cache.get(ticket.id);
 
-            channel.updateOverwrite(memberObj.id, {
+            channel.updateOverwrite(ticket.id, {
                 VIEW_CHANNEL: false
             });
 

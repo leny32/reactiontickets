@@ -102,7 +102,7 @@ exports.run = async (client, event) => {
                                 guildID: msg.guild.id
                             });
 
-                            channel.send(reactions.closeMsg.replace('{member}', memberObj.user.tag).replace('{username}', memberObj.user.username)).then(()=> {
+                            channel.send(reactions.closeMsg.replace('{member}', memberObj.user.tag).replace('{username}', memberObj.username)).then(()=> {
                                 const embed = new Discord.MessageEmbed()
                                     .setTitle("Staff Tool")
                                     .setDescription(`**Save transcript**: 📑
@@ -159,7 +159,7 @@ exports.run = async (client, event) => {
                                 guildID: msg.guild.id
                             });
 
-                            channel.send(reactions.reopenMsg.replace('{member}', memberObj.user.tag).replace('{username}', memberObj.user.username));
+                            channel.send(reactions.reopenMsg.replace('{member}', memberObj.user.tag).replace('{username}', memberObj.username));
                         };
                     });
                 } else if (event.d.emoji.name == "📑") {
@@ -196,9 +196,7 @@ exports.run = async (client, event) => {
                                 guildID: msg.guild.id
                             });
 
-                            console.log(memberObj)
-
-                            channel.send(reactions.deleteMsg.replace('{member}', memberObj.user.tag).replace('{username}', memberObj.user.username)).then(() => {
+                            channel.send(reactions.deleteMsg.replace('{member}', memberObj.user.tag).replace('{username}', memberObj.username)).then(() => {
                                 channel.messages.fetch({ limit: 100 }).then(async (fetched) => {
                                     fetched = fetched.array().reverse();
                                     const mapped = fetched.map(m => `${m.author.tag}: ${m.content}`).join('\n');
