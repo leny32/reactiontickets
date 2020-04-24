@@ -13,6 +13,8 @@ exports.run = async (client, guild, message, args) => {
         channelID: message.channel.id
     });
 
+    if (!ticket) return;
+
     if (reactions && !message.member.roles.cache.get(reactions.supportID)) return;
     message.channel.send(reactions.forcedeleteMsg);
     message.channel.messages.fetch({ limit: 100 }).then(async (fetched) => {
