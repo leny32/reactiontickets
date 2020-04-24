@@ -8,17 +8,22 @@ exports.run = async (client, guild, message, args) => {
     });
 
     const embed = new Discord.MessageEmbed()
-    .setTitle("Help | Prefix " + reactions.prefix)
-    .addField("Commands", "``help``, ``setup``, ``delete``")
+    .setTitle("Premium")
+    .setColor("ORANGE")
+    .setDescription(`**Pricing**
+    
+    Premium can be bought for only $3/lifetime
+    
+    Purchase at droplet.gg/reactiontickets`)
     .setFooter(reactions.footer)
     message.channel.send(embed);
 }
 
 module.exports.help = {
-    name: "help",
-    aliases: ["info", "commands"],
-    usage: "help command",
-    description: "Help command",
+    name: "premium",
+    aliases: ["pricing"],
+    usage: "premium",
+    description: "Gives a brief description on how to get premium.",
     perms: 0
 };
 

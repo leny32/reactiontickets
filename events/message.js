@@ -4,7 +4,7 @@ const Discord = require("discord.js");
 
 exports.run = async (client, message) => {
     if (message.author.bot) return;
-    if (message.channel.type == "dm") return message.channel.send(`${config.emojis.error} | Cannot execute commands via DMs.`);
+    if (message.channel.type == "dm") return message.channel.send(`⛔ | Cannot execute commands via DMs.`);
 
     let guild;
     guild = await Reactions.findOne({

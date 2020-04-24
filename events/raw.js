@@ -7,7 +7,7 @@ exports.run = async (client, event) => {
 
     if (event.t === 'MESSAGE_REACTION_ADD') {
 
-        const reactions = await Reactions.findOne({
+        let reactions = await Reactions.findOne({
             channelID: event.d.channel_id
         });
 
@@ -35,7 +35,7 @@ exports.run = async (client, event) => {
                                 userID: memberObj.id
                             });
 
-                            if (tickets && tickets.active) return memberObj.send("You've already got a ticket opened.");
+                            if (tickets && tickets.active) return memberObj.send("⛔ | You've already got a ticket opened.");
 
                             react.ticket = react.ticket + 1;
                             await react.save().catch(e => console.log(e));
@@ -63,7 +63,7 @@ exports.run = async (client, event) => {
                                 c.send(pingMsg).then(() => {
                                     const embed = new Discord.MessageEmbed()
                                         .setTitle("New Ticket")
-                                        .setDescription("The ticket can be closed by reacting 🔒 under this message.");
+                                        .setDescription(reactions.newTicket);
                                     c.send(embed).then(async (m) => {
                                             tickets = new Tickets({
                                                 guildID: msg.guild.id,
@@ -96,12 +96,17 @@ exports.run = async (client, event) => {
                             channel.updateOverwrite(memberObj.id, {
                                 VIEW_CHANNEL: false
                             });
-                            channel.send(`The ticket was closed by ${memberObj.user.tag}`).then(()=> {
+
+                            let reactions = await Reactions.findOne({
+                                guildID: msg.guild.id
+                            });
+
+                            channel.send(reactions.closeMsg.replace('{member}', memberObj.user.tag).replace('{username}', memberObj.user.username)).then(()=> {
                                 const embed = new Discord.MessageEmbed()
                                     .setTitle("Staff Tool")
                                     .setDescription(`**Save transcript**: 📑
-                                    **Reopen ticket**: 🔓
-                                    **Delete ticket**: ⛔`)
+**Reopen ticket**: 🔓
+**Delete ticket**: ⛔`)
                                 channel.send(embed).then(async (m) => {
                                     await Tickets.findOne({
                                         guildID: msg.guild.id,
@@ -148,7 +153,11 @@ exports.run = async (client, event) => {
 
                             msg.delete();
 
-                            channel.send(`The ticket was reopened by ${memberObj.user.tag}.`);
+                            let reactions = await Reactions.findOne({
+                                guildID: msg.guild.id
+                            });
+
+                            channel.send(reactions.reopenMsg.replace('{member}', memberObj.user.tag).replace('{username}', memberObj.user.username));
                         };
                     });
                 } else if (event.d.emoji.name == "📑") {
@@ -185,7 +194,7 @@ exports.run = async (client, event) => {
                                 guildID: msg.guild.id
                             });
 
-                            channel.send(`The ticket was deleted by ${memberObj.user.tag}.`).then(() => {
+                            channel.send(reactions.deleteMsg.replace('{member}', memberObj.user.tag).replace('{username}', memberObj.user.username)).then(() => {
                                 channel.messages.fetch({ limit: 100 }).then(async (fetched) => {
                                     fetched = fetched.array().reverse();
                                     const mapped = fetched.map(m => `${m.author.tag}: ${m.content}`).join('\n');
