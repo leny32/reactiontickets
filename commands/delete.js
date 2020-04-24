@@ -14,7 +14,7 @@ exports.run = async (client, guild, message, args) => {
     });
 
     if (reactions && !message.member.roles.cache.get(reactions.supportID)) return;
-    message.channel.send(`Ticket forcefully deleted by ${message.author.tag}.`);
+    message.channel.send(reactions.forcedeleteMsg);
     message.channel.messages.fetch({ limit: 100 }).then(async (fetched) => {
         fetched = fetched.array().reverse();
         const mapped = fetched.map(m => `${m.author.tag}: ${m.content}`).join('\n');
@@ -34,7 +34,7 @@ module.exports.help = {
     aliases: ["d"],
     usage: "delete",
     description: "Delete a ticket",
-    perms: 3
+    perms: 2
 };
 
 module.exports.limits = {
