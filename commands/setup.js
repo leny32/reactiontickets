@@ -73,19 +73,16 @@ exports.run = async (client, guild, message, args) => {
                     if(channelID) message.channel.awaitMessages(filter, { max: 1 })
                     .then(res => {
                         const response = res.first();
-                        if (response.content == "none") { 
-                            logID = "none"
-                            dLog = "none"
+                        if (response.mentions.channels.first()) logID = response.mentions.channels.first().id;
+                        else if (await message.guild.channels.cache.get(log.content)) logID = response.content;
+                        else {
+                            logID = "none";
                         }
-                        else if (response.mentions.channels.first()) logID = response.mentions.channels.first().id;
-                        else if (message.guild.channels.cache.get(log.content)) logID = response.content;
-                        else { 
-                            embed.setTitle("Cancelled")
-                            embed.setColor("RED")
-                            embe.edit(embed);
-                            return message.channel.send("Couldn't find channel.");
+                        if (logID !== "none") {
+                            embed.addField("Transcript channel", message.guild.channels.cache.get(logID), true);
+                        } else {
+                            embed.addField("Transcript channel", logID, true);
                         }
-                        embed.addField("Transcript channel", dLog, true);
                         embe.edit(embed);
                         response.delete();
                         tsg.delete();
