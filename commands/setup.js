@@ -61,7 +61,7 @@ exports.run = async (client, guild, message, args) => {
                 else if (response.mentions.channels.first()) logID = response.mentions.channels.first().id;
                 else if (message.guild.channels.cache.get(log.content)) logID = response.content;
                 else return message.channel.send("Couldn't find channel.");
-                dLog = message.guild.channels.cache.get(logID)
+                if (!response.content == "none") dLog = message.guild.channels.cache.get(logID)
             }).then(() => {
                 if(logID) message.channel.send("Please provide a category id for where tickets should be placed or \"none\", if you don't want any.")
             }).then(async() => {

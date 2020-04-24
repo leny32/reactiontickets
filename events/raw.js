@@ -94,7 +94,7 @@ exports.run = async (client, event) => {
                             let memberObj = msg.guild.members.cache.get(user.id);
                             msg.reactions.cache.get("🔒").users.remove(memberObj);
 
-                            channel.updateOverwrite(memberObj.id, {
+                            channel.updateOverwrite(ticket.userID, {
                                 VIEW_CHANNEL: false
                             });
 
@@ -149,7 +149,7 @@ exports.run = async (client, event) => {
                                 await ticket.save().catch(e => console.log(e));
                             });
 
-                            channel.updateOverwrite(memberObj.id, {
+                            channel.updateOverwrite(ticket.userID, {
                                 VIEW_CHANNEL: true
                             });
 
