@@ -73,7 +73,10 @@ exports.run = async (client, guild, message, args) => {
                     if(channelID) message.channel.awaitMessages(filter, { max: 1 })
                     .then(res => {
                         const response = res.first();
-                        if (response.content == "none") logID = "none";
+                        if (response.content == "none") { 
+                            logID = "none"
+                            dLog = "none"
+                        }
                         else if (response.mentions.channels.first()) logID = response.mentions.channels.first().id;
                         else if (message.guild.channels.cache.get(log.content)) logID = response.content;
                         else { 
@@ -82,8 +85,6 @@ exports.run = async (client, guild, message, args) => {
                             embe.edit(embed);
                             return message.channel.send("Couldn't find channel.");
                         }
-                        if (!response.content == "none") dLog = message.guild.channels.cache.get(logID)
-                        else dLog = "none"
                         embed.addField("Transcript channel", dLog, true);
                         embe.edit(embed);
                         response.delete();
@@ -96,7 +97,12 @@ exports.run = async (client, guild, message, args) => {
                              const response = res.first();
                                 if (response.content == "none") categoryID = "none";
                                 else if (message.guild.channels.cache.get(response.content)) categoryID = response.content;
-                                else return message.channel.send("Couldn't find category, or the specified \"none\".");
+                                else { 
+                                    embed.setTitle("Cancelled")
+                                    embed.setColor("RED")
+                                    embe.edit(embed);
+                                    return message.channel.send("Couldn't find category, or the specified \"none\".");
+                                }
                                 embed.addField("Category ID", categoryID, true);
                                 embe.edit(embed);
                                 response.delete();
