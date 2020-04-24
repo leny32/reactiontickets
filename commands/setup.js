@@ -74,7 +74,7 @@ exports.run = async (client, guild, message, args) => {
                     .then(res => {
                         const response = res.first();
                         if (response.mentions.channels.first()) logID = response.mentions.channels.first().id;
-                        else if (message.guild.channels.cache.get(log.content)) logID = response.content;
+                        else if (message.guild.channels.cache.get(response.content)) logID = response.content;
                         else {
                             logID = "none";
                         }
