@@ -91,7 +91,8 @@ exports.run = async (client, event) => {
                     await channel.messages.fetch(ticket.messageID).then(async (msg) => {
                         let user = msg.guild.members.cache.get(event.d.user_id);
                         if (user.id !== client.user.id) {
-                            let memberObj = msg.guild.members.cache.get(user.id);
+                            let staff = msg.guild.members.cache.get(user.id);
+                            let ticketOwner = msg.guild.members.cache.get(ticket.userID);
                             msg.reactions.cache.get("🔒").users.remove(memberObj);
 
                             channel.updateOverwrite(ticket.userID, {
@@ -102,7 +103,7 @@ exports.run = async (client, event) => {
                                 guildID: msg.guild.id
                             });
 
-                            channel.send(reactions.closeMsg.replace('{member}', memberObj.user.tag).replace('{username}', memberObj.username)).then(()=> {
+                            channel.send(reactions.closeMsg.replace('{executor}', staff.user.tag).replace('{executorusername}', staff.username).replace('{member}', ticketOwner.user.tag).replace('{username}', ticketOwner.username)).then(()=> {
                                 const embed = new Discord.MessageEmbed()
                                     .setTitle("Staff Tool")
                                     .setDescription(`**Save transcript**: 📑
@@ -137,8 +138,9 @@ exports.run = async (client, event) => {
                     await channel.messages.fetch(ticket.staffTool).then(async (msg) => {
                         let user = msg.guild.members.cache.get(event.d.user_id);
                         if (user.id !== client.user.id) {
-                            let memberObj = msg.guild.members.cache.get(user.id);
-                            msg.reactions.cache.get("🔓").users.remove(memberObj);
+                            let staff = msg.guild.members.cache.get(user.id);
+                            let ticketOwner = msg.guild.members.cache.get(ticket.userID);
+                            msg.reactions.cache.get("🔓").users.remove(staff);
 
                             await Tickets.findOne({
                                 guildID: msg.guild.id,
@@ -159,7 +161,7 @@ exports.run = async (client, event) => {
                                 guildID: msg.guild.id
                             });
 
-                            channel.send(reactions.reopenMsg.replace('{member}', memberObj.user.tag).replace('{username}', memberObj.username));
+                            channel.send(reactions.reopenMsg.replace('{executor}', staff.user.tag).replace('{executorusername}', staff.username).replace('{member}', ticketOwner.user.tag).replace('{username}', ticketOwner.username));
                         };
                     });
                 } else if (event.d.emoji.name == "📑") {
@@ -168,8 +170,8 @@ exports.run = async (client, event) => {
                     await channel.messages.fetch(ticket.staffTool).then(async (msg) => {
                         let user = msg.guild.members.cache.get(event.d.user_id);
                         if (user.id !== client.user.id) {
-                            let memberObj = msg.guild.members.cache.get(user.id);
-                            msg.reactions.cache.get("📑").users.remove(memberObj);
+                            let staff = msg.guild.members.cache.get(user.id);
+                            msg.reactions.cache.get("📑").users.remove(staff);
 
                             let reactions = await Reactions.findOne({
                                 guildID: msg.guild.id
@@ -191,12 +193,13 @@ exports.run = async (client, event) => {
                     await channel.messages.fetch(ticket.staffTool).then(async (msg) => {
                         let user = msg.guild.members.cache.get(event.d.user_id);
                         if (user.id !== client.user.id) {
-                            let memberObj = msg.guild.members.cache.get(user.id);
+                            let staff = msg.guild.members.cache.get(user.id);
+                            let ticketOwner = msg.guild.members.cache.get(ticket.userID);
                             let reactions = await Reactions.findOne({
                                 guildID: msg.guild.id
                             });
 
-                            channel.send(reactions.deleteMsg.replace('{member}', memberObj.user.tag).replace('{username}', memberObj.username)).then(() => {
+                            channel.send(reactions.deleteMsg.replace('{executor}', staff.user.tag).replace('{executorusername}', staff.username).replace('{member}', ticketOwner.user.tag).replace('{username}', ticketOwner.username)).then(() => {
                                 channel.messages.fetch({ limit: 100 }).then(async (fetched) => {
                                     fetched = fetched.array().reverse();
                                     const mapped = fetched.map(m => `${m.author.tag}: ${m.content}`).join('\n');
