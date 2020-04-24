@@ -12,9 +12,9 @@ exports.run = async (client, guild, message, args) => {
     .setColor("ORANGE")
     .setDescription(`**Pricing**
     
-    Premium can be bought for only $3/lifetime
+    Premium can be bought for only $3/lifetime/per server
     
-    Purchase at droplet.gg/reactiontickets`)
+    Purchase at ||idk?||`)
     .setFooter(reactions.footer)
     message.channel.send(embed);
 }
