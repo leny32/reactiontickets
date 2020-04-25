@@ -60,12 +60,12 @@ exports.run = async (client, event) => {
                                 let pingMsg;
                                 if (reactions.pingOnTicket) pingMsg = `<@&${reactions.supportID}>, <@${memberObj.id}>`;
                                 else pingMsg = `<@${memberObj.id}>`;
-                                c.send(pingMsg).then(() => {
+                                c.send(pingMsg).then(async () => {
                                     const embed = new Discord.MessageEmbed()
                                         .setTitle("New Ticket")
                                         .setFooter(reactions.footer)
                                         .setDescription(reactions.newTicket);
-                                    c.send(embed).then(async (m) => {
+                                    await c.send(embed).then(async (m) => {
                                             tickets = new Tickets({
                                                 guildID: msg.guild.id,
                                                 channelID: m.channel.id,

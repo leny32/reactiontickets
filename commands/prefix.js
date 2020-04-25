@@ -7,6 +7,8 @@ exports.run = async (client, guild, message, args) => {
         guildID: message.guild.id
     });
 
+    if (!reactions.premium) return message.channel.send("Premium has not been bought on this server yet.");
+
     if (!args[0]) return bot.throw(message, "Wrong Usage", `${config.wrongUsage} \`${reactions.prefix}${this.help.usage}\``)
 
     if (args[0] === gConfig.prefix) return message.channel.send(`Prefix is already set to \`${reactions.prefix}\``);
