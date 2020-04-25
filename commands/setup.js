@@ -187,7 +187,7 @@ exports.run = async (client, guild, message, args) => {
                                                                                 message.channel.awaitMessages(filter, { max: 1 })
                                                                                 .then(res => {
                                                                                     const response = res.first();
-                                                                                    if (response.content == "default") closeMsg = "The ticket was closed by {member}";
+                                                                                    if (response.content == "default") closeMsg = "The ticket was closed by {executor}";
                                                                                     else if (response.content) closeMsg = response.content;
                                                                                     else closeMsg = "The ticket was closed by {member}";
                                                                                     embed.addField("Ticket closed", closeMsg, true);
@@ -205,7 +205,7 @@ exports.run = async (client, guild, message, args) => {
                                                                                         message.channel.awaitMessages(filter, { max: 1 })
                                                                                         .then(res => {
                                                                                             const response = res.first();
-                                                                                            if (response.content == "default") reopenMsg = "The ticket was reopened by {member}";
+                                                                                            if (response.content == "default") reopenMsg = "The ticket was reopened by {executor}";
                                                                                             else if (response.content) reopenMsg = response.content;
                                                                                             else reopenMsg = "The ticket was reopend by {member}";
                                                                                             embed.addField("Ticket reopened", reopenMsg, true);
@@ -223,7 +223,7 @@ exports.run = async (client, guild, message, args) => {
                                                                                                 message.channel.awaitMessages(filter, { max: 1 })
                                                                                                 .then(res => {
                                                                                                     const response = res.first();
-                                                                                                    if (response.content == "default") deleteMsg = "The ticket was deleted by {member}";
+                                                                                                    if (response.content == "default") deleteMsg = "The ticket was deleted by {executor}";
                                                                                                     else if (response.content) deleteMsg = response.content;
                                                                                                     else deleteMsg = "The ticket was deleted by {member}";
                                                                                                     embed.addField("Ticket deleted", deleteMsg, true);
@@ -241,7 +241,7 @@ exports.run = async (client, guild, message, args) => {
                                                                                                         message.channel.awaitMessages(filter, { max: 1 })
                                                                                                         .then(res => {
                                                                                                             const response = res.first();
-                                                                                                            if (response.content == "default") forcedeleteMsg = "The ticket was forcefully deleted by {member}";
+                                                                                                            if (response.content == "default") forcedeleteMsg = "The ticket was forcefully deleted by {executor}";
                                                                                                             else if (response.content) forcedeleteMsg = response.content;
                                                                                                             else forcedeleteMsg = "The ticket was forcefully deleted by {member}";
                                                                                                             embed.addField("Ticket forcefully deleted ", forcedeleteMsg, true);
