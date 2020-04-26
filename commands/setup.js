@@ -121,7 +121,7 @@ exports.run = async (client, guild, message, args) => {
                                         embe.edit(embed);
                                         response.delete();
                                         tsg.delete();
-                                     }).then(() => {
+                                     }).then(async () => {
                                         if(premium) {
                                             if(supportID) message.channel.send(`**Step 5**: Would you like ${support.name} to get pinged when a ticket is greated? (yes/no)`)
                                             .then(async (tsg) => {
