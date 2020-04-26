@@ -313,10 +313,7 @@ exports.run = async (client, guild, message, args) => {
                                                     });
                                                 });
                                             });
-                                        } else if (!reactions.premium) {
-                                            embed.setDescription("Final configuration:")
-                                            embed.setColor("GREEN")
-                                            await embe.edit(embed);
+                                        } else {
                                             const embed = new Discord.MessageEmbed()
                                                 .setTitle("Open Ticket")
                                                 .setDescription("Please react with 🎫 below to open a ticket.")
