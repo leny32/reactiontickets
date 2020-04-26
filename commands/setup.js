@@ -56,7 +56,7 @@ exports.run = async (client, guild, message, args) => {
                 const response = res.first();
                 if (response.mentions.channels.first()) channelID = response.mentions.channels.first().id;
                 else if (message.guild.channels.cache.get(response.content)) channelID = response.content;
-                else if (message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase())) channelID = message.guild.channel.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()).id;
+                else if (message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase())) channelID = message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()).id;
                 else { 
                     embed.setTitle("Cancelled")
                     embed.setColor("RED")
@@ -76,7 +76,7 @@ exports.run = async (client, guild, message, args) => {
                         const response = res.first();
                         if (response.mentions.channels.first()) logID = response.mentions.channels.first().id;
                         else if (message.guild.channels.cache.get(response.content)) logID = response.content;
-                        else if (message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase())) logID = message.guild.channel.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()).id;
+                        else if (message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase())) logID = message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()).id;
                         else {
                             logID = "none";
                         }
@@ -95,7 +95,7 @@ exports.run = async (client, guild, message, args) => {
                             .then(res => {
                              const response = res.first();
                                 if (message.guild.channels.cache.get(response.content) && message.guild.channels.cache.get(response.content).type === "category") categoryID = response.content;
-                                else if (message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()) && message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()).type === "category") categoryID = message.guild.channel.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()).id;
+                                else if (message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()) && message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()).type === "category") categoryID = message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()).id;
                                 else categoryID = "none";
                                 embed.addField("Category ID", categoryID, true);
                                 embe.edit(embed);
@@ -365,7 +365,7 @@ exports.run = async (client, guild, message, args) => {
 module.exports.help = {
     name: "setup",
     aliases: ["s"],
-    usage: "setup #channel @supportrole message",
+    usage: "setup",
     description: "Setup the bot",
     perms: 3
 };
