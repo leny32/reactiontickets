@@ -46,7 +46,7 @@ exports.run = async (client, guild, message, args) => {
         embed.setDescription(`Current configuration:`)
     message.channel.send(embed).then(embe => {
 
-        message.channel.send("Please provide a channel ID or mention a channel where tickets can be opened.")
+        message.channel.send("**Step 1**: Please provide a channel from where tickets will be opened from. (mention/id/name)")
         .then(async (tsg) => {
             let filter = msg => {
                 return msg.author.id === message.author.id
@@ -56,6 +56,7 @@ exports.run = async (client, guild, message, args) => {
                 const response = res.first();
                 if (response.mentions.channels.first()) channelID = response.mentions.channels.first().id;
                 else if (message.guild.channels.cache.get(response.content)) channelID = response.content;
+                else if (message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase())) channelID = message.guild.channel.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()).id;
                 else { 
                     embed.setTitle("Cancelled")
                     embed.setColor("RED")
@@ -68,13 +69,14 @@ exports.run = async (client, guild, message, args) => {
                 response.delete();
                 tsg.delete();
             }).then(() => {
-                if (channelID) message.channel.send("Please provide a transcript log channel, id, or \"none\", if you don't want any.")
+                if (channelID) message.channel.send("**Step 2**: Please provide a transcript log channel. (none/mention/id/name)\n(A transcript channel is where chat-logs of your tickets will be stored.)")
                 .then(async (tsg) => {
                     if(channelID) message.channel.awaitMessages(filter, { max: 1 })
                     .then(res => {
                         const response = res.first();
                         if (response.mentions.channels.first()) logID = response.mentions.channels.first().id;
                         else if (message.guild.channels.cache.get(response.content)) logID = response.content;
+                        else if (message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase())) logID = message.guild.channel.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()).id;
                         else {
                             logID = "none";
                         }
@@ -87,31 +89,27 @@ exports.run = async (client, guild, message, args) => {
                         response.delete();
                         tsg.delete();
                     }).then(() => {
-                        if(logID) message.channel.send("Please provide a category id for where tickets should be placed or \"none\", if you don't want any.")
+                        if(logID) message.channel.send("**Step 3**: Please provide a category for where tickets should be placed. (none/id/name)")
                         .then(async(tsg) => {
                             if (logID) message.channel.awaitMessages(filter, { max: 1 })
                             .then(res => {
                              const response = res.first();
-                                if (response.content == "none") categoryID = "none";
-                                else if (message.guild.channels.cache.get(response.content)) categoryID = response.content;
-                                else { 
-                                    embed.setTitle("Cancelled")
-                                    embed.setColor("RED")
-                                    embe.edit(embed);
-                                    return message.channel.send("Couldn't find category, or the specified \"none\".");
-                                }
+                                if (message.guild.channels.cache.get(response.content) && message.guild.channels.cache.get(response.content).type === "category") categoryID = response.content;
+                                else if (message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()) && message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()).type === "category") categoryID = message.guild.channel.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()).id;
+                                else categoryID = "none";
                                 embed.addField("Category ID", categoryID, true);
                                 embe.edit(embed);
                                 response.delete();
                                 tsg.delete();
                              }).then(() => {
-                                if (categoryID) message.channel.send("Please provide a support role ID or mention a role, which will get access to tickets.")
+                                if (categoryID) message.channel.send("**Step 4**: Please provide a support role, for which will have access to tickets. (mention/id/name)")
                                 .then(async (tsg) => {
                                     if (categoryID) message.channel.awaitMessages(filter, { max: 1 })
                                     .then(res => {
                                         const response = res.first();
                                         if (response.mentions.roles.first()) supportID = response.mentions.roles.first().id;
                                         else if (message.guild.roles.cache.get(response.content)) supportID = response.content;
+                                        else if (message.guild.roles.cache.find(r => r.name.toLowerCase() == response.content.toLowerCase())) supportID = message.guild.roles.cache.find(r => r.name.toLowerCase() == response.content.toLowerCase()).id;
                                         else { 
                                             embed.setTitle("Cancelled")
                                             embed.setColor("RED")
@@ -125,7 +123,7 @@ exports.run = async (client, guild, message, args) => {
                                         tsg.delete();
                                      }).then(() => {
                                         if(premium) {
-                                            if(supportID) message.channel.send(`Would you like ${support.name} to get pinged when a ticket is greated? (yes/no)`)
+                                            if(supportID) message.channel.send(`**Step 5**: Would you like ${support.name} to get pinged when a ticket is greated? (yes/no)`)
                                             .then(async (tsg) => {
                                                 if (supportID) message.channel.awaitMessages(filter, { max: 1 })
                                                 .then(res => {
@@ -138,7 +136,7 @@ exports.run = async (client, guild, message, args) => {
                                                     response.delete();
                                                     tsg.delete();
                                                 }).then(() => {
-                                                    message.channel.send(`What message would you like to send in ${channel}? (default/message)`)
+                                                    message.channel.send(`**Step 6**: What message would you like to send in ${channel}? (default/message)`)
                                                     .then(async (tsg) => {
                                                         message.channel.awaitMessages(filter, { max: 1 })
                                                         .then(res => {
@@ -151,7 +149,7 @@ exports.run = async (client, guild, message, args) => {
                                                             response.delete();
                                                             tsg.delete();
                                                         }).then(() => {
-                                                            message.channel.send("What message would you like to be sent when new tickets are opened? (default/message)")
+                                                            message.channel.send("**Step 7**: What message would you like to be sent when new tickets are opened? (default/message)")
                                                             .then(async (tsg) => {
                                                                 message.channel.awaitMessages(filter, { max: 1 })
                                                                 .then(res => {
@@ -164,7 +162,7 @@ exports.run = async (client, guild, message, args) => {
                                                                     response.delete();
                                                                     tsg.delete();
                                                                 }).then(() => {
-                                                                    message.channel.send("What would you like to be in the footer of all messages? (default/message)")
+                                                                    message.channel.send("**Step 8**: What would you like to be in the footer of all messages? (default/message)")
                                                                     .then(async (tsg) => {
                                                                         message.channel.awaitMessages(filter, { max: 1 })
                                                                         .then(res => {
@@ -177,7 +175,7 @@ exports.run = async (client, guild, message, args) => {
                                                                             response.delete();
                                                                             tsg.delete();
                                                                         }).then(() => {
-                                                                            message.channel.send(`What would you like the **close** ticket message to be? (default/message)
+                                                                            message.channel.send(`**Step 9**: What would you like the **close** ticket message to be? (default/message)
                                                         
 {member} = Username + discriminator
 {username} = Username
@@ -195,7 +193,7 @@ exports.run = async (client, guild, message, args) => {
                                                                                     response.delete();
                                                                                     tsg.delete();
                                                                                 }).then(() => {
-                                                                                    message.channel.send(`What would you like the **reopen** ticket message to be? (default/message)
+                                                                                    message.channel.send(`**Step 10**: What would you like the **reopen** ticket message to be? (default/message)
                                                         
 {member} = Username + discriminator
 {username} = Username
@@ -213,7 +211,7 @@ exports.run = async (client, guild, message, args) => {
                                                                                             response.delete();
                                                                                             tsg.delete();
                                                                                         }).then(() => {
-                                                                                            message.channel.send(`What would you like the **delete** ticket message to be? (default/message)
+                                                                                            message.channel.send(`**Step 11**: What would you like the **delete** ticket message to be? (default/message)
                                                         
 {member} = Username + discriminator
 {username} = Username
@@ -231,7 +229,7 @@ exports.run = async (client, guild, message, args) => {
                                                                                                     response.delete();
                                                                                                     tsg.delete();
                                                                                                 }).then(() => {
-                                                                                                    message.channel.send(`What would you like the **forcefully deleted** ticket message to be? (default/message)
+                                                                                                    message.channel.send(`**Step 12**: What would you like the **forcefully deleted** ticket message to be? (default/message)
 
 {member} = Username + discriminator
 {username} = Username
@@ -316,50 +314,42 @@ exports.run = async (client, guild, message, args) => {
                                                 });
                                             });
                                         } else {
+                                            embed.setDescription("Final configuration:")
+                                            embed.setColor("GREEN")
+                                            embe.edit(embed);
                                             const embed = new Discord.MessageEmbed()
-                                                .setTitle("Configuration")
-                                                .setColor("GREEN")
-                                                .setDescription(`Current configuration:`)
-                                                .addField("Ticket Channel", channel, true)
-                                                .addField("Support role", support, true)
-                                                .addField("Transcript channel", dLog, true)
-                                                .addField("Category ID", categoryID, true)
+                                                .setTitle("Open Ticket")
+                                                .setDescription("Please react with 🎫 below to open a ticket.")
                                                 .setFooter(reactions.footer);
-                                            if (supportID) message.channel.send(embed).then(async () => {
-                                                const embed = new Discord.MessageEmbed()
-                                                    .setTitle("Open Ticket")
-                                                    .setDescription("Please react with 🎫 below to open a ticket.")
-                                                    .setFooter(reactions.footer);
-                                                await channel.send(embed).then(m => {
-                                                    messageID = m.id;
-                                                    m.react("🎫");
-                                                });
-                    
-                                                if (reactions) {
-                                                    await Reactions.findOne({
-                                                        guildID: guildID
-                                                    }, async (err, react) => {
-                                                        if (err) console.log(err);
-                                                        react.channelID = channelID;
-                                                        react.messageID = messageID;
-                                                        react.supportID = supportID;
-                                                        react.categoryID = categoryID;
-                                                        react.logID = logID;
-                                                        await react.save().catch(e => console.log(e));
-                                                    });
-                                        
-                                                } else if (!reactions) {
-                                                    const newReaction = new Reactions({
-                                                        guildID: guildID,
-                                                        channelID: channelID,
-                                                        messageID: messageID,
-                                                        supportID: supportID,
-                                                        categoryID: categoryID,
-                                                        logID: logID
-                                                    });
-                                                    await newReaction.save().catch(e => console.log(e));
-                                                };
+                                            await channel.send(embed).then(m => {
+                                                messageID = m.id;
+                                                m.react("🎫");
                                             });
+                
+                                            if (reactions) {
+                                                await Reactions.findOne({
+                                                    guildID: guildID
+                                                }, async (err, react) => {
+                                                    if (err) console.log(err);
+                                                    react.channelID = channelID;
+                                                    react.messageID = messageID;
+                                                    react.supportID = supportID;
+                                                    react.categoryID = categoryID;
+                                                    react.logID = logID;
+                                                    await react.save().catch(e => console.log(e));
+                                                });
+                                    
+                                            } else if (!reactions) {
+                                                const newReaction = new Reactions({
+                                                    guildID: guildID,
+                                                    channelID: channelID,
+                                                    messageID: messageID,
+                                                    supportID: supportID,
+                                                    categoryID: categoryID,
+                                                    logID: logID
+                                                });
+                                                await newReaction.save().catch(e => console.log(e));
+                                            };
                                         }
                                     });
                                 });
