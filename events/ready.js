@@ -4,7 +4,7 @@ exports.run = async(client) => {
 
     console.log("Ready");
   
-    client.user.setActivity(`${config.domain} | ${config.prefix}info` , {
+    client.user.setActivity(`${config.prefix}help | ${config.domain}` , {
         type: "PLAYING"
     });
     
