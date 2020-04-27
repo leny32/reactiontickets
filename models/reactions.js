@@ -16,7 +16,8 @@ const reactSchema = new mongoose.Schema({
     forcedeleteMsg: { type: String, default: "The ticket was forcefully deleted by {executor}" },
     ticket: { type: Number, default: 0 },
     premium: { type: Boolean, default: false },
-    pingOnTicket: { type: Boolean, default: false }
+    pingOnTicket: { type: Boolean, default: false },
+    nameTicket: { type: Boolean, default: false }
 });
 
 module.exports = mongoose.model("reactions", reactSchema);

@@ -40,45 +40,87 @@ exports.run = async (client, event) => {
                             react.ticket = react.ticket + 1;
                             await react.save().catch(e => console.log(e));
 
-                            msg.guild.channels.create(`ticket-${react.ticket}`, {
-                                type: "text",
-                                permissionOverwrites: [
-                                    {
-                                        id: support.id,
-                                        allow: ["VIEW_CHANNEL", "SEND_MESSAGES"]
-                                    },
-                                    {
-                                        id: memberObj.id,
-                                        allow: ["VIEW_CHANNEL", "SEND_MESSAGES"]
-                                    },
-                                    {
-                                        id: msg.guild.id,
-                                        deny: ["VIEW_CHANNEL"]
-                                    }
-                                ]
-                            }).then((c) => {
-                                let pingMsg;
-                                if (reactions.pingOnTicket) pingMsg = `<@&${reactions.supportID}>, <@${memberObj.id}>`;
-                                else pingMsg = `<@${memberObj.id}>`;
-                                c.send(pingMsg).then(async () => {
-                                    const embed = new Discord.MessageEmbed()
-                                        .setTitle("New Ticket")
-                                        .setFooter(reactions.footer)
-                                        .setDescription(reactions.newTicket);
-                                    await c.send(embed).then(async (m) => {
-                                            tickets = new Tickets({
-                                                guildID: msg.guild.id,
-                                                channelID: m.channel.id,
-                                                messageID: m.id,
-                                                userID: memberObj.id,
-                                                ticket: react.ticket
-                                            });
-                                            await tickets.save().catch(e => console.log(e));
-                                        m.react("🔒");
+                            if (reactions.nameTicket) {
+                                msg.guild.channels.create(`${memberObj.user.username}`, {
+                                    type: "text",
+                                    permissionOverwrites: [
+                                        {
+                                            id: support.id,
+                                            allow: ["VIEW_CHANNEL", "SEND_MESSAGES"]
+                                        },
+                                        {
+                                            id: memberObj.id,
+                                            allow: ["VIEW_CHANNEL", "SEND_MESSAGES"]
+                                        },
+                                        {
+                                            id: msg.guild.id,
+                                            deny: ["VIEW_CHANNEL"]
+                                        }
+                                    ]
+                                }).then((c) => {
+                                    let pingMsg;
+                                    if (reactions.pingOnTicket) pingMsg = `<@&${reactions.supportID}>, <@${memberObj.id}>`;
+                                    else pingMsg = `<@${memberObj.id}>`;
+                                    c.send(pingMsg).then(async () => {
+                                        const embed = new Discord.MessageEmbed()
+                                            .setTitle("New Ticket")
+                                            .setFooter(reactions.footer)
+                                            .setDescription(reactions.newTicket);
+                                        await c.send(embed).then(async (m) => {
+                                                tickets = new Tickets({
+                                                    guildID: msg.guild.id,
+                                                    channelID: m.channel.id,
+                                                    messageID: m.id,
+                                                    userID: memberObj.id,
+                                                    ticket: react.ticket
+                                                });
+                                                await tickets.save().catch(e => console.log(e));
+                                            m.react("🔒");
+                                        });
+                                        if(reactions.categoryID != "none") c.setParent(reactions.categoryID);
                                     });
-                                    if(reactions.categoryID != "none") c.setParent(reactions.categoryID);
                                 });
-                            });
+                            } else {
+                                msg.guild.channels.create(`ticket-${react.ticket}`, {
+                                    type: "text",
+                                    permissionOverwrites: [
+                                        {
+                                            id: support.id,
+                                            allow: ["VIEW_CHANNEL", "SEND_MESSAGES"]
+                                        },
+                                        {
+                                            id: memberObj.id,
+                                            allow: ["VIEW_CHANNEL", "SEND_MESSAGES"]
+                                        },
+                                        {
+                                            id: msg.guild.id,
+                                            deny: ["VIEW_CHANNEL"]
+                                        }
+                                    ]
+                                }).then((c) => {
+                                    let pingMsg;
+                                    if (reactions.pingOnTicket) pingMsg = `<@&${reactions.supportID}>, <@${memberObj.id}>`;
+                                    else pingMsg = `<@${memberObj.id}>`;
+                                    c.send(pingMsg).then(async () => {
+                                        const embed = new Discord.MessageEmbed()
+                                            .setTitle("New Ticket")
+                                            .setFooter(reactions.footer)
+                                            .setDescription(reactions.newTicket);
+                                        await c.send(embed).then(async (m) => {
+                                                tickets = new Tickets({
+                                                    guildID: msg.guild.id,
+                                                    channelID: m.channel.id,
+                                                    messageID: m.id,
+                                                    userID: memberObj.id,
+                                                    ticket: react.ticket
+                                                });
+                                                await tickets.save().catch(e => console.log(e));
+                                            m.react("🔒");
+                                        });
+                                        if(reactions.categoryID != "none") c.setParent(reactions.categoryID);
+                                    });
+                                });
+                            }
                         });
                     };
                 });
