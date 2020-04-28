@@ -26,7 +26,7 @@ exports.run = async (client, guild, message, args) => {
     let apiurl = "https://store.droplet.gg/rts/";
     let storeapi = "V.=usaFUKiQ,lbkrL8l2!q7E7SgR*P0Dp%UdwFZ:rw.vme;Uy54&Er,uZR*:Xfz?Fe=9OrwLY9&Zp91P";
 
-    let { data } = await axios.post(apiurl + "/premiumCheck/", { "guildid": message.guild.id }, {
+    let { data } = await axios.post(apiurl + "premiumCheck/", { "guildid": message.guild.id }, {
         headers: {
             'Authorization': `Bearer ${storeapi}`
         }
