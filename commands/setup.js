@@ -55,9 +55,9 @@ exports.run = async (client, guild, message, args) => {
             message.channel.awaitMessages(filter, { max: 1 })
             .then(res => {
                 const response = res.first();
-                if (response.mentions.channels.first()) channelID = response.mentions.channels.first().id;
-                else if (message.guild.channels.cache.get(response.content)) channelID = response.content;
-                else if (message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase())) channelID = message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()).id;
+                if (response.mentions.channels.first() && response.mentions.channels.first().type === "text") channelID = response.mentions.channels.first().id;
+                else if (message.guild.channels.cache.get(response.content) && message.guild.channels.cache.get(response.content).type === "text") channelID = response.content;
+                else if (message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()) && message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()).type === "text") channelID = message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()).id;
                 else { 
                     embed.setTitle("Cancelled")
                     embed.setColor("RED")
@@ -75,9 +75,9 @@ exports.run = async (client, guild, message, args) => {
                     if(channelID) message.channel.awaitMessages(filter, { max: 1 })
                     .then(res => {
                         const response = res.first();
-                        if (response.mentions.channels.first()) logID = response.mentions.channels.first().id;
-                        else if (message.guild.channels.cache.get(response.content)) logID = response.content;
-                        else if (message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase())) logID = message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()).id;
+                        if (response.mentions.channels.first() && response.mentions.channels.first().type === "text") logID = response.mentions.channels.first().id;
+                        else if (message.guild.channels.cache.get(response.content) && message.guild.channels.cache.get(response.content).type === "text") logID = response.content;
+                        else if (message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()) && message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()).type === "text") logID = message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()).id;
                         else {
                             logID = "none";
                         }
