@@ -17,7 +17,7 @@ exports.run = async (client, guild, message, args) => {
 
     if (!args[0]) return client.throw(message, "Wrong Usage", `${config.wrongUsage} \`${reactions.prefix}${this.help.usage}\``)
 
-    if (args[0] === gConfig.prefix) return message.channel.send(`Prefix is already set to \`${reactions.prefix}\``);
+    if (args[0] === guild.prefix) return message.channel.send(`Prefix is already set to \`${reactions.prefix}\``);
     if (args[0].length > 5) return message.channel.send("Prefix can be maximum 5 characters");
 
     await Reactions.findOne({
