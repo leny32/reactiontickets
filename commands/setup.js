@@ -204,7 +204,7 @@ exports.run = async (client, guild, message, args) => {
                                                                                             const response = res.first();
                                                                                             if (response.content == "default") closeMsg = "The ticket was closed by {executor}";
                                                                                             else if (response.content) closeMsg = response.content;
-                                                                                            else closeMsg = "The ticket was closed by {member}";
+                                                                                            else closeMsg = "The ticket was closed by {executor}";
                                                                                             embed.addField("Ticket closed", closeMsg, true);
                                                                                             embe.edit(embed);
                                                                                             response.delete();
@@ -222,7 +222,7 @@ exports.run = async (client, guild, message, args) => {
                                                                                                     const response = res.first();
                                                                                                     if (response.content == "default") reopenMsg = "The ticket was reopened by {executor}";
                                                                                                     else if (response.content) reopenMsg = response.content;
-                                                                                                    else reopenMsg = "The ticket was reopend by {member}";
+                                                                                                    else reopenMsg = "The ticket was reopend by {executor}";
                                                                                                     embed.addField("Ticket reopened", reopenMsg, true);
                                                                                                     embe.edit(embed);
                                                                                                     response.delete();
@@ -240,7 +240,7 @@ exports.run = async (client, guild, message, args) => {
                                                                                                             const response = res.first();
                                                                                                             if (response.content == "default") deleteMsg = "The ticket was deleted by {executor}";
                                                                                                             else if (response.content) deleteMsg = response.content;
-                                                                                                            else deleteMsg = "The ticket was deleted by {member}";
+                                                                                                            else deleteMsg = "The ticket was deleted by {executor}";
                                                                                                             embed.addField("Ticket deleted", deleteMsg, true);
                                                                                                             embe.edit(embed);
                                                                                                             response.delete();
@@ -258,7 +258,7 @@ exports.run = async (client, guild, message, args) => {
                                                                                                                     const response = res.first();
                                                                                                                     if (response.content == "default") forcedeleteMsg = "The ticket was forcefully deleted by {executor}";
                                                                                                                     else if (response.content) forcedeleteMsg = response.content;
-                                                                                                                    else forcedeleteMsg = "The ticket was forcefully deleted by {member}";
+                                                                                                                    else forcedeleteMsg = "The ticket was forcefully deleted by {executor}";
                                                                                                                     embed.addField("Ticket forcefully deleted ", forcedeleteMsg, true);
                                                                                                                     embe.edit(embed);
                                                                                                                     response.delete();
