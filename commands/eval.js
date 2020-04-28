@@ -2,7 +2,7 @@ const Reactions = require("../models/reactions");
 const Tickets = require("../models/tickets");
 const config = require("../config");
 
-exports.run = async (client, message, args) => {
+exports.run = async (client, guild, message, args) => {
 
     if (!config.admins.includes(message.author.id)) return;
 
