@@ -1,3 +1,4 @@
+const Discord = require("discord.js");
 const Reactions = require("../models/reactions");
 const Tickets = require("../models/tickets");
 const config = require("../config");
