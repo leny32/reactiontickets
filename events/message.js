@@ -1,4 +1,5 @@
 const Reactions = require("../models/reactions");
+const Tickets = require("../models/tickets");
 const config = require('../config')
 const Discord = require("discord.js");
 
@@ -19,6 +20,38 @@ exports.run = async (client, message) => {
 
     if (message.mentions.members.first() && message.mentions.members.first().id == client.user.id) message.channel.send(`The prefix for this server is \`${guild.prefix}\`\n> For more info please use \`${guild.prefix}info\``)
     
+    let ticket = await Tickets.findOne({
+        channelID: message.channel.id
+    });
+
+    if (ticket && ticket.ticketTopic === "none") {
+        if (!ticket.userID === message.author.id) return;
+
+        const embed = new Discord.MessageEmbed()
+            .setTitle("Topic")
+            .setDescription(message.content.substring(0, 256))
+            .setFooter(guild.footer);
+
+        const logEmbed = new Discord.MessageEmbed()
+            .setTitle("Ticket Opened")
+            .addField("Ticket Opener", `<@${ticket.userID}> [${ticket.userID}]`)
+            .addField("Topic", message.content.substring(0, 256))
+            .setFooter(guild.footer)
+        let logChannel = message.guild.channels.cache.get(guild.logID);
+        if (logChannel) logChannel.send(logEmbed);
+
+        await Tickets.findOne({
+            channelID: message.channel.id
+        }, async (err, ticket) => {
+            if (err) console.log(err);
+            ticket.ticketTopic = message.content.substring(0, 256);
+            ticket.save().catch(e => console.log(e));
+            message.delete();
+            message.channel.send(embed);
+        });
+    }
+
+
     if (message.content.startsWith(guild.prefix)) {
 
         let messageArray = message.content.split(" ");

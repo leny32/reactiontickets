@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const Reactions = require("../models/reactions");
 const config = require("../config");
+const axios = require("axios");
 
 exports.run = async (client, guild, message, args) => {
 

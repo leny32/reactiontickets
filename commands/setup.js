@@ -5,6 +5,9 @@ const axios = require("axios");
 
 exports.run = async (client, guild, message, args) => {
 
+    if (!message.guild.me.hasPermission("MANAGE_MESSAGES")) return message.channel.send("I'm missing the Manage Messages permission.");
+    if (!message.guild.me.hasPermission("MANAGE_CHANNELS")) return message.channel.send("I'm missing the Manage Channels permission.");
+
     let guildID = message.guild.id;
 
     let reactions = await Reactions.findOne({
@@ -73,12 +76,16 @@ exports.run = async (client, guild, message, args) => {
                     return message.channel.send("Couldn't find channel.");
                 }
                 channel = message.guild.channels.cache.get(channelID);
+                if (!channel.permissionsFor(message.guild.me).has("SEND_MESSAGES")) {
+                    channelID = "";
+                    return message.channel.send("I'm missing the send messages permission in that channel.");
+                }
                 embed.addField("Ticket Channel", channel, true);
                 embe.edit(embed);
                 response.delete();
                 tsg.delete();
             }).then(() => {
-                if (channelID) message.channel.send("**Step 2**: Please provide a transcript log channel. (none/mention/id/name)\n(A transcript channel is where chat-logs of your tickets will be stored.)")
+                if (channelID) message.channel.send("**Step 2**: Please provide a ticket log channel. (none/mention/id/name)\n(A ticket channel is where ticket-logs from tickets will be stored.)")
                 .then(async (tsg) => {
                     if(channelID) message.channel.awaitMessages(filter, { max: 1 })
                     .then(res => {
@@ -90,10 +97,15 @@ exports.run = async (client, guild, message, args) => {
                             logID = "none";
                         }
                         if (logID !== "none") {
-                            embed.addField("Transcript channel", message.guild.channels.cache.get(logID), true);
+                            if (!message.guild.channels.cache.get(logID).permissionsFor(message.guild.me).has("SEND_MESSAGES")) {
+                                channelID = "";
+                                return message.channel.send("I'm missing the Send Messages permission in that channel.");
+                            }
+                            embed.addField("Ticket log channel", message.guild.channels.cache.get(logID), true);
                         } else {
-                            embed.addField("Transcript channel", logID, true);
+                            embed.addField("Ticket log channel", logID, true);
                         }
+
                         embe.edit(embed);
                         response.delete();
                         tsg.delete();

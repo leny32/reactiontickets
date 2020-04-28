@@ -6,6 +6,7 @@ const reactSchema = new mongoose.Schema({
     messageID: String,
     userID: String,
     staffTool: String,
+    ticketTopic: { type: String, default: "none" },
     active: { type: Boolean, default: true },
     ticket: Number
 });

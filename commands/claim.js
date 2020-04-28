@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const Reactions = require("../models/reactions");
 const Premium = require("../models/premium");
 const config = require("../config");
+const axios = require("axios");
 
 exports.run = async (client, guild, message, args) => {
 
@@ -9,34 +10,17 @@ exports.run = async (client, guild, message, args) => {
         guildID: message.guild.id
     });
 
-    if (reactions.premium) return message.channel.send("Premium is already activiated on this server.");
-
-    let dKey = args[0];
-
-    if (!dKey) return client.throw(message, "Wrong Usage", `${config.wrongUsage} ${guild.prefix}${this.help.usage}`);
-
-    let key = await Premium.findOne({
-        key: dKey,
-        claimed: false
+    let key = args[0];
+    if (!key) return message.reply("Please supply me with a valid key.")
+    let reponse = await axios.post(`https://store.droplet.gg/api/checkKey/reactiontickets/${key}/${message.guild.id}/${message.author.id}`, {}, {
+        headers: {
+            'Authorization': `Bearer ${config.genKey}`
+        }
     });
-
-    if(!key) return message.channel.send("Invalid key");
-
-    await Reactions.findOne({
-        guildID: message.guild.id,
-    }, async (err, key) => {
-        if (err) console.log(err);
-        key.premium = true
-        await key.save().catch(e => console.log(e)); 
-    });
-
-    await Premium.findOne({
-        key: dKey
-    }, async (err, key) => {
-        if (err) console.log(err);
-        key.claimed = true
-        await key.save().catch(e => console.log(e));
-    });
+    if (!reponse) return message.reply("Some error occured, please contact droplet staff via the support server.");
+    if (!reponse.data) return message.reply("Some error occured, please contact droplet staff via the support server.");
+    let enabled = reponse.data.success;
+    if (!enabled) return message.reply("This key does not exist or it is redeemed!").catch(err => { });
 
     const embed = new Discord.MessageEmbed()
     .setTitle("Premium has been activated")
@@ -47,7 +31,7 @@ exports.run = async (client, guild, message, args) => {
 
 module.exports.help = {
     name: "claim",
-    aliases: ["get"],
+    aliases: ["get", "redeem"],
     usage: "claim (key)",
     description: "Claim your premium key.",
     perms: 0

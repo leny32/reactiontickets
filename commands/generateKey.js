@@ -2,43 +2,36 @@ const Discord = require("discord.js");
 const Reactions = require("../models/reactions");
 const Premium = require("../models/premium");
 const config = require("../config");
+const axios = require("axios");
 
 exports.run = async (client, guild, message, args) => {
-
-    if (message.author.id !== "561715927503339549") return;
 
     let reactions = await Reactions.findOne({
         guildID: message.guild.id
     });
 
-    let dKey = makeKey(30);
+    if (config.admins.includes(message.author.id)) {
 
-    const newKey = new Premium({
-        key: dKey
-    });
-    await newKey.save().catch(e => console.log(e));
+        if (!args[0] || !args[1] || !args[2]) return message.reply("Please follow the fucking format useless lenny **rt!generate [number of keys] [amount (time)] [value (time)]**")
 
-    const embed = new Discord.MessageEmbed()
-    .setTitle("Premium has been generated")
-    .setDescription(`||${dKey}||`)
-    .setColor("GREEN")
-    .setFooter(reactions.footer)
-    message.author.send(embed);
-}
+        let amount = args[0]
+        let length = args[1] + " " + args[2];
 
-function makeKey(length) {
-    var result = '';
-    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var charactersLength = characters.length;
-    for (var i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        let response = await axios.post(`https://store.droplet.gg/api/genKey/`, { "length": length, "amount": amount, "bot": "reactiontickets" },
+            {
+                headers: {
+                    'Authorization': `Bearer ${config.genKey}`
+                }
+            });
+        message.reply({ embed: new Discord.MessageEmbed().setTitle("Keys").setDescription(response.data.key.join("\n")).setFooter(reactions.footer) })
+    } else {
+        return message.reply("NOPE");
     }
-    return result;
 }
 
 module.exports.help = {
     name: "generate",
-    aliases: ["newkey", "createkey", "generatekey", "generate"],
+    aliases: ["newkey", "createkey", "generatekey", "generate", "mass"],
     usage: "generate",
     description: "Generate a new premium key.",
     perms: 3

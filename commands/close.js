@@ -16,10 +16,20 @@ exports.run = async (client, guild, message, args) => {
     if (!ticket) return;
 
     let channel = client.channels.cache.get(ticket.channelID);
+
+    const logEmbed = new Discord.MessageEmbed()
+        .setTitle(`Ticket ${ticket.ticket} | Closed`)
+        .addField("Channel", `<#${ticket.channelID}> [${ticket.channelID}]`)
+        .addField("Ticket Opener", `<@${ticket.userID}> [${ticket.userID}]`)
+        .addField("Ticket Closer", `${message.author} [${message.author.id}]`)
+        .setFooter(reactions.footer)
+    let logChannel = message.guild.channels.cache.get(reactions.logID);
+    if (logChannel) logChannel.send(logEmbed);
+
     await channel.messages.fetch(ticket.messageID).then(async (msg) => {
         let user = message.guild.members.cache.get(message.author.id);
         if (user.id !== client.user.id) {
-            let memberObj = message.guild.members.cache.get(user.id);
+            let ticketOwner = message.guild.members.cache.get(ticket.userID);
 
             channel.updateOverwrite(ticket.userID, {
                 VIEW_CHANNEL: false
@@ -29,7 +39,7 @@ exports.run = async (client, guild, message, args) => {
                 guildID: msg.guild.id
             });
 
-            channel.send(reactions.closeMsg.replace('{member}', memberObj.user.tag).replace('{username}', memberObj.user.username)).then(()=> {
+            channel.send(reactions.closeMsg.replace('{executor}', message.author.tag).replace('{executorusername}', message.author.username).replace('{member}', ticketOwner.user.tag).replace('{username}', ticketOwner.user.username)).then(()=> {
                 const embed = new Discord.MessageEmbed()
                     .setTitle("Staff Tool")
                     .setDescription(`**Save transcript**: 📑

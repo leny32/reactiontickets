@@ -145,6 +145,15 @@ exports.run = async (client, event) => {
                                 guildID: msg.guild.id
                             });
 
+                            const logEmbed = new Discord.MessageEmbed()
+                                .setTitle(`Ticket ${ticket.ticket} | Closed`)
+                                .addField("Channel", `<#${ticket.channelID}> [${ticket.channelID}]`)
+                                .addField("Ticket Opener", `${ticketOwner} [${ticketOwner.id}]`)
+                                .addField("Ticket Closer", `${staff} [${staff.id}]`)
+                                .setFooter(reactions.footer)
+                            let logChannel = msg.guild.channels.cache.get(reactions.logID);
+                            if (logChannel) logChannel.send(logEmbed);
+
                             channel.send(reactions.closeMsg.replace('{executor}', staff.user.tag).replace('{executorusername}', staff.user.username).replace('{member}', ticketOwner.user.tag).replace('{username}', ticketOwner.user.username)).then(()=> {
                                 const embed = new Discord.MessageEmbed()
                                     .setTitle("Staff Tool")
@@ -197,11 +206,20 @@ exports.run = async (client, event) => {
                                 VIEW_CHANNEL: true
                             });
 
-                            msg.delete();
-
                             let reactions = await Reactions.findOne({
                                 guildID: msg.guild.id
                             });
+
+                            const logEmbed = new Discord.MessageEmbed()
+                                .setTitle(`Ticket ${ticket.ticket} | Reopened`)
+                                .addField("Channel", `<#${ticket.channelID}> [${ticket.channelID}]`)
+                                .addField("Ticket Opener", `${ticketOwner} [${ticketOwner.id}]`)
+                                .addField("Ticket Reopener", `${staff} [${staff.id}]`)
+                                .setFooter(reactions.footer)
+                            let logChannel = msg.guild.channels.cache.get(reactions.logID);
+                            if (logChannel) logChannel.send(logEmbed);
+
+                            msg.delete();
 
                             channel.send(reactions.reopenMsg.replace('{executor}', staff.user.tag).replace('{executorusername}', staff.user.username).replace('{member}', ticketOwner.user.tag).replace('{username}', ticketOwner.user.username));
                         };
@@ -219,11 +237,19 @@ exports.run = async (client, event) => {
                                 guildID: msg.guild.id
                             });
 
+                            const logEmbed = new Discord.MessageEmbed()
+                                .setTitle(`Ticket ${ticket.ticket} | Transcript`)
+                                .addField("Channel", `<#${ticket.channelID}> [${ticket.channelID}]`)
+                                .addField("Ticket Opener", `<@${ticket.userID}> [${ticket.userID}]`)
+                                .addField("Saved by", `${staff} [${staff.id}]`)
+                                .setFooter(reactions.footer)
+                            let logChannel = msg.guild.channels.cache.get(reactions.logID);
+                            if (logChannel) logChannel.send(logEmbed);
+
                             channel.messages.fetch({ limit: 100 }).then(async (fetched) => {
                                 fetched = fetched.array().reverse();
                                 const mapped = fetched.map(m => `${m.author.tag}: ${m.content}`).join('\n');
                                 const att = new Discord.MessageAttachment(Buffer.from(mapped), `Transcript-${ticket.userID}.txt`);
-                                let logChannel = msg.guild.channels.cache.get(reactions.logID);
                                 if (logChannel) logChannel.send(att);
                                 else channel.send(att);
                             });
@@ -240,6 +266,16 @@ exports.run = async (client, event) => {
                             let reactions = await Reactions.findOne({
                                 guildID: msg.guild.id
                             });
+
+                            const logEmbed = new Discord.MessageEmbed()
+                                .setTitle(`Ticket ${ticket.ticket} | Deleted`)
+                                .addField("Channel", `[${ticket.channelID}]`)
+                                .addField("Ticket Opener", `<@${ticket.userID}> [${ticket.userID}]`)
+                                .addField("Deleted by", `${staff} [${staff.id}]`)
+                                .addField("Topic", ticket.ticketTopic)
+                                .setFooter(reactions.footer)
+                            let logChannel = msg.guild.channels.cache.get(reactions.logID);
+                            if (logChannel) logChannel.send(logEmbed);
 
                             channel.send(reactions.deleteMsg.replace('{executor}', staff.user.tag).replace('{executorusername}', staff.user.username).replace('{member}', ticketOwner.user.tag).replace('{username}', ticketOwner.user.username)).then(() => {
                                 channel.messages.fetch({ limit: 100 }).then(async (fetched) => {
