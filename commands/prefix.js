@@ -5,6 +5,10 @@ const axios = require("axios");
 
 exports.run = async (client, guild, message, args) => {
 
+    let reactions = await Reactions.findOne({
+        guildID: message.guild.id
+    });
+
     let { data } = await axios.post(config.apiUrl + "premiumCheck", { "guildid": message.guild.id }, {
         headers: {
             'Authorization': `Bearer ${config.storeapi}`

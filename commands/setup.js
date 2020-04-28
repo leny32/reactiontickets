@@ -178,7 +178,7 @@ exports.run = async (client, guild, message, args) => {
                                                                 message.channel.awaitMessages(filter, { max: 1 })
                                                                 .then(res => {
                                                                     const response = res.first();
-                                                                    if (response.content == "default") openTicket = "You've opened a ticket, react below to close it.";
+                                                                    if (response.content == "default") openTicket = "React below to open a ticket.";
                                                                     else if (response.content) openTicket = response.content
                                                                     else openTicket = "React below to open a ticket."
                                                                     embed.addField("Open ticket", openTicket, true);
