@@ -40,7 +40,7 @@ exports.run = async (client, event) => {
                             react.ticket = react.ticket + 1;
                             await react.save().catch(e => console.log(e));
 
-                            if (reactions.nameTicket) {
+                            if (react.nameTicket) {
                                 msg.guild.channels.create(`${memberObj.user.username}`, {
                                     type: "text",
                                     permissionOverwrites: [
