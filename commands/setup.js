@@ -194,10 +194,10 @@ exports.run = async (client, guild, message, args) => {
                                                                                 }).then(() => {
                                                                                     message.channel.send(`**Step 10**: What would you like the **close** ticket message to be? (default/message)
                                                                 
-        {member} = Username + discriminator
-        {username} = Username
-        {executor} = Username + discriminator
-        {executorusername} = Username`)
+{member} = Username + discriminator
+{username} = Username
+{executor} = Username + discriminator
+{executorusername} = Username`)
                                                                                     .then(async (tsg) => {
                                                                                         message.channel.awaitMessages(filter, { max: 1 })
                                                                                         .then(res => {
@@ -212,10 +212,10 @@ exports.run = async (client, guild, message, args) => {
                                                                                         }).then(() => {
                                                                                             message.channel.send(`**Step 11**: What would you like the **reopen** ticket message to be? (default/message)
                                                                 
-        {member} = Username + discriminator
-        {username} = Username
-        {executor} = Username + discriminator
-        {executorusername} = Username`)
+{member} = Username + discriminator
+{username} = Username
+{executor} = Username + discriminator
+{executorusername} = Username`)
                                                                                             .then(async (tsg) => {
                                                                                                 message.channel.awaitMessages(filter, { max: 1 })
                                                                                                 .then(res => {
@@ -230,10 +230,10 @@ exports.run = async (client, guild, message, args) => {
                                                                                                 }).then(() => {
                                                                                                     message.channel.send(`**Step 12**: What would you like the **delete** ticket message to be? (default/message)
                                                                 
-        {member} = Username + discriminator
-        {username} = Username
-        {executor} = Username + discriminator
-        {executorusername} = Username`)
+{member} = Username + discriminator
+{username} = Username
+{executor} = Username + discriminator
+{executorusername} = Username`)
                                                                                                     .then(async (tsg) => {
                                                                                                         message.channel.awaitMessages(filter, { max: 1 })
                                                                                                         .then(res => {
@@ -248,10 +248,10 @@ exports.run = async (client, guild, message, args) => {
                                                                                                         }).then(() => {
                                                                                                             message.channel.send(`**Step 13**: What would you like the **forcefully deleted** ticket message to be? (default/message)
 
-        {member} = Username + discriminator
-        {username} = Username
-        {executor} = Username + discriminator
-        {executorusername} = Username`)
+{member} = Username + discriminator
+{username} = Username
+{executor} = Username + discriminator
+{executorusername} = Username`)
                                                                                                             .then(async (tsg) => {
                                                                                                                 message.channel.awaitMessages(filter, { max: 1 })
                                                                                                                 .then(res => {
