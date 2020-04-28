@@ -1,13 +1,18 @@
 const Discord = require("discord.js");
 const Reactions = require("../models/reactions");
+const config = require("../config");
 
 exports.run = async (client, guild, message, args) => {
 
-    let reactions = await Reactions.findOne({
-        guildID: message.guild.id
+    let { data } = await axios.post(config.apiUrl + "premiumCheck", { "guildid": message.guild.id }, {
+        headers: {
+            'Authorization': `Bearer ${config.storeapi}`
+        }
     });
 
-    if (!reactions.premium) return message.channel.send("Premium has not been bought on this server yet.");
+    let premium = data.data;
+
+    if (!premium) return message.channel.send("Premium has not been bought on this server yet.");
 
     if (!args[0]) return bot.throw(message, "Wrong Usage", `${config.wrongUsage} \`${reactions.prefix}${this.help.usage}\``)
 

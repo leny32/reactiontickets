@@ -5,7 +5,7 @@ exports.run = async (client, guild, message, args) => {
 
     let reaction = await Reactions.findOne({
         guildID: message.guild.id
-    });s
+    });
 
     const embed = new Discord.MessageEmbed()
     .setDescription("It is suggested to invite the bot with administrator permissions in order to bypass all permissions checks. This means that you only have to move the role over the role you are giving to make it work. Or you could use the normal invite that should have all needed permissions but does not bypass channel and other permissions.")
@@ -17,10 +17,10 @@ exports.run = async (client, guild, message, args) => {
 }
 
 module.exports.help = {
-    name: "help",
-    aliases: ["info", "commands"],
-    usage: "help command",
-    description: "Help command",
+    name: "invite",
+    aliases: ["inv"],
+    usage: "invite",
+    description: "Invite bot to your server.",
     perms: 0
 };
 

@@ -41,7 +41,7 @@ exports.run = async (client, event) => {
                             await react.save().catch(e => console.log(e));
 
                             if (react.nameTicket) {
-                                msg.guild.channels.create(`${memberObj.user.username}`, {
+                                msg.guild.channels.create(`ticket-${memberObj.user.username}`, {
                                     type: "text",
                                     permissionOverwrites: [
                                         {
