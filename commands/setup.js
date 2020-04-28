@@ -293,6 +293,7 @@ exports.run = async (client, guild, message, args) => {
                                                                                                                             react.deleteMsg = deleteMsg;
                                                                                                                             react.forcedeleteMsg = forcedeleteMsg;
                                                                                                                             react.pingOnTicket = pingOnTicket;
+                                                                                                                            react.nameTicket = nameTicket;
                                                                                                                             await react.save().catch(e => console.log(e));
                                                                                                                         });
                                                                                                             
@@ -310,7 +311,8 @@ exports.run = async (client, guild, message, args) => {
                                                                                                                             reopenMsg: reopenMsg,
                                                                                                                             deleteMsg: deleteMsg,
                                                                                                                             forcedeleteMsg: forcedeleteMsg,
-                                                                                                                            pingOnTicket: pingOnTicket
+                                                                                                                            pingOnTicket: pingOnTicket,
+                                                                                                                            nameTicket: nameTicket
                                                                                                                         });
                                                                                                                         await newReaction.save().catch(e => console.log(e));
                                                                                                                     };
