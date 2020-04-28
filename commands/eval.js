@@ -28,6 +28,17 @@ exports.run = async (client, guild, message, args) => {
       message.channel.send(`Input:\`\`\`js\n${code}\n\`\`\`\nOutput:\`\`\`xl\n${err}\n\`\`\``);
     }
   
-  
-  
-  }
+}
+
+module.exports.help = {
+    name: "eval",
+    aliases: ["ev"],
+    usage: "eval (thing)",
+    description: "Evaluate",
+    perms: 0
+};
+
+module.exports.limits = {
+    rateLimit: 5,
+    cooldown: 5000
+}
