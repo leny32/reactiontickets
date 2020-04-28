@@ -14,7 +14,7 @@ exports.run = async (client, guild, message, args) => {
     
     Premium can be bought for only $3/lifetime/per server
     
-    Purchase at ||idk?||`)
+    Purchase at [droplet.gg](https://store.droplet.gg/reactiontickets/)`)
     .setFooter(reactions.footer)
     message.channel.send(embed);
 }
