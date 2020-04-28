@@ -23,8 +23,8 @@ exports.run = async (client, guild, message, args) => {
         
     }
 
-    let apiurl = "https://store.droplet.gg/api/reactiontickets/"
-    let storeapi = "n5;CA=?&kBl(BzIHnpj1!.nTWRwv9VGW7JAv5qp+a--6Oz*j1kUqaA4!M1WSP(G&olm=%J&1O3xz)w&s6,C61NSUR7Hp4U(9Kv7"
+    let apiurl = "https://store.droplet.gg/api/rts/";
+    let storeapi = "n5;CA=?&kBl(BzIHnpj1!.nTWRwv9VGW7JAv5qp+a--6Oz*j1kUqaA4!M1WSP(G&olm=%J&1O3xz)w&s6,C61NSUR7Hp4U(9Kv7";
 
     let { data } = await axios.post(apiurl + "premiumCheck/", { "guildid": message.guild.id }, {
         headers: {
