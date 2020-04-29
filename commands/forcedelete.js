@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const Tickets = require("../models/tickets");
 const Reactions = require("../models/reactions");
+const Panels = require("../models/panels");
 const config = require("../config");
 
 exports.run = async (client, guild, message, args) => {
@@ -8,34 +9,40 @@ exports.run = async (client, guild, message, args) => {
     let reactions = await Reactions.findOne({
         guildID: message.guild.id
     });
-
     let ticket = await Tickets.findOne({
         channelID: message.channel.id
     });
 
     if (!ticket) return;
 
-    if (reactions && !message.member.roles.cache.get(reactions.supportID)) return;
+    let panels = await Panels.findOne({
+        guildID: message.guild.id,
+        ticketType: ticket.ticketType
+    });
+
+    if (panels && !message.member.roles.cache.get(panels.supportID)) return;
 
     const logEmbed = new Discord.MessageEmbed()
         .setTitle(`Ticket ${ticket.ticket} | Deleted (force)`)
         .addField("Channel", `[${ticket.channelID}]`)
         .addField("Ticket Opener", `<@${ticket.userID}> [${ticket.userID}]`)
         .addField("Deleted by", `${message.author} [${message.author.id}]`)
-        .addField("Topic", ticket.ticketTopic)
         .setFooter(reactions.footer)
-    let logChannel = message.guild.channels.cache.get(reactions.logID);
+        if (panels.topic) logEmbed.addField("Topic", ticket.ticketTopic)
+    let logChannel = message.guild.channels.cache.get(panels.logID);
     if (logChannel) logChannel.send(logEmbed);
 
     let ticketOwner = message.guild.members.cache.get(ticket.userID);
 
-    message.channel.send(reactions.forcedeleteMsg.replace('{executor}', message.author.tag).replace('{executorusername}', message.author.username).replace('{member}', ticketOwner.user.tag).replace('{username}', ticketOwner.user.username)).then(() => {
+    message.channel.send(panels.forcedeleteMsg.replace('{executor}', message.author.tag).replace('{executorusername}', message.author.username).replace('{member}', ticketOwner.user.tag).replace('{username}', ticketOwner.user.username)).then(() => {
         message.channel.messages.fetch({ limit: 100 }).then(async (fetched) => {
             fetched = fetched.array().reverse();
-            const mapped = fetched.map(m => `${m.author.tag}: ${m.content}`).join('\n');
-            const att = new Discord.MessageAttachment(Buffer.from(mapped), `Transcript-${ticket.userID}.txt`);
-            let logChannel = message.guild.channels.cache.get(reactions.logID);
-            if (logChannel) logChannel.send(att);
+            if (panels.transcriptOnDelete) {
+                const mapped = fetched.map(m => `${m.author.tag}: ${m.content}`).join('\n');
+                const att = new Discord.MessageAttachment(Buffer.from(mapped), `Transcript-${ticket.userID}.txt`);
+                let logChannel = message.guild.channels.cache.get(panels.logID);
+                if (logChannel) logChannel.send(att);
+            }
         }).then(async () => {
             await Tickets.findOneAndDelete({
                 channelID: message.channel.id
@@ -47,7 +54,7 @@ exports.run = async (client, guild, message, args) => {
 
 module.exports.help = {
     name: "forcedelete",
-    aliases: ["delete", "d"],
+    aliases: ["tdelete", "fd"],
     usage: "delete",
     description: "Delete a ticket",
     perms: 2

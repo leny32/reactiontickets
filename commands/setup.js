@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const Reactions = require("../models/reactions");
+const Panels = require("../models/panels");
 const config = require("../config");
 const axios = require("axios");
 
@@ -7,24 +8,6 @@ exports.run = async (client, guild, message, args) => {
 
     if (!message.guild.me.hasPermission("MANAGE_MESSAGES")) return message.channel.send("I'm missing the Manage Messages permission.");
     if (!message.guild.me.hasPermission("MANAGE_CHANNELS")) return message.channel.send("I'm missing the Manage Channels permission.");
-
-    let guildID = message.guild.id;
-
-    let reactions = await Reactions.findOne({
-        guildID: guildID
-    });
-
-    let channel = client.channels.cache.get(reactions.channelID);
-    let ticketMsg;
-    try {
-        if (channel) ticketMsg = await channel.messages.fetch(reactions.messageID);
-        if (ticketMsg) {
-            ticketMsg.delete()
-            message.channel.send(`Previous ticket in <#${reactions.channelID}> has been deleted, because the setup command was issued.`);
-        }
-    } catch {
-        
-    }
 
     let { data } = await axios.post(config.apiUrl + "premiumCheck", { "guildid": message.guild.id }, {
         headers: {
@@ -34,22 +17,38 @@ exports.run = async (client, guild, message, args) => {
 
     let premium = data.data;
 
+    let guildID = message.guild.id;
+
+    let reactions = await Reactions.findOne({
+        guildID: guildID
+    });
+
+    let panel = await Panels.findOne({
+        guildID: guildID
+    });
+
+    let panelCheck = await Panels.find({
+        guildID: guildID
+    })
+    if (panelCheck.length >= 1 && !premium) return message.channel.send("Premium has not been bought on this server yet, to open more than one ticket setup at a time, please buy premium.");
+    let configMessage = `\n\n{member} = Username + discriminator\n{username} = Username\n{executor} = Username + discriminator\n{executorusername} = Username`
     let messageID;
     let channelID;
     let supportID;
     let support;
     let logID;
-    let dLog;
     let categoryID;
     let openTicket;
     let newTicket;
-    let footer;
     let closeMsg;
     let reopenMsg;
     let deleteMsg;
     let forcedeleteMsg;
     let pingOnTicket;
     let nameTicket;
+    let topic;
+    let transcriptOnDelete;
+    let type;
 
 
     const embed = new Discord.MessageEmbed()
@@ -142,204 +141,193 @@ exports.run = async (client, guild, message, args) => {
                                         embe.edit(embed);
                                         response.delete();
                                         tsg.delete();
-                                     }).then(async () => {
-                                        if(premium) {
-                                            if(supportID) message.channel.send(`**Step 5**: Would you like ${support.name} to get pinged when a ticket is greated? (yes/no)`)
-                                            .then(async (tsg) => {
-                                                if (supportID) message.channel.awaitMessages(filter, { max: 1 })
-                                                .then(res => {
-                                                    const response = res.first();
-                                                    if (response.content == "yes" || response.content == "y") pingOnTicket = true;
-                                                    else if (response.content == "no" || response.content == "n") pingOnTicket = false;
-                                                    else pingOnTicket = false;
-                                                    embed.addField("Ping on ticket", pingOnTicket, true);
-                                                    embe.edit(embed);
-                                                    response.delete();
-                                                    tsg.delete();
-                                                }).then(() => {
-                                                    message.channel.send(`**Step 6**: Would you like to tickets to be named #${message.author.username} or #ticket-1? (username/ticket)`)
+                                    }).then(async () => {
+                                        if(supportID) message.channel.send(`**Step 5**: Would you like topics to be created when a ticket is created? (yes/no)`)
+                                        .then(async (tsg) => {
+                                            if (supportID) message.channel.awaitMessages(filter, { max: 1 })
+                                            .then(res => {
+                                                const response = res.first();
+                                                if (response.content == "yes" || response.content == "y") topic = true;
+                                                else if (response.content == "no" || response.content == "n") topic = false;
+                                                else topic = false;
+                                                embed.addField("Topic on ticket", topic, true);
+                                                embe.edit(embed);
+                                                response.delete();
+                                                tsg.delete();
+                                            }).then(async () => {
+                                                if(premium) {
+                                                    message.channel.send(`**Step 6**: Would you like ${support.name} to get pinged when a ticket is created? (yes/no)`)
                                                     .then(async (tsg) => {
                                                         message.channel.awaitMessages(filter, { max: 1 })
                                                         .then(res => {
                                                             const response = res.first();
-                                                            if (response.content == "username") nameTicket = true;
-                                                            else if (response.content == message.author.username) nameTicket = true;
-                                                            else if (response.content == "u") nameTicket = true;
-                                                            else if (response.content == "ticket") nameTicket = false;
-                                                            else if (response.content == "t") nameTicket = false;
-                                                            else nameTicket = false;
-                                                            embed.addField("Name Tickets", nameTicket, true);
+                                                            if (response.content == "yes" || response.content == "y") pingOnTicket = true;
+                                                            else if (response.content == "no" || response.content == "n") pingOnTicket = false;
+                                                            else pingOnTicket = false;
+                                                            embed.addField("Ping on ticket", pingOnTicket, true);
                                                             embe.edit(embed);
                                                             response.delete();
                                                             tsg.delete();
                                                         }).then(() => {
-                                                            message.channel.send(`**Step 7**: What message would you like to send in ${channel}? (default/message)`)
+                                                            if(supportID) message.channel.send(`**Step 7**: Would you like transcripts to be created when a ticket is deleted? (yes/no)`)
                                                             .then(async (tsg) => {
-                                                                message.channel.awaitMessages(filter, { max: 1 })
+                                                                if (supportID) message.channel.awaitMessages(filter, { max: 1 })
                                                                 .then(res => {
                                                                     const response = res.first();
-                                                                    if (response.content == "default") openTicket = "React below to open a ticket.";
-                                                                    else if (response.content) openTicket = response.content
-                                                                    else openTicket = "React below to open a ticket."
-                                                                    embed.addField("Open ticket", openTicket, true);
+                                                                    if (response.content == "yes" || response.content == "y") transcriptOnDelete = true;
+                                                                    else if (response.content == "no" || response.content == "n") transcriptOnDelete = false;
+                                                                    else transcriptOnDelete = false;
+                                                                    embed.addField("Transcript on delete", transcriptOnDelete, true);
                                                                     embe.edit(embed);
                                                                     response.delete();
                                                                     tsg.delete();
                                                                 }).then(() => {
-                                                                    message.channel.send("**Step 8**: What message would you like to be sent when new tickets are opened? (default/message)")
+                                                                    message.channel.send(`**Step 8**: Would you like to tickets to be named #ticket-${message.author.username} or #ticket-1? (username/number)`)
                                                                     .then(async (tsg) => {
                                                                         message.channel.awaitMessages(filter, { max: 1 })
                                                                         .then(res => {
                                                                             const response = res.first();
-                                                                            if (response.content == "default") newTicket = "You've opened a ticket, react below to close it.";
-                                                                            else if (response.content) newTicket = response.content;
-                                                                            else newTicket = "You've opened a ticket, react below to close it.";
-                                                                            embed.addField("New ticket", newTicket, true);
+                                                                            if (response.content == "username") nameTicket = true;
+                                                                            else if (response.content == message.author.username) nameTicket = true;
+                                                                            else if (response.content == "u") nameTicket = true;
+                                                                            else if (response.content == "ticket") nameTicket = false;
+                                                                            else if (response.content == "n") nameTicket = false;
+                                                                            else nameTicket = false;
+                                                                            embed.addField("Name Tickets", nameTicket, true);
                                                                             embe.edit(embed);
                                                                             response.delete();
                                                                             tsg.delete();
                                                                         }).then(() => {
-                                                                            message.channel.send("**Step 9**: What would you like to be in the footer of all messages? (default/message)")
+                                                                            message.channel.send(`**Step 9**: What message would you like to send in ${channel}? (default/message)`)
                                                                             .then(async (tsg) => {
                                                                                 message.channel.awaitMessages(filter, { max: 1 })
                                                                                 .then(res => {
                                                                                     const response = res.first();
-                                                                                    if (response.content == "default") footer = "Powered by Reaction Tickets";
-                                                                                    else if (response.content) footer = response.content;
-                                                                                    else footer = "Powered by Reaction Tickets";
-                                                                                    embed.setFooter(footer);
+                                                                                    if (response.content == "default") openTicket = "React below to open a ticket.";
+                                                                                    else if (response.content) openTicket = response.content
+                                                                                    else openTicket = "React below to open a ticket."
+                                                                                    embed.addField("Open ticket", openTicket, true);
                                                                                     embe.edit(embed);
                                                                                     response.delete();
                                                                                     tsg.delete();
                                                                                 }).then(() => {
-                                                                                    message.channel.send(`**Step 10**: What would you like the **close** ticket message to be? (default/message)
-                                                                
-{member} = Username + discriminator
-{username} = Username
-{executor} = Username + discriminator
-{executorusername} = Username`)
+                                                                                    message.channel.send("**Step 10**: What message would you like to be sent when new tickets are opened? (default/message)")
                                                                                     .then(async (tsg) => {
                                                                                         message.channel.awaitMessages(filter, { max: 1 })
                                                                                         .then(res => {
                                                                                             const response = res.first();
-                                                                                            if (response.content == "default") closeMsg = "The ticket was closed by {executor}";
-                                                                                            else if (response.content) closeMsg = response.content;
-                                                                                            else closeMsg = "The ticket was closed by {executor}";
-                                                                                            embed.addField("Ticket closed", closeMsg, true);
+                                                                                            if (response.content == "default") newTicket = "You've opened a ticket, react below to close it.";
+                                                                                            else if (response.content) newTicket = response.content;
+                                                                                            else newTicket = "You've opened a ticket, react below to close it.";
+                                                                                            embed.addField("New ticket", newTicket, true);
                                                                                             embe.edit(embed);
                                                                                             response.delete();
                                                                                             tsg.delete();
                                                                                         }).then(() => {
-                                                                                            message.channel.send(`**Step 11**: What would you like the **reopen** ticket message to be? (default/message)
-                                                                
-{member} = Username + discriminator
-{username} = Username
-{executor} = Username + discriminator
-{executorusername} = Username`)
+                                                                                            message.channel.send("**Step 11**: What would you like to be ticket name of this setup? (default/message)")
                                                                                             .then(async (tsg) => {
                                                                                                 message.channel.awaitMessages(filter, { max: 1 })
                                                                                                 .then(res => {
                                                                                                     const response = res.first();
-                                                                                                    if (response.content == "default") reopenMsg = "The ticket was reopened by {executor}";
-                                                                                                    else if (response.content) reopenMsg = response.content;
-                                                                                                    else reopenMsg = "The ticket was reopend by {executor}";
-                                                                                                    embed.addField("Ticket reopened", reopenMsg, true);
+                                                                                                    if (response.content == "default") type = "Ticket";
+                                                                                                    else if (response.content) type = response.content;
+                                                                                                    else type = "Ticket";
+                                                                                                    embed.title(type);
                                                                                                     embe.edit(embed);
                                                                                                     response.delete();
                                                                                                     tsg.delete();
                                                                                                 }).then(() => {
-                                                                                                    message.channel.send(`**Step 12**: What would you like the **delete** ticket message to be? (default/message)
-                                                                
-{member} = Username + discriminator
-{username} = Username
-{executor} = Username + discriminator
-{executorusername} = Username`)
+                                                                                                    message.channel.send(`**Step 12**: What would you like the **close** ticket message to be? (default/message) ${configMessage}`)
                                                                                                     .then(async (tsg) => {
                                                                                                         message.channel.awaitMessages(filter, { max: 1 })
                                                                                                         .then(res => {
                                                                                                             const response = res.first();
-                                                                                                            if (response.content == "default") deleteMsg = "The ticket was deleted by {executor}";
-                                                                                                            else if (response.content) deleteMsg = response.content;
-                                                                                                            else deleteMsg = "The ticket was deleted by {executor}";
-                                                                                                            embed.addField("Ticket deleted", deleteMsg, true);
+                                                                                                            if (response.content == "default") closeMsg = "The ticket was closed by {executor}";
+                                                                                                            else if (response.content) closeMsg = response.content;
+                                                                                                            else closeMsg = "The ticket was closed by {executor}";
+                                                                                                            embed.addField("Ticket closed", closeMsg, true);
                                                                                                             embe.edit(embed);
                                                                                                             response.delete();
                                                                                                             tsg.delete();
                                                                                                         }).then(() => {
-                                                                                                            message.channel.send(`**Step 13**: What would you like the **forcefully deleted** ticket message to be? (default/message)
-
-{member} = Username + discriminator
-{username} = Username
-{executor} = Username + discriminator
-{executorusername} = Username`)
+                                                                                                            message.channel.send(`**Step 13**: What would you like the **reopen** ticket message to be? (default/message) ${configMessage}`)
                                                                                                             .then(async (tsg) => {
                                                                                                                 message.channel.awaitMessages(filter, { max: 1 })
                                                                                                                 .then(res => {
                                                                                                                     const response = res.first();
-                                                                                                                    if (response.content == "default") forcedeleteMsg = "The ticket was forcefully deleted by {executor}";
-                                                                                                                    else if (response.content) forcedeleteMsg = response.content;
-                                                                                                                    else forcedeleteMsg = "The ticket was forcefully deleted by {executor}";
-                                                                                                                    embed.addField("Ticket forcefully deleted ", forcedeleteMsg, true);
+                                                                                                                    if (response.content == "default") reopenMsg = "The ticket was reopened by {executor}";
+                                                                                                                    else if (response.content) reopenMsg = response.content;
+                                                                                                                    else reopenMsg = "The ticket was reopend by {executor}";
+                                                                                                                    embed.addField("Ticket reopened", reopenMsg, true);
                                                                                                                     embe.edit(embed);
                                                                                                                     response.delete();
                                                                                                                     tsg.delete();
-                                                                                                                }).then(async () => {
-                                                                                                                    embed.setDescription("Final configuration:")
-                                                                                                                    embed.setColor("GREEN")
-                                                                                                                    embe.edit(embed);
-                                                                                                                    const newEmbed = new Discord.MessageEmbed()
-                                                                                                                        .setTitle("Open Ticket")
-                                                                                                                        .setDescription(`${openTicket}\n\nBy opening a ticket, you agree that your conversation will be recorded for legal and quality purposes.`)
-                                                                                                                        .setFooter(footer);
-                                                                                                                    await channel.send(newEmbed).then(m => {
-                                                                                                                        messageID = m.id;
-                                                                                                                        m.react("🎫");
+                                                                                                                }).then(() => {
+                                                                                                                    message.channel.send(`**Step 14**: What would you like the **delete** ticket message to be? (default/message) ${configMessage}`)
+                                                                                                                    .then(async (tsg) => {
+                                                                                                                        message.channel.awaitMessages(filter, { max: 1 })
+                                                                                                                        .then(res => {
+                                                                                                                            const response = res.first();
+                                                                                                                            if (response.content == "default") deleteMsg = "The ticket was deleted by {executor}";
+                                                                                                                            else if (response.content) deleteMsg = response.content;
+                                                                                                                            else deleteMsg = "The ticket was deleted by {executor}";
+                                                                                                                            embed.addField("Ticket deleted", deleteMsg, true);
+                                                                                                                            embe.edit(embed);
+                                                                                                                            response.delete();
+                                                                                                                            tsg.delete();
+                                                                                                                        }).then(() => {
+                                                                                                                            message.channel.send(`**Step 15**: What would you like the **forcefully deleted** ticket message to be? (default/message) ${configMessage}`)
+                                                                                                                            .then(async (tsg) => {
+                                                                                                                                message.channel.awaitMessages(filter, { max: 1 })
+                                                                                                                                .then(res => {
+                                                                                                                                    const response = res.first();
+                                                                                                                                    if (response.content == "default") forcedeleteMsg = "The ticket was forcefully deleted by {executor}";
+                                                                                                                                    else if (response.content) forcedeleteMsg = response.content;
+                                                                                                                                    else forcedeleteMsg = "The ticket was forcefully deleted by {executor}";
+                                                                                                                                    embed.addField("Ticket forcefully deleted ", forcedeleteMsg, true);
+                                                                                                                                    embe.edit(embed);
+                                                                                                                                    response.delete();
+                                                                                                                                    tsg.delete();
+                                                                                                                                }).then(async () => {
+                                                                                                                                    embed.setDescription("Final configuration:")
+                                                                                                                                    embed.setColor("GREEN")
+                                                                                                                                    embe.edit(embed);
+                                                                                                                                        const newEmbed = new Discord.MessageEmbed()
+                                                                                                                                        .setTitle(`Open ${type}`)
+                                                                                                                                        .setDescription(`${openTicket}\n\nBy opening a ticket, you agree that your conversation will be recorded for legal and quality purposes.`)
+                                                                                                                                        .setFooter(reactions.footer);
+                                                                                                                                    await channel.send(newEmbed).then(m => {
+                                                                                                                                        messageID = m.id;
+                                                                                                                                        m.react("🎫");
+                                                                                                                                    }).then(async () => {
+                                                                                                                                        const newReaction = new Panels({
+                                                                                                                                            guildID: guildID,
+                                                                                                                                            channelID: channelID,
+                                                                                                                                            messageID: messageID,
+                                                                                                                                            supportID: supportID,
+                                                                                                                                            categoryID: categoryID,
+                                                                                                                                            logID: logID,
+                                                                                                                                            ticketType: type,
+                                                                                                                                            newTicket: newTicket,
+                                                                                                                                            closeMsg: closeMsg,
+                                                                                                                                            reopenMsg: reopenMsg,
+                                                                                                                                            deleteMsg: deleteMsg,
+                                                                                                                                            forcedeleteMsg: forcedeleteMsg,
+                                                                                                                                            pingOnTicket: pingOnTicket,
+                                                                                                                                            nameTicket: nameTicket,
+                                                                                                                                            transcriptOnDelete: transcriptOnDelete,
+                                                                                                                                            topic: topic
+                                                                                                                                        });
+                                                                                                                                        await newReaction.save().catch(e => console.log(e));
+                                                                                                                                    });
+                                                                                                                                });
+                                                                                                                            });
+                                                                                                                        });
                                                                                                                     });
-                                                                                        
-                                                                                                                    if (reactions) {
-                                                                                                                        await Reactions.findOne({
-                                                                                                                            guildID: guildID
-                                                                                                                        }, async (err, react) => {
-                                                                                                                            if (err) console.log(err);
-                                                                                                                            react.channelID = channelID;
-                                                                                                                            react.messageID = messageID;
-                                                                                                                            react.supportID = supportID;
-                                                                                                                            react.categoryID = categoryID;
-                                                                                                                            react.logID = logID;
-                                                                                                                            react.footer = footer;
-                                                                                                                            react.newTicket = newTicket;
-                                                                                                                            react.closeMsg = closeMsg;
-                                                                                                                            react.reopenMsg = reopenMsg;
-                                                                                                                            react.deleteMsg = deleteMsg;
-                                                                                                                            react.forcedeleteMsg = forcedeleteMsg;
-                                                                                                                            react.pingOnTicket = pingOnTicket;
-                                                                                                                            react.nameTicket = nameTicket;
-                                                                                                                            await react.save().catch(e => console.log(e));
-                                                                                                                        });
-                                                                                                            
-                                                                                                                    } else if (!reactions) {
-                                                                                                                        const newReaction = new Reactions({
-                                                                                                                            guildID: guildID,
-                                                                                                                            channelID: channelID,
-                                                                                                                            messageID: messageID,
-                                                                                                                            supportID: supportID,
-                                                                                                                            categoryID: categoryID,
-                                                                                                                            logID: logID,
-                                                                                                                            footer: footer,
-                                                                                                                            newTicket: newTicket,
-                                                                                                                            closeMsg: closeMsg,
-                                                                                                                            reopenMsg: reopenMsg,
-                                                                                                                            deleteMsg: deleteMsg,
-                                                                                                                            forcedeleteMsg: forcedeleteMsg,
-                                                                                                                            pingOnTicket: pingOnTicket,
-                                                                                                                            nameTicket: nameTicket
-                                                                                                                        });
-                                                                                                                        await newReaction.save().catch(e => console.log(e));
-                                                                                                                    };
                                                                                                                 });
                                                                                                             });
                                                                                                         });
-                                                                                                    })
+                                                                                                    });
                                                                                                 });
                                                                                             });
                                                                                         });
@@ -352,43 +340,45 @@ exports.run = async (client, guild, message, args) => {
                                                             });
                                                         });
                                                     });
-                                                });
+                                                } else {
+                                                    const embed = new Discord.MessageEmbed()
+                                                        .setTitle("Open Ticket")
+                                                        .setDescription("Please react with 🎫 below to open a ticket.")
+                                                        .setFooter(reactions.footer);
+                                                    await channel.send(embed).then(m => {
+                                                        messageID = m.id;
+                                                        m.react("🎫");
+                                                    });
+                        
+                                                    if (reactions) {
+                                                        await Panels.findOne({
+                                                            guildID: guildID
+                                                        }, async (err, react) => {
+                                                            if (err) console.log(err);
+                                                            react.channelID = channelID;
+                                                            react.messageID = messageID
+                                                            react.supportID = supportID;
+                                                            react.categoryID = categoryID;
+                                                            react.logID = logID;
+                                                            react.topic = topic;
+                                                            await react.save().catch(e => console.log(e));
+                                                        });
+                                            
+                                                    } else if (!reactions) {
+                                                        const newReaction = new Panels({
+                                                            guildID: guildID,
+                                                            channelID: channelID,
+                                                            messageID: messageID,
+                                                            supportID: supportID,
+                                                            categoryID: categoryID,
+                                                            logID: logID,
+                                                            topic: topic
+                                                        });
+                                                        await newReaction.save().catch(e => console.log(e));
+                                                    };
+                                                }
                                             });
-                                        } else {
-                                            const embed = new Discord.MessageEmbed()
-                                                .setTitle("Open Ticket")
-                                                .setDescription("Please react with 🎫 below to open a ticket.")
-                                                .setFooter(reactions.footer);
-                                            await channel.send(embed).then(m => {
-                                                messageID = m.id;
-                                                m.react("🎫");
-                                            });
-                
-                                            if (reactions) {
-                                                await Reactions.findOne({
-                                                    guildID: guildID
-                                                }, async (err, react) => {
-                                                    if (err) console.log(err);
-                                                    react.channelID = channelID;
-                                                    react.messageID = messageID;
-                                                    react.supportID = supportID;
-                                                    react.categoryID = categoryID;
-                                                    react.logID = logID;
-                                                    await react.save().catch(e => console.log(e));
-                                                });
-                                    
-                                            } else if (!reactions) {
-                                                const newReaction = new Reactions({
-                                                    guildID: guildID,
-                                                    channelID: channelID,
-                                                    messageID: messageID,
-                                                    supportID: supportID,
-                                                    categoryID: categoryID,
-                                                    logID: logID
-                                                });
-                                                await newReaction.save().catch(e => console.log(e));
-                                            };
-                                        }
+                                        });
                                     });
                                 });
                             });

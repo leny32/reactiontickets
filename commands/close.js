@@ -1,19 +1,21 @@
 const Discord = require("discord.js");
 const Tickets = require("../models/tickets");
 const Reactions = require("../models/reactions");
+const Panels = require("../models/panels");
 const config = require("../config");
 
 exports.run = async (client, guild, message, args) => {
-
-    let reactions = await Reactions.findOne({
-        guildID: message.guild.id
-    });
 
     let ticket = await Tickets.findOne({
         channelID: message.channel.id
     });
 
     if (!ticket) return;
+
+    let panels = await Panels.findOne({
+        guildID: message.guild.id,
+        ticketType: ticket.ticketType
+    });
 
     let channel = client.channels.cache.get(ticket.channelID);
 
@@ -22,8 +24,8 @@ exports.run = async (client, guild, message, args) => {
         .addField("Channel", `<#${ticket.channelID}> [${ticket.channelID}]`)
         .addField("Ticket Opener", `<@${ticket.userID}> [${ticket.userID}]`)
         .addField("Ticket Closer", `${message.author} [${message.author.id}]`)
-        .setFooter(reactions.footer)
-    let logChannel = message.guild.channels.cache.get(reactions.logID);
+        .setFooter(guild.footer)
+    let logChannel = message.guild.channels.cache.get(panels.logID);
     if (logChannel) logChannel.send(logEmbed);
 
     await channel.messages.fetch(ticket.messageID).then(async (msg) => {
@@ -35,11 +37,7 @@ exports.run = async (client, guild, message, args) => {
                 VIEW_CHANNEL: false
             });
 
-            let reactions = await Reactions.findOne({
-                guildID: msg.guild.id
-            });
-
-            channel.send(reactions.closeMsg.replace('{executor}', message.author.tag).replace('{executorusername}', message.author.username).replace('{member}', ticketOwner.user.tag).replace('{username}', ticketOwner.user.username)).then(()=> {
+            channel.send(panels.closeMsg.replace('{executor}', message.author.tag).replace('{executorusername}', message.author.username).replace('{member}', ticketOwner.user.tag).replace('{username}', ticketOwner.user.username)).then(()=> {
                 const embed = new Discord.MessageEmbed()
                     .setTitle("Staff Tool")
                     .setDescription(`**Save transcript**: 📑

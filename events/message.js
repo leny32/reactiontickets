@@ -1,5 +1,6 @@
 const Reactions = require("../models/reactions");
 const Tickets = require("../models/tickets");
+const Panels = require("../models/panels");
 const config = require('../config')
 const Discord = require("discord.js");
 
@@ -27,18 +28,16 @@ exports.run = async (client, message) => {
     if (ticket && ticket.ticketTopic === "none") {
         if (!ticket.userID === message.author.id) return;
 
+        let panel = await Panels.findOne({
+            guildID: message.guild.id,
+            ticketType: ticket.ticketType
+        });
+        if (!panel && panel.transcriptOnDelete) return;
+
         const embed = new Discord.MessageEmbed()
             .setTitle("Topic")
             .setDescription(message.content.substring(0, 256))
             .setFooter(guild.footer);
-
-        const logEmbed = new Discord.MessageEmbed()
-            .setTitle("Ticket Opened")
-            .addField("Ticket Opener", `<@${ticket.userID}> [${ticket.userID}]`)
-            .addField("Topic", message.content.substring(0, 256))
-            .setFooter(guild.footer)
-        let logChannel = message.guild.channels.cache.get(guild.logID);
-        if (logChannel) logChannel.send(logEmbed);
 
         await Tickets.findOne({
             channelID: message.channel.id

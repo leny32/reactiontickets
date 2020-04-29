@@ -1,6 +1,5 @@
 const Discord = require("discord.js");
 const Reactions = require("../models/reactions");
-const Premium = require("../models/premium");
 const config = require("../config");
 const axios = require("axios");
 
@@ -34,7 +33,7 @@ module.exports.help = {
     aliases: ["newkey", "createkey", "generatekey", "generate", "mass"],
     usage: "generate",
     description: "Generate a new premium key.",
-    perms: 3
+    perms: 0
 };
 
 module.exports.limits = {

@@ -1,6 +1,5 @@
 const Discord = require("discord.js");
 const Reactions = require("../models/reactions");
-const Premium = require("../models/premium");
 const config = require("../config");
 const axios = require("axios");
 

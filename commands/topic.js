@@ -1,19 +1,27 @@
 const Discord = require("discord.js");
 const Tickets = require("../models/tickets");
 const Reactions = require("../models/reactions");
+const Panels = require("../models/panels");
 const config = require("../config");
 
 exports.run = async (client, guild, message, args) => {
-
-    let reactions = await Reactions.findOne({
-        guildID: message.guild.id
-    });
 
     let ticket = await Tickets.findOne({
         channelID: message.channel.id
     });
 
     if (!ticket) return;
+
+    let reactions = await Reactions.findOne({
+        guildID: message.guild.id
+    });
+
+    let panels = await Panels.findOne({
+        guildID: message.guild.id,
+        ticketType: ticket.ticketType
+    });
+
+    if (!panels && !panels.topic) return;
 
     const embed = new Discord.MessageEmbed()
     .setTitle("New Topic")
