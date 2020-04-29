@@ -64,6 +64,10 @@ exports.run = async (client, event) => {
                             react.ticket = react.ticket + 1;
                             await react.save().catch(e => console.log(e));
 
+                            let reactions = await Reactions.findOne({
+                                guildID: msg.guild.id
+                            });
+
                             const logEmbed = new Discord.MessageEmbed()
                                 .setTitle("Ticket Opened")
                                 .addField("Ticket Opener", `<@${memberObj.id}> [${memberObj.id}]`)
