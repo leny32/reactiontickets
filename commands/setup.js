@@ -350,7 +350,7 @@ exports.run = async (client, guild, message, args) => {
                                                         m.react("🎫");
                                                     });
                         
-                                                    if (reactions) {
+                                                    if (panel) {
                                                         await Panels.findOne({
                                                             guildID: guildID
                                                         }, async (err, react) => {
@@ -364,7 +364,7 @@ exports.run = async (client, guild, message, args) => {
                                                             await react.save().catch(e => console.log(e));
                                                         });
                                             
-                                                    } else if (!reactions) {
+                                                    } else if (!panel) {
                                                         const newReaction = new Panels({
                                                             guildID: guildID,
                                                             channelID: channelID,
