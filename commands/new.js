@@ -10,7 +10,7 @@ exports.run = async (client, guild, message, args) => {
         guildID: message.guild.id
     });
 
-    let type = args[0];
+    let type = args[0]
     if (!type) return client.throw(message, "Wrong Usage", `${config.wrongUsage} \`${reactions.prefix}${this.help.usage}\``)
 
     let panels = await Panels.findOne({
