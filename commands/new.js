@@ -1,6 +1,8 @@
 const Discord = require("discord.js");
 const Reactions = require("../models/reactions");
 const Panels = require("../models/panels");
+const Tickets = require("../models/tickets");
+const config = require("../config");
 
 exports.run = async (client, guild, message, args) => {
 
@@ -24,7 +26,7 @@ exports.run = async (client, guild, message, args) => {
 
     let memberObj = message.guild.members.cache.get(message.author.id);
     let support = message.guild.roles.cache.get(panels.supportID);
-    message.reactions.cache.get("🎫").users.remove(memberObj);
+
     await Panels.findOne({
         guildID: message.guild.id,
         ticketType: type
@@ -42,13 +44,13 @@ exports.run = async (client, guild, message, args) => {
 
         const logEmbed = new Discord.MessageEmbed()
             .setTitle("Ticket Opened")
-            .addField("Ticket Opener", `<@${ticket.userID}> [${ticket.userID}]`)
+            .addField("Ticket Opener", `<@${message.author.id}> [${message.author.id}]`)
             .setFooter(reactions.footer)
         let logChannel = message.guild.channels.cache.get(panels.logID);
         if (logChannel) logChannel.send(logEmbed);
 
         if (react.nameTicket) {
-            message.guild.channels.create(`ticket-${memberObj.user.username}`, {
+            message.guild.channels.create(`${panels.ticketType}-${memberObj.user.username}`, {
                 type: "text",
                 permissionOverwrites: [
                     {
@@ -79,7 +81,8 @@ exports.run = async (client, guild, message, args) => {
                                 channelID: m.channel.id,
                                 messageID: m.id,
                                 userID: memberObj.id,
-                                ticket: react.ticket
+                                ticket: react.ticket,
+                                ticketType: type
                             });
                             await tickets.save().catch(e => console.log(e));
                         m.react("🔒");
@@ -88,7 +91,7 @@ exports.run = async (client, guild, message, args) => {
                 });
             });
         } else {
-            message.guild.channels.create(`ticket-${react.ticket}`, {
+            message.guild.channels.create(`${panels.ticketType}-${react.ticket}`, {
                 type: "text",
                 permissionOverwrites: [
                     {
@@ -119,7 +122,8 @@ exports.run = async (client, guild, message, args) => {
                                 channelID: m.channel.id,
                                 messageID: m.id,
                                 userID: memberObj.id,
-                                ticket: react.ticket
+                                ticket: react.ticket,
+                                ticketType: type
                             });
                             await tickets.save().catch(e => console.log(e));
                         m.react("🔒");
