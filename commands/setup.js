@@ -232,7 +232,7 @@ exports.run = async (client, guild, message, args) => {
                                                                                                     if (response.content == "default") type = "Ticket";
                                                                                                     else if (response.content) type = response.content;
                                                                                                     else type = "Ticket";
-                                                                                                    embed.title(type);
+                                                                                                    embed.setTitle(type);
                                                                                                     embe.edit(embed);
                                                                                                     response.delete();
                                                                                                     tsg.delete();
