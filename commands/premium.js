@@ -27,7 +27,7 @@ Premium can be bought for only $3/lifetime
     
 Purchase at [droplet.gg](https://store.droplet.gg/reactiontickets/)`)
     .setFooter(reactions.footer)
-    message.channel.send(embed);
+    message.channel.send(embed).catch(err => { })
 }
 
 module.exports.help = {

@@ -10,14 +10,14 @@ exports.run = async (client, guild, message, args) => {
     });
 
     let key = args[0];
-    if (!key) return message.reply("Please supply me with a valid key.")
+    if (!key) return message.reply("Please supply me with a valid key.").catch(err => { })
     let reponse = await axios.post(`https://store.droplet.gg/api/checkKey/reactiontickets/${key}/${message.guild.id}/${message.author.id}`, {}, {
         headers: {
             'Authorization': `Bearer ${config.genKey}`
         }
     });
-    if (!reponse) return message.reply("Some error occured, please contact droplet staff via the support server.");
-    if (!reponse.data) return message.reply("Some error occured, please contact droplet staff via the support server.");
+    if (!reponse) return message.reply("Some error occured, please contact droplet staff via the support server.").catch(err => { });
+    if (!reponse.data) return message.reply("Some error occured, please contact droplet staff via the support server.").catch(err => { });
     let enabled = reponse.data.success;
     if (!enabled) return message.reply("This key does not exist or it is redeemed!").catch(err => { });
 
@@ -25,7 +25,7 @@ exports.run = async (client, guild, message, args) => {
     .setTitle("Premium has been activated")
     .setColor("GREEN")
     .setFooter(reactions.footer)
-    message.channel.send(embed);
+    message.channel.send(embed).catch(err => { });
 }
 
 module.exports.help = {

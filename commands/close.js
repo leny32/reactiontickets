@@ -37,13 +37,13 @@ exports.run = async (client, guild, message, args) => {
                 VIEW_CHANNEL: false
             });
 
-            channel.send(panels.closeMsg.replace('{executor}', message.author.tag).replace('{executorusername}', message.author.username).replace('{member}', ticketOwner.user.tag).replace('{username}', ticketOwner.user.username)).then(()=> {
+            channel.send(panels.closeMsg.replace('{executor}', message.author.tag).replace('{executorusername}', message.author.username).replace('{member}', ticketOwner.user.tag).replace('{username}', ticketOwner.user.username)).catch(err => { }).then(()=> {
                 const embed = new Discord.MessageEmbed()
                     .setTitle("Staff Tool")
                     .setDescription(`**Save transcript**: 📑
 **Reopen ticket**: 🔓
 **Delete ticket**: ⛔`)
-                channel.send(embed).then(async (m) => {
+                channel.send(embed).catch(err => { }).then(async (m) => {
                     await Tickets.findOne({
                         guildID: msg.guild.id,
                         channelID: msg.channel.id
@@ -54,9 +54,9 @@ exports.run = async (client, guild, message, args) => {
                         await ticket.save().catch(e => console.log(e));
                     });
 
-                    m.react("📑").then(() => {
-                        m.react("🔓").then(() => {
-                            m.react("⛔");
+                    m.react("📑").catch(err => { }).then(() => {
+                        m.react("🔓").catch(err => { }).then(() => {
+                            m.react("⛔").catch(err => { });
                         });
                     });
                 });

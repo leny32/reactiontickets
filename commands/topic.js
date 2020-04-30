@@ -34,8 +34,8 @@ exports.run = async (client, guild, message, args) => {
         if (err) console.log(err);
         ticket.ticketTopic = args.slice(0).join(" ").substring(0, 256);
         ticket.save().catch(e => console.log(e));
-        message.delete();
-        message.channel.send(embed);
+        message.delete().catch(err => { })
+        message.channel.send(embed).catch(err => { })
     });
 }
 

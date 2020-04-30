@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const Reactions = require("../models/reactions");
 const Panels = require("../models/panels");
+const config = require("../config")
 
 exports.run = async (client, guild, message, args) => {
 
@@ -9,7 +10,7 @@ exports.run = async (client, guild, message, args) => {
     });
 
     let type = args.join(" ");
-    if (!type) return client.throw(message, "Wrong Usage", `${config.wrongUsage} \`${reactions.prefix}${this.help.usage}\``);
+    if (!type) return client.throw(message, "Wrong Usage", `${config.wrongUsage} \`${reactions.prefix}${this.help.usage}\``)
 
     let panel = await Panels.findOne({
         guildID: message.guild.id,
@@ -28,7 +29,7 @@ exports.run = async (client, guild, message, args) => {
         guildID: message.guild.id,
         ticketType: type
     });
-    message.channel.send("The panel was deleted.");
+    message.channel.send("The panel was deleted.").catch(err => { })
 
 }
 

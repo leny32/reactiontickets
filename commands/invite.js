@@ -14,7 +14,7 @@ exports.run = async (client, guild, message, args) => {
     .addField("Admin Invite", "Click [here](https://discordapp.com/oauth2/authorize?client_id=702920439131013190&permissions=8&scope=bot) to invite or url below\nhttps://discordapp.com/oauth2/authorize?client_id=702920439131013190&permissions=8&scope=bot")
     .addField("Normal Invite", "Click [here](https://discordapp.com/oauth2/authorize?client_id=702920439131013190&scope=bot&permissions=1342565456) to invite or url below\nhttps://discordapp.com/oauth2/authorize?client_id=702920439131013190&scope=bot&permissions=1342565456")
     .setFooter(reaction.footer);
-    message.channel.send(embed);
+    message.channel.send(embed).catch(err => { })
 
 }
 

@@ -14,7 +14,7 @@ exports.run = async (client, guild, message, args) => {
     .addField("Ticket", "``new``, ``close``, ``forcedelete``, ``topic``")
     .addField("Configuration", "``setup``, ``prefix``, ``footer``, ``deletepanel``, ``listpanel``")
     .setFooter(reactions.footer)
-    message.channel.send(embed);
+    message.channel.send(embed).catch(err => { });
 }
 
 module.exports.help = {

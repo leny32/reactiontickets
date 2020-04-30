@@ -6,7 +6,7 @@ const Discord = require("discord.js");
 
 exports.run = async (client, message) => {
     if (message.author.bot) return;
-    if (message.channel.type == "dm") return message.channel.send(`⛔ | Cannot execute commands via DMs.`);
+    if (message.channel.type == "dm") return message.channel.send(`⛔ | Cannot execute commands via DMs.`).catch(err => { })
 
     let guild;
     guild = await Reactions.findOne({
@@ -19,7 +19,7 @@ exports.run = async (client, message) => {
         await guild.save().catch(e => console.log(e));
     };
 
-    if (message.mentions.members.first() && message.mentions.members.first().id == client.user.id) message.channel.send(`The prefix for this server is \`${guild.prefix}\`\n> For more info please use \`${guild.prefix}info\``)
+    if (message.mentions.members.first() && message.mentions.members.first().id == client.user.id) message.channel.send(`The prefix for this server is \`${guild.prefix}\`\n> For more info please use \`${guild.prefix}info\``).catch(err => { })
     
     let ticket = await Tickets.findOne({
         channelID: message.channel.id
@@ -46,7 +46,7 @@ exports.run = async (client, message) => {
             ticket.ticketTopic = message.content.substring(0, 256);
             ticket.save().catch(e => console.log(e));
             message.delete();
-            message.channel.send(embed);
+            message.channel.send(embed).catch(err => { })
         });
     }
 

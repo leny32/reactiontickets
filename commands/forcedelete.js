@@ -30,24 +30,24 @@ exports.run = async (client, guild, message, args) => {
         .setFooter(reactions.footer)
         if (panels.topic) logEmbed.addField("Topic", ticket.ticketTopic)
     let logChannel = message.guild.channels.cache.get(panels.logID);
-    if (logChannel) logChannel.send(logEmbed);
+    if (logChannel) logChannel.send(logEmbed).catch(err => { });
 
     let ticketOwner = message.guild.members.cache.get(ticket.userID);
 
-    message.channel.send(panels.forcedeleteMsg.replace('{executor}', message.author.tag).replace('{executorusername}', message.author.username).replace('{member}', ticketOwner.user.tag).replace('{username}', ticketOwner.user.username)).then(() => {
-        message.channel.messages.fetch({ limit: 100 }).then(async (fetched) => {
+    message.channel.send(panels.forcedeleteMsg.replace('{executor}', message.author.tag).replace('{executorusername}', message.author.username).replace('{member}', ticketOwner.user.tag).replace('{username}', ticketOwner.user.username)).catch(err => { }).then(() => {
+        message.channel.messages.fetch({ limit: 100 }).catch(err => { }).then(async (fetched) => {
             fetched = fetched.array().reverse();
             if (panels.transcriptOnDelete) {
                 const mapped = fetched.map(m => `${m.author.tag}: ${m.content}`).join('\n');
                 const att = new Discord.MessageAttachment(Buffer.from(mapped), `Transcript-${ticket.userID}.txt`);
                 let logChannel = message.guild.channels.cache.get(panels.logID);
-                if (logChannel) logChannel.send(att);
+                if (logChannel) logChannel.send(att).catch(err => { });
             }
         }).then(async () => {
             await Tickets.findOneAndDelete({
                 channelID: message.channel.id
             });
-            message.channel.delete();
+            message.channel.delete().catch(err => { });
         });
     })
 }

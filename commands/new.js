@@ -37,7 +37,7 @@ exports.run = async (client, guild, message, args) => {
                 userID: memberObj.id
             });
 
-            if (tickets && tickets.active) return memberObj.send("⛔ | You've already got a ticket opened.");
+            if (tickets && tickets.active) return memberObj.send("⛔ | You've already got a ticket opened.").catch(err => { })
 
             react.ticket = react.ticket + 1;
             await react.save().catch(e => console.log(e));
@@ -47,7 +47,7 @@ exports.run = async (client, guild, message, args) => {
                 .addField("Ticket Opener", `<@${message.author.id}> [${message.author.id}]`)
                 .setFooter(reactions.footer)
             let logChannel = message.guild.channels.cache.get(panels.logID);
-            if (logChannel) logChannel.send(logEmbed);
+            if (logChannel) logChannel.send(logEmbed).catch(err => { })
 
             if (react.nameTicket) {
                 message.guild.channels.create(`${panels.ticketType}-${memberObj.user.username}`, {
@@ -66,11 +66,11 @@ exports.run = async (client, guild, message, args) => {
                             deny: ["VIEW_CHANNEL"]
                         }
                     ]
-                }).then((c) => {
+                }).catch(err => { }).then((c) => {
                     let pingMsg;
                     if (panels.pingOnTicket) pingMsg = `<@&${panels.supportID}>, <@${memberObj.id}>`;
                     else pingMsg = `<@${memberObj.id}>`;
-                    c.send(pingMsg).then(async () => {
+                    c.send(pingMsg).catch(err => { }).then(async () => {
                         const embed = new Discord.MessageEmbed()
                             .setTitle("New Ticket")
                             .setFooter(reactions.footer)
@@ -85,9 +85,9 @@ exports.run = async (client, guild, message, args) => {
                                     ticketType: type
                                 });
                                 await tickets.save().catch(e => console.log(e));
-                            m.react("🔒");
+                            m.react("🔒").catch(err => { })
                         });
-                        if(panels.categoryID != "none") c.setParent(panels.categoryID);
+                        if(panels.categoryID != "none") c.setParent(panels.categoryID).catch(err => { })
                     });
                 });
             } else {
@@ -107,11 +107,11 @@ exports.run = async (client, guild, message, args) => {
                             deny: ["VIEW_CHANNEL"]
                         }
                     ]
-                }).then((c) => {
+                }).catch(err => { }).then((c) => {
                     let pingMsg;
                     if (panels.pingOnTicket) pingMsg = `<@&${panels.supportID}>, <@${memberObj.id}>`;
                     else pingMsg = `<@${memberObj.id}>`;
-                    c.send(pingMsg).then(async () => {
+                    c.send(pingMsg).catch(err => { }).then(async () => {
                         const embed = new Discord.MessageEmbed()
                             .setTitle("New Ticket")
                             .setFooter(reactions.footer)
@@ -126,9 +126,9 @@ exports.run = async (client, guild, message, args) => {
                                     ticketType: type
                                 });
                                 await tickets.save().catch(e => console.log(e));
-                            m.react("🔒");
+                            m.react("🔒").catch(err => { })
                         });
-                        if(panels.categoryID != "none") c.setParent(panels.categoryID);
+                        if(panels.categoryID != "none") c.setParent(panels.categoryID).catch(err => { })
                     });
                 });
             }
@@ -155,7 +155,7 @@ exports.run = async (client, guild, message, args) => {
                 userID: memberObj.id
             });
 
-            if (tickets && tickets.active) return memberObj.send("⛔ | You've already got a ticket opened.");
+            if (tickets && tickets.active) return memberObj.send("⛔ | You've already got a ticket opened.").catch(err => { })
 
             react.ticket = react.ticket + 1;
             await react.save().catch(e => console.log(e));
@@ -165,7 +165,7 @@ exports.run = async (client, guild, message, args) => {
                 .addField("Ticket Opener", `<@${message.author.id}> [${message.author.id}]`)
                 .setFooter(reactions.footer)
             let logChannel = message.guild.channels.cache.get(panels.logID);
-            if (logChannel) logChannel.send(logEmbed);
+            if (logChannel) logChannel.send(logEmbed).catch(err => { })
             if (panels.topic) {
 
                 if (react.nameTicket) {
@@ -185,11 +185,11 @@ exports.run = async (client, guild, message, args) => {
                                 deny: ["VIEW_CHANNEL"]
                             }
                         ]
-                    }).then((c) => {
+                    }).catch(err => { }).then((c) => {
                         let pingMsg;
                         if (panels.pingOnTicket) pingMsg = `<@&${panels.supportID}>, <@${memberObj.id}>`;
                         else pingMsg = `<@${memberObj.id}>`;
-                        c.send(pingMsg).then(async () => {
+                        c.send(pingMsg).catch(err => { }).then(async () => {
                             const embed = new Discord.MessageEmbed()
                                 .setTitle("New Ticket")
                                 .setFooter(reactions.footer)
@@ -205,9 +205,9 @@ exports.run = async (client, guild, message, args) => {
                                         ticketTopic: topic
                                     });
                                     await tickets.save().catch(e => console.log(e));
-                                m.react("🔒");
+                                m.react("🔒").catch(err => { })
                             });
-                            if(panels.categoryID != "none") c.setParent(panels.categoryID);
+                            if(panels.categoryID != "none") c.setParent(panels.categoryID).catch(err => { })
                         });
                     });
                 } else {
@@ -227,11 +227,11 @@ exports.run = async (client, guild, message, args) => {
                                 deny: ["VIEW_CHANNEL"]
                             }
                         ]
-                    }).then((c) => {
+                    }).catch(err => { }).then((c) => {
                         let pingMsg;
                         if (panels.pingOnTicket) pingMsg = `<@&${panels.supportID}>, <@${memberObj.id}>`;
                         else pingMsg = `<@${memberObj.id}>`;
-                        c.send(pingMsg).then(async () => {
+                        c.send(pingMsg).catch(err => { }).then(async () => {
                             const embed = new Discord.MessageEmbed()
                                 .setTitle("New Ticket")
                                 .setFooter(reactions.footer)
@@ -247,9 +247,9 @@ exports.run = async (client, guild, message, args) => {
                                         ticketTopic: topic
                                     });
                                     await tickets.save().catch(e => console.log(e));
-                                m.react("🔒");
+                                m.react("🔒").catch(err => { })
                             });
-                            if(panels.categoryID != "none") c.setParent(panels.categoryID);
+                            if(panels.categoryID != "none") c.setParent(panels.categoryID).catch(err => { })
                         });
                     });
                 }
@@ -271,11 +271,11 @@ exports.run = async (client, guild, message, args) => {
                                 deny: ["VIEW_CHANNEL"]
                             }
                         ]
-                    }).then((c) => {
+                    }).catch(err => { }).then((c) => {
                         let pingMsg;
                         if (panels.pingOnTicket) pingMsg = `<@&${panels.supportID}>, <@${memberObj.id}>`;
                         else pingMsg = `<@${memberObj.id}>`;
-                        c.send(pingMsg).then(async () => {
+                        c.send(pingMsg).catch(err => { }).then(async () => {
                             const embed = new Discord.MessageEmbed()
                                 .setTitle("New Ticket")
                                 .setFooter(reactions.footer)
@@ -290,9 +290,9 @@ exports.run = async (client, guild, message, args) => {
                                         ticketType: type
                                     });
                                     await tickets.save().catch(e => console.log(e));
-                                m.react("🔒");
+                                m.react("🔒").catch(err => { });
                             });
-                            if(panels.categoryID != "none") c.setParent(panels.categoryID);
+                            if(panels.categoryID != "none") c.setParent(panels.categoryID).catch(err => { });
                         });
                     });
                 } else {
@@ -312,11 +312,11 @@ exports.run = async (client, guild, message, args) => {
                                 deny: ["VIEW_CHANNEL"]
                             }
                         ]
-                    }).then((c) => {
+                    }).catch(err => { }).then((c) => {
                         let pingMsg;
                         if (panels.pingOnTicket) pingMsg = `<@&${panels.supportID}>, <@${memberObj.id}>`;
                         else pingMsg = `<@${memberObj.id}>`;
-                        c.send(pingMsg).then(async () => {
+                        c.send(pingMsg).catch(err => { }).then(async () => {
                             const embed = new Discord.MessageEmbed()
                                 .setTitle("New Ticket")
                                 .setFooter(reactions.footer)
@@ -331,9 +331,9 @@ exports.run = async (client, guild, message, args) => {
                                         ticketType: type
                                     });
                                     await tickets.save().catch(e => console.log(e));
-                                m.react("🔒");
+                                m.react("🔒").catch(err => { });
                             });
-                            if(panels.categoryID != "none") c.setParent(panels.categoryID);
+                            if(panels.categoryID != "none") c.setParent(panels.categoryID).catch(err => { });
                         });
                     });
                 }

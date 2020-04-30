@@ -35,7 +35,7 @@ client.throw = async (message,errorType ,errorMessage) => {
         .setDescription(errorMessage)
         .setColor("RED")
         .setTimestamp();
-    message.channel.send(embed);
+    message.channel.send(embed).catch(err => { })
 };
 
 fs.readdir(__dirname +"/commands/", (err, files) => {

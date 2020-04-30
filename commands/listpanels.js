@@ -8,8 +8,6 @@ exports.run = async (client, guild, message, args) => {
         guildID: message.guild.id
     });
 
-    
-
     let panel = await Panels.find({
         guildID: message.guild.id
     });
@@ -18,11 +16,11 @@ exports.run = async (client, guild, message, args) => {
     .setTitle("Panel List")
     .setColor("GREEN")
     .setFooter(reactions.footer)
-
+    if (panel.length === "") panelEmbed.addField("No panels created.");
     for (let i = 0; i < panel.length; i++) {
         panelEmbed.addField(panel[i].ticketType,`**Ticket:** ${panel[i].ticket}\n**Channel**: ${message.guild.channels.cache.get(panel[i].channelID)}\n**Delete**: ${guild.prefix}dpanel ${panel[i].ticketType}`, true)
     }
-    message.channel.send(panelEmbed)
+    message.channel.send(panelEmbed).catch(err => { })
 }
 
 module.exports.help = {

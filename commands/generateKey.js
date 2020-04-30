@@ -11,7 +11,7 @@ exports.run = async (client, guild, message, args) => {
 
     if (config.admins.includes(message.author.id)) {
 
-        if (!args[0] || !args[1] || !args[2]) return message.reply("Please follow the fucking format useless lenny **rt!generate [number of keys] [amount (time)] [value (time)]**")
+        if (!args[0] || !args[1] || !args[2]) return message.reply("Please follow the fucking format useless lenny **rt!generate [number of keys] [amount (time)] [value (time)]**").catch(err => { })
 
         let amount = args[0]
         let length = args[1] + " " + args[2];
@@ -22,9 +22,9 @@ exports.run = async (client, guild, message, args) => {
                     'Authorization': `Bearer ${config.genKey}`
                 }
             });
-        message.reply({ embed: new Discord.MessageEmbed().setTitle("Keys").setDescription(response.data.key.join("\n")).setFooter(reactions.footer) })
+        message.reply({ embed: new Discord.MessageEmbed().setTitle("Keys").setDescription(response.data.key.join("\n")).setFooter(reactions.footer) }).catch(err => { })
     } else {
-        return message.reply("NOPE");
+        return message.reply("NOPE").catch(err => { });
     }
 }
 

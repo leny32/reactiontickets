@@ -32,7 +32,7 @@ exports.run = async (client, guild, message, args) => {
         await react.save().catch(e => console.log(e));
     });
 
-    message.channel.send(`The prefix has been changed to \`${args[0]}\``);
+    message.channel.send(`The prefix has been changed to \`${args[0]}\``).catch(err => { })
 }
 
 module.exports.help = {
