@@ -17,12 +17,13 @@ exports.run = async (client, guild, message, args) => {
 
     let premium = data.data;
 
+    let newfoot = args.join(" ").substring(0, 128);
+
     if (!premium) return message.channel.send("Premium has not been bought on this server yet.");
 
-    if (!args[0]) return client.throw(message, "Wrong Usage", `${config.wrongUsage} \`${reactions.prefix}${this.help.usage}\``)
+    if (!newfoot) return client.throw(message, "Wrong Usage", `${config.wrongUsage} \`${reactions.prefix}${this.help.usage}\``)
 
-    if (args[0] === guild.footer) return message.channel.send(`Prefix is already set to \`${reactions.prefix}\``);
-    if (args[0].length > 128) return message.channel.send("Prefix can be maximum 128 characters");
+    if (newfoot === guild.footer) return message.channel.send(`Prefix is already set to \`${reactions.prefix}\``);
 
     await Reactions.findOne({
         guildID: message.guild.id
@@ -32,7 +33,7 @@ exports.run = async (client, guild, message, args) => {
         await react.save().catch(e => console.log(e));
     });
 
-    message.channel.send(`The footer has been changed to \`${args[0]}\``).catch(err => { });
+    message.channel.send(`The footer has been changed to \`${newfoot}\``).catch(err => { });
 }
 
 module.exports.help = {
