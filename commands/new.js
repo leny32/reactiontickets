@@ -346,7 +346,7 @@ exports.run = async (client, guild, message, args) => {
 module.exports.help = {
     name: "new",
     aliases: ["n"],
-    usage: "new (type)",
+    usage: "new (type/<topic>)",
     description: "Open a ticket by command.",
     perms: 0
 };
