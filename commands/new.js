@@ -135,8 +135,7 @@ exports.run = async (client, guild, message, args) => {
         });
     } else {
         let panels = await Panels.findOne({
-            guildID: message.guild.id,
-            ticketType: type
+            guildID: message.guild.id
         });
 
         let topic = args[0];
@@ -146,8 +145,7 @@ exports.run = async (client, guild, message, args) => {
         let support = message.guild.roles.cache.get(panels.supportID);
 
         await Panels.findOne({
-            guildID: message.guild.id,
-            ticketType: type
+            guildID: message.guild.id
         }, async (err, react) => {
             if (err) console.log(err);
             let tickets = await Tickets.findOne({
