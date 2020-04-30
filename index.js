@@ -64,7 +64,7 @@ setInterval(() => {
     this.postStats(client)
 }, 300000);
 
-moudle.exports.postStats = async function(client) {
+module.exports.postStats = async function(client) {
     let botid = 1
     let guild = client.guilds.cache.size
     let members = client.members.cache.size
