@@ -245,7 +245,7 @@ exports.run = async (client, guild, message, args) => {
                                                                                                     response.delete();
                                                                                                     tsg.delete();
                                                                                                 }).then(() => {
-                                                                                                    if (!nameCheck) message.channel.send(`**Step 12**: What would you like the **close** ticket message to be? (default/message) ${configMessage}`)
+                                                                                                    if (!nameChecker) message.channel.send(`**Step 12**: What would you like the **close** ticket message to be? (default/message) ${configMessage}`)
                                                                                                     .then(async (tsg) => {
                                                                                                         message.channel.awaitMessages(filter, { max: 1 })
                                                                                                         .then(res => {
