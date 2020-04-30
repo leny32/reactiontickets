@@ -13,7 +13,7 @@ exports.run = async (client, guild, message, args) => {
     let panelCheck = await Panels.find({
         guildID: message.guild.id
     });
-    if (panelCheck.length >= 1) {
+    if (panelCheck.length > 1) {
         let type = args[0]
         if (!type) return client.throw(message, "Wrong Usage", `${config.wrongUsage} \`${reactions.prefix}${this.help.usage}\``)
 
