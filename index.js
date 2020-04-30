@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 const mongoose = require("mongoose");
-
+const axios = require("axi")
 const config = require("./config");
 
 const client = new Discord.Client({ disableEveryone: true });
