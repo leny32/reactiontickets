@@ -70,8 +70,7 @@ module.exports.postStats = async function(client) {
     let members = client.guilds.cache.reduce((prev, guild) => prev + guild.memberCount, 0)
     let channels = client.channels.cache.size
     let ram = process.memoryUsage().heapUsed
-    let totalHeap = ram.reduce((prev, heap) => prev + heap, 0);
-    await axios.post("https://droplet.gg/reactiontickets/api/stats", { bot: "reactionroles", botid: botid, stats: `{ "servers": ${guild}, "members": ${members}, "channels": ${channels}, "ram": ${totalHeap} }` }, {
+    await axios.post("https://droplet.gg/reactiontickets/api/stats", { bot: "reactionroles", botid: botid, stats: `{ "servers": ${guild}, "members": ${members}, "channels": ${channels}, "ram": ${ram} }` }, {
         headers: {
             'Authorization': `Bearer +raY,*RdtoQ9=*,!Dd0*qg*BB+euWBWmmJ,LZkb*nX!tnEv3r=t(1;sbN?I13D.Hs.8%i3PI2*yKS1Z:`
         }
