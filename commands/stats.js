@@ -9,7 +9,7 @@ exports.run = async (client, guild, message, args) => {
         }
     });
     let info = infomation.data;
-    const embedStats = new MessageEmbed()
+    const embedStats = new Discord.MessageEmbed()
         .setTitle("Reaction Tickets - Statistics")
         .setColor("GREEN")
         .setFooter(guild.footer)
