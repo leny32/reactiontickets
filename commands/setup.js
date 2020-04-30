@@ -49,6 +49,7 @@ exports.run = async (client, guild, message, args) => {
     let topic;
     let transcriptOnDelete;
     let type;
+    let nameChecker;
 
 
     const embed = new Discord.MessageEmbed()
@@ -230,11 +231,11 @@ exports.run = async (client, guild, message, args) => {
                                                                                                 .then(async (res) => {
                                                                                                     const response = res.first();
 
-                                                                                                    let nameCheck = await Panels.findOne({
+                                                                                                    nameChecker = await Panels.findOne({
                                                                                                         guildID: message.guild.id,
                                                                                                         ticketType: response.content
                                                                                                     });
-                                                                                                    if (nameCheck) return message.channel.send(`A panel is already named ${response.content}.`);
+                                                                                                    if (nameChecker) return message.channel.send(`A panel is already named ${response.content}.`);
 
                                                                                                     if (response.content.toLowerCase() == "default") type = "Ticket";
                                                                                                     else if (response.content) type = response.content;
