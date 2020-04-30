@@ -32,9 +32,9 @@ exports.run = async (client, guild, message, args) => {
     let logChannel = message.guild.channels.cache.get(panels.logID);
     if (logChannel) logChannel.send(logEmbed).catch(err => { });
 
-    let ticketOwner = message.guild.members.cache.get(ticket.userID);
+    let ticketOwner = await client.users.fetch(ticket.userID);
 
-    message.channel.send(panels.forcedeleteMsg.replace('{executor}', message.author.tag).replace('{executorusername}', message.author.username).replace('{member}', ticketOwner.user.tag).replace('{username}', ticketOwner.user.username)).catch(err => { }).then(() => {
+    message.channel.send(panels.forcedeleteMsg.replace('{executor}', message.author.tag).replace('{executorusername}', message.author.username).replace('{member}', ticketOwner.tag).replace('{username}', ticketOwner.username)).catch(err => { }).then(() => {
         message.channel.messages.fetch({ limit: 100 }).catch(err => { }).then(async (fetched) => {
             fetched = fetched.array().reverse();
             if (panels.transcriptOnDelete) {

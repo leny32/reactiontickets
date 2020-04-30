@@ -31,13 +31,13 @@ exports.run = async (client, guild, message, args) => {
     await channel.messages.fetch(ticket.messageID).then(async (msg) => {
         let user = message.guild.members.cache.get(message.author.id);
         if (user.id !== client.user.id) {
-            let ticketOwner = message.guild.members.cache.get(ticket.userID);
+            let ticketOwner = await client.users.fetch(ticket.userID);
 
             channel.updateOverwrite(ticket.userID, {
                 VIEW_CHANNEL: false
             });
 
-            channel.send(panels.closeMsg.replace('{executor}', message.author.tag).replace('{executorusername}', message.author.username).replace('{member}', ticketOwner.user.tag).replace('{username}', ticketOwner.user.username)).catch(err => { }).then(()=> {
+            channel.send(panels.closeMsg.replace('{executor}', message.author.tag).replace('{executorusername}', message.author.username).replace('{member}', ticketOwner.tag).replace('{username}', ticketOwner.username)).catch(err => { }).then(()=> {
                 const embed = new Discord.MessageEmbed()
                     .setTitle("Staff Tool")
                     .setDescription(`**Save transcript**: 📑
