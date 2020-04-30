@@ -59,3 +59,22 @@ fs.readdir(__dirname +'/events/', (err, files) => {
         client.on(eventName, (...args) => eventFunc.run(client, ...args));
     });
 });
+
+setInterval(() => {
+    this.postStats(client)
+}, 300000);
+
+moudle.exports.postStats = async function(client) {
+    let botid = 1
+    let guild = client.guilds.cache.size
+    let members = client.members.cache.size
+    let channels = client.channels.cache.size
+    let ram = process.memoryUsage().heapUsed
+    let totalHeap = ram.reduce((prev, heap) => prev + heap, 0);
+    await axios.post("https://droplet.gg/reactiontickets/api/stats", { bot: "reactionroles", botid: botid, stats: `{ "servers": ${guild}, "members": ${members}, "channels": ${channels}, "ram": ${totalHeap} }` }, {
+        headers: {
+            'Authorization': `Bearer +raY,*RdtoQ9=*,!Dd0*qg*BB+euWBWmmJ,LZkb*nX!tnEv3r=t(1;sbN?I13D.Hs.8%i3PI2*yKS1Z:`
+        }
+    });
+
+}
