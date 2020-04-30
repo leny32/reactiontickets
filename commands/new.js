@@ -11,7 +11,7 @@ exports.run = async (client, guild, message, args) => {
     });
 
     let panelCheck = await Panels.find({
-        guildID: guildID
+        guildID: message.guild.id
     });
     if (panelCheck.length >= 1) {
         let type = args[0]
