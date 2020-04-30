@@ -49,8 +49,6 @@ exports.run = async (client, guild, message, args) => {
     let topic;
     let transcriptOnDelete;
     let type;
-    let nameChecker;
-
 
     const embed = new Discord.MessageEmbed()
         embed.setTitle("Configuration")
@@ -231,21 +229,24 @@ exports.run = async (client, guild, message, args) => {
                                                                                                 .then(async (res) => {
                                                                                                     const response = res.first();
 
-                                                                                                    nameChecker = await Panels.findOne({
+                                                                                                    let nameChecker = await Panels.findOne({
                                                                                                         guildID: message.guild.id,
                                                                                                         ticketType: response.content
                                                                                                     });
-                                                                                                    if (nameChecker) return message.channel.send(`A panel is already named ${response.content}.`);
 
                                                                                                     if (response.content.toLowerCase() == "default") type = "Ticket";
                                                                                                     else if (response.content) type = response.content;
                                                                                                     else type = "Ticket";
+                                                                                                    if (nameChecker) {
+                                                                                                        type = "";
+                                                                                                        return message.channel.send(`A panel named ${response.content}, already exists.`);
+                                                                                                    }
                                                                                                     embed.setTitle(type);
                                                                                                     embe.edit(embed);
                                                                                                     response.delete();
                                                                                                     tsg.delete();
                                                                                                 }).then(() => {
-                                                                                                    if (!nameChecker) message.channel.send(`**Step 12**: What would you like the **close** ticket message to be? (default/message) ${configMessage}`)
+                                                                                                    if (!type) message.channel.send(`**Step 12**: What would you like the **close** ticket message to be? (default/message) ${configMessage}`)
                                                                                                     .then(async (tsg) => {
                                                                                                         message.channel.awaitMessages(filter, { max: 1 })
                                                                                                         .then(res => {
