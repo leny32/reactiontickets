@@ -3,14 +3,14 @@ const Reactions = require("../models/reactions");
 const axios = require("axios")
 exports.run = async (client, guild, message, args) => {
 
-    let infomation = await axios.post("https://droplet.gg/reactionticket/api/getStats", { bot: "reactionticket" }, {
+    let infomation = await axios.post("https://droplet.gg/reactiontickets/api/getStats", { bot: "reactionticket" }, {
         headers: {
             'Authorization': `Bearer +raY,*RdtoQ9=*,!Dd0*qg*BB+euWBWmmJ,LZkb*nX!tnEv3r=t(1;sbN?I13D.Hs.8%i3PI2*yKS1Z:`
         }
     });
     let info = infomation.data;
     const embedStats = new MessageEmbed()
-        .setTitle("Reaction Roles - Statistics")
+        .setTitle("Reaction Tickets - Statistics")
         .setColor("GREEN")
         .setFooter(guild.footer)
         .addField("• Ram Usage", `${info.ram}GB`)
@@ -24,10 +24,10 @@ exports.run = async (client, guild, message, args) => {
 }
 
 module.exports.help = {
-    name: "help",
-    aliases: ["info", "commands"],
-    usage: "help command",
-    description: "Help command",
+    name: "stats",
+    aliases: ["stat"],
+    usage: "stats",
+    description: "Stats command",
     perms: 0
 };
 
