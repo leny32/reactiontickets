@@ -67,7 +67,7 @@ setInterval(() => {
 module.exports.postStats = async function(client) {
     let botid = 1
     let guild = client.guilds.cache.size
-    let members = client.members.cache.size
+    let members = client.guilds.cache.reduce((prev, guild) => prev + guild.memberCount, 0)
     let channels = client.channels.cache.size
     let ram = process.memoryUsage().heapUsed
     let totalHeap = ram.reduce((prev, heap) => prev + heap, 0);
