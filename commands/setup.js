@@ -202,7 +202,7 @@ exports.run = async (client, guild, message, args) => {
                                                                                 message.channel.awaitMessages(filter, { max: 1 })
                                                                                 .then(res => {
                                                                                     const response = res.first();
-                                                                                    if (response.content.toLowerCase() == "default") openTicket = "React below to open a ticket.";
+                                                                                    if (response.content.toLowerCase() == "default" || response.content.toLowerCase() == "d") openTicket = "React below to open a ticket.";
                                                                                     else if (response.content) openTicket = response.content
                                                                                     else openTicket = "React below to open a ticket."
                                                                                     embed.addField("Open ticket", openTicket, true);
@@ -215,7 +215,7 @@ exports.run = async (client, guild, message, args) => {
                                                                                         message.channel.awaitMessages(filter, { max: 1 })
                                                                                         .then(res => {
                                                                                             const response = res.first();
-                                                                                            if (response.content.toLowerCase() == "default") newTicket = "You've opened a ticket, react below to close it.";
+                                                                                            if (response.content.toLowerCase() == "default" || response.content.toLowerCase() == "d") newTicket = "You've opened a ticket, react below to close it.";
                                                                                             else if (response.content) newTicket = response.content;
                                                                                             else newTicket = "You've opened a ticket, react below to close it.";
                                                                                             embed.addField("New ticket", newTicket, true);
@@ -229,32 +229,32 @@ exports.run = async (client, guild, message, args) => {
                                                                                                 .then(async (res) => {
                                                                                                     const response = res.first();
 
-                                                                                                    let nameChecker = await Panels.findOne({
-                                                                                                        guildID: message.guild.id,
-                                                                                                        ticketType: response.content
-                                                                                                    });
-
-                                                                                                    if (response.content.toLowerCase() == "default") type = "Ticket";
+                                                                                                    if (response.content.toLowerCase() == "default" || response.content.toLowerCase() == "d") type = "Ticket";
                                                                                                     else if (response.content) type = response.content;
                                                                                                     else type = "Ticket";
+                                                                                                    let nameChecker = await Panels.findOne({
+                                                                                                        guildID: message.guild.id,
+                                                                                                        ticketType: type
+                                                                                                    });
                                                                                                     if (nameChecker) {
-                                                                                                        type = "";
                                                                                                         embed.setTitle("Cancelled")
                                                                                                         embed.setColor("RED")
                                                                                                         embe.edit(embed);
-                                                                                                        return message.channel.send(`A panel named ${response.content}, already exists.`);
+                                                                                                        message.channel.send(`A panel named \`${type}\`, already exists.`);
+                                                                                                        return type = "";
+                                                                                                    } else {
+                                                                                                        embed.setTitle(type);
+                                                                                                        embe.edit(embed);
+                                                                                                        response.delete();
+                                                                                                        tsg.delete();
                                                                                                     }
-                                                                                                    embed.setTitle(type);
-                                                                                                    embe.edit(embed);
-                                                                                                    response.delete();
-                                                                                                    tsg.delete();
                                                                                                 }).then(() => {
-                                                                                                    if (!type) message.channel.send(`**Step 12**: What would you like the **close** ticket message to be? (default/message) ${configMessage}`)
+                                                                                                    if (!type === "") message.channel.send(`**Step 12**: What would you like the **close** ticket message to be? (default/message) ${configMessage}`)
                                                                                                     .then(async (tsg) => {
                                                                                                         message.channel.awaitMessages(filter, { max: 1 })
                                                                                                         .then(res => {
                                                                                                             const response = res.first();
-                                                                                                            if (response.content.toLowerCase() == "default") closeMsg = "The ticket was closed by {executor}";
+                                                                                                            if (response.content.toLowerCase() == "default" || response.content.toLowerCase() == "d") closeMsg = "The ticket was closed by {executor}";
                                                                                                             else if (response.content) closeMsg = response.content;
                                                                                                             else closeMsg = "The ticket was closed by {executor}";
                                                                                                             embed.addField("Ticket closed", closeMsg, true);
@@ -267,7 +267,7 @@ exports.run = async (client, guild, message, args) => {
                                                                                                                 message.channel.awaitMessages(filter, { max: 1 })
                                                                                                                 .then(res => {
                                                                                                                     const response = res.first();
-                                                                                                                    if (response.content.toLowerCase() == "default") reopenMsg = "The ticket was reopened by {executor}";
+                                                                                                                    if (response.content.toLowerCase() == "default" || response.content.toLowerCase() == "d") reopenMsg = "The ticket was reopened by {executor}";
                                                                                                                     else if (response.content) reopenMsg = response.content;
                                                                                                                     else reopenMsg = "The ticket was reopend by {executor}";
                                                                                                                     embed.addField("Ticket reopened", reopenMsg, true);
@@ -280,7 +280,7 @@ exports.run = async (client, guild, message, args) => {
                                                                                                                         message.channel.awaitMessages(filter, { max: 1 })
                                                                                                                         .then(res => {
                                                                                                                             const response = res.first();
-                                                                                                                            if (response.content.toLowerCase() == "default") deleteMsg = "The ticket was deleted by {executor}";
+                                                                                                                            if (response.content.toLowerCase() == "default" || response.content.toLowerCase() == "d") deleteMsg = "The ticket was deleted by {executor}";
                                                                                                                             else if (response.content) deleteMsg = response.content;
                                                                                                                             else deleteMsg = "The ticket was deleted by {executor}";
                                                                                                                             embed.addField("Ticket deleted", deleteMsg, true);
@@ -293,7 +293,7 @@ exports.run = async (client, guild, message, args) => {
                                                                                                                                 message.channel.awaitMessages(filter, { max: 1 })
                                                                                                                                 .then(res => {
                                                                                                                                     const response = res.first();
-                                                                                                                                    if (response.content.toLowerCase() == "default") forcedeleteMsg = "The ticket was forcefully deleted by {executor}";
+                                                                                                                                    if (response.content.toLowerCase() == "default" || response.content.toLowerCase() == "d") forcedeleteMsg = "The ticket was forcefully deleted by {executor}";
                                                                                                                                     else if (response.content) forcedeleteMsg = response.content;
                                                                                                                                     else forcedeleteMsg = "The ticket was forcefully deleted by {executor}";
                                                                                                                                     embed.addField("Ticket forcefully deleted ", forcedeleteMsg, true);
