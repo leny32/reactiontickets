@@ -20,7 +20,7 @@ exports.run = async (client, message) => {
     };
 
     if (message.mentions.members.first() && message.mentions.members.first().id == client.user.id) message.channel.send(`The prefix for this server is \`${guild.prefix}\`\n> For more info please use \`${guild.prefix}info\``).catch(err => { })
-    
+
     let ticket = await Tickets.findOne({
         channelID: message.channel.id
     });
@@ -32,7 +32,7 @@ exports.run = async (client, message) => {
             guildID: message.guild.id,
             ticketType: ticket.ticketType
         });
-        if (!panel && panel.transcriptOnDelete) return;
+        if (!panel && panel.topic) return;
 
         const embed = new Discord.MessageEmbed()
             .setTitle("Topic")
