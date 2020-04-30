@@ -227,7 +227,7 @@ exports.run = async (client, guild, message, args) => {
                                                                                             message.channel.send("**Step 11**: What would you like to be ticket name of this setup? (default/message)")
                                                                                             .then(async (tsg) => {
                                                                                                 message.channel.awaitMessages(filter, { max: 1 })
-                                                                                                .then(res => {
+                                                                                                .then(async (res) => {
                                                                                                     const response = res.first();
 
                                                                                                     let nameCheck = await Panels.findOne({
