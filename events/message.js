@@ -32,7 +32,7 @@ exports.run = async (client, message) => {
             guildID: message.guild.id,
             ticketType: ticket.ticketType
         });
-        if (!panel && panel.topic) return;
+        if (!panel && !panel.topic) return;
 
         const embed = new Discord.MessageEmbed()
             .setTitle("Topic")
