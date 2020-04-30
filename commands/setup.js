@@ -239,6 +239,9 @@ exports.run = async (client, guild, message, args) => {
                                                                                                     else type = "Ticket";
                                                                                                     if (nameChecker) {
                                                                                                         type = "";
+                                                                                                        embed.setTitle("Cancelled")
+                                                                                                        embed.setColor("RED")
+                                                                                                        embe.edit(embed);
                                                                                                         return message.channel.send(`A panel named ${response.content}, already exists.`);
                                                                                                     }
                                                                                                     embed.setTitle(type);
