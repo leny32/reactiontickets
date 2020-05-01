@@ -16,7 +16,7 @@ exports.run = async (client, guild, message, args) => {
     });
 
     let premium = data.data;
-    if(premiun) return message.channel.send("Get some manners, another premium lifetime is not good for me.");
+    if(premium) return message.channel.send("Get some manners, another premium lifetime is not good for me.");
 
     let key = args[0];
     if (!key) return message.reply("Please supply me with a valid key.").catch(err => { })
