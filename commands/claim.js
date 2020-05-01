@@ -9,6 +9,15 @@ exports.run = async (client, guild, message, args) => {
         guildID: message.guild.id
     });
 
+    let { data } = await axios.post(config.apiUrl + "premiumCheck", { "guildid": message.guild.id }, {
+        headers: {
+            'Authorization': `Bearer ${config.storeapi}`
+        }
+    });
+
+    let premium = data.data;
+    if(premiun) return message.channel.send("Get some manners, another premium lifetime is not good for me.");
+
     let key = args[0];
     if (!key) return message.reply("Please supply me with a valid key.").catch(err => { })
     let reponse = await axios.post(`https://store.droplet.gg/api/checkKey/reactiontickets/${key}/${message.guild.id}/${message.author.id}`, {}, {
