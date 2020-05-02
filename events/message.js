@@ -26,7 +26,7 @@ exports.run = async (client, message) => {
     });
 
     if (ticket && ticket.ticketTopic === "none") {
-        if (!ticket.userID === message.author.id) return;
+        if (ticket.userID !== message.author.id) return;
 
         let panel = await Panels.findOne({
             guildID: message.guild.id,
