@@ -29,7 +29,7 @@ exports.run = async (client, guild, message, args) => {
         guildID: message.guild.id
     }, async (err, react) => {
         if (err) console.log(err);
-        react.footer = args[0]
+        react.footer = newfoot
         await react.save().catch(e => console.log(e));
     });
 
