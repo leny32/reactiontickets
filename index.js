@@ -6,7 +6,8 @@ const config = require("./config");
 
 const client = new Discord.Client({ disableEveryone: true });
 mongoose.connect(config.mongodb, {
-    useNewUrlParser: true
+    useNewUrlParser: true,
+    useUnifiedTopology: true
 });
 
 client.login(config.token);
