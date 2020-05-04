@@ -336,11 +336,13 @@ exports.run = async (client, event) => {
                             let logChannel = msg.guild.channels.cache.get(panel.logID);
                             if (logChannel) logChannel.send(logEmbed).catch(err => { })
 
+                            let mapped;
+
                             channel.send(panel.deleteMsg.replace('{executor}', staff.user.tag).replace('{executorusername}', staff.user.username).replace('{member}', ticketOwner.tag).replace('{username}', ticketOwner.username)).catch(err => { }).then(() => {
                                 channel.messages.fetch({ limit: 100 }).catch(err => { }).then(async (fetched) => {
                                     fetched = fetched.array().reverse();
                                     if (panel.transcriptOnDelete) {
-                                        const mapped = fetched.map(m => `${m.author.tag}: ${m.content}`).join('\n');
+                                        mapped = fetched.map(m => `${m.author.tag}: ${m.content}`).join('\n');
                                         const att = new Discord.MessageAttachment(Buffer.from(mapped), `Transcript-${ticket.userID}.txt`);
                                         let logChannel = msg.guild.channels.cache.get(panel.logID);
                                         if (logChannel) logChannel.send(att).catch(err => { })
@@ -351,6 +353,15 @@ exports.run = async (client, event) => {
                                         active: false
                                     });
                                     channel.delete().catch(err => { })
+                                    if (!panels.noDMTicket) {
+                                        let endMessage = `Hey ${ticketOwner.username},
+                                        
+                        Thank you for making a ticket with Reaction Tickets.`
+                                        try {
+                                            if (panels.transcriptOnDelete) ticketOwner.send(endMessage, { files: [{ attachment: Buffer.from(mapped), name: `Transcript-${ticket.userID}.txt` }] }).catch(err => { console.log(err) })
+                                            else ticketOwner.send(endMessage);
+                                        } catch { }
+                                    }
                                 });
                             });
                         };
