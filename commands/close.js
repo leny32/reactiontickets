@@ -10,7 +10,7 @@ exports.run = async (client, guild, message, args) => {
         channelID: message.channel.id
     });
 
-    if (!ticket) return;
+    if (!ticket) return client.throw(message, "Wrong Usage", `${config.wrongUsage} \`${reactions.prefix}${this.help.usage}\``);
 
     let panels = await Panels.findOne({
         guildID: message.guild.id,
@@ -37,7 +37,7 @@ exports.run = async (client, guild, message, args) => {
                 VIEW_CHANNEL: false
             });
 
-            channel.send(panels.closeMsg.replace('{executor}', message.author.tag).replace('{executorusername}', message.author.username).replace('{member}', ticketOwner.tag).replace('{username}', ticketOwner.username)).catch(err => { }).then(()=> {
+            channel.send(panels.closeMsg.replace('{executor}', message.author.tag).replace('{executorusername}', message.author.username).replace('{member}', ticketOwner.tag).replace('{username}', ticketOwner.username)).catch(err => { }).then(() => {
                 const embed = new Discord.MessageEmbed()
                     .setTitle("Staff Tool")
                     .setDescription(`**Save transcript**: 📑
@@ -68,7 +68,7 @@ exports.run = async (client, guild, message, args) => {
 module.exports.help = {
     name: "close",
     aliases: ["c"],
-    usage: "close",
+    usage: "close [Must be Ticket Channel]",
     description: "Close a ticket",
     perms: 0
 };

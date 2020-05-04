@@ -8,9 +8,9 @@ exports.run = async (client, guild, message, args) => {
     });
 
     const embed = new Discord.MessageEmbed()
-    .setTitle("Premium")
-    .setColor("ORANGE")
-    .setDescription(`**Features**
+        .setTitle("Premium")
+        .setColor("ORANGE")
+        .setDescription(`**Features**
 - Custom prefix
 - Custom footer message
 - New ticket message
@@ -26,7 +26,7 @@ exports.run = async (client, guild, message, args) => {
 Premium can be bought for only $3/lifetime
     
 Purchase at [droplet.gg](https://store.droplet.gg/reactiontickets/)`)
-    .setFooter(reactions.footer)
+        .setFooter(reactions.footer)
     message.channel.send(embed).catch(err => { })
 }
 

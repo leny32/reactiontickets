@@ -76,18 +76,19 @@ exports.run = async (client, guild, message, args) => {
                             .setFooter(reactions.footer)
                             .setDescription(panels.newTicket);
                         await c.send(embed).then(async (m) => {
-                                tickets = new Tickets({
-                                    guildID: message.guild.id,
-                                    channelID: m.channel.id,
-                                    messageID: m.id,
-                                    userID: memberObj.id,
-                                    ticket: react.ticket,
-                                    ticketType: type
-                                });
-                                await tickets.save().catch(e => console.log(e));
+                            tickets = new Tickets({
+                                guildID: message.guild.id,
+                                channelID: m.channel.id,
+                                messageID: m.id,
+                                userID: memberObj.id,
+                                ticket: react.ticket,
+                                ticketType: type
+                            });
+                            await tickets.save().catch(e => console.log(e));
+                            m.pin().catch(err => { });
                             m.react("🔒").catch(err => { })
                         });
-                        if(panels.categoryID != "none") c.setParent(panels.categoryID).catch(err => { })
+                        if (panels.categoryID != "none") c.setParent(panels.categoryID).catch(err => { })
                     });
                 });
             } else {
@@ -117,18 +118,19 @@ exports.run = async (client, guild, message, args) => {
                             .setFooter(reactions.footer)
                             .setDescription(panels.newTicket);
                         await c.send(embed).then(async (m) => {
-                                tickets = new Tickets({
-                                    guildID: message.guild.id,
-                                    channelID: m.channel.id,
-                                    messageID: m.id,
-                                    userID: memberObj.id,
-                                    ticket: react.ticket,
-                                    ticketType: type
-                                });
-                                await tickets.save().catch(e => console.log(e));
+                            tickets = new Tickets({
+                                guildID: message.guild.id,
+                                channelID: m.channel.id,
+                                messageID: m.id,
+                                userID: memberObj.id,
+                                ticket: react.ticket,
+                                ticketType: type
+                            });
+                            await tickets.save().catch(e => console.log(e));
+                            m.pin().catch(err => { });
                             m.react("🔒").catch(err => { })
                         });
-                        if(panels.categoryID != "none") c.setParent(panels.categoryID).catch(err => { })
+                        if (panels.categoryID != "none") c.setParent(panels.categoryID).catch(err => { })
                     });
                 });
             }
@@ -193,19 +195,20 @@ exports.run = async (client, guild, message, args) => {
                                 .setFooter(reactions.footer)
                                 .setDescription(panels.newTicket);
                             await c.send(embed).then(async (m) => {
-                                    tickets = new Tickets({
-                                        guildID: message.guild.id,
-                                        channelID: m.channel.id,
-                                        messageID: m.id,
-                                        userID: memberObj.id,
-                                        ticket: react.ticket,
-                                        ticketType: type,
-                                        ticketTopic: topic
-                                    });
-                                    await tickets.save().catch(e => console.log(e));
+                                tickets = new Tickets({
+                                    guildID: message.guild.id,
+                                    channelID: m.channel.id,
+                                    messageID: m.id,
+                                    userID: memberObj.id,
+                                    ticket: react.ticket,
+                                    ticketType: type,
+                                    ticketTopic: topic
+                                });
+                                await tickets.save().catch(e => console.log(e));
+                                m.pin().catch(err => { });
                                 m.react("🔒").catch(err => { })
                             });
-                            if(panels.categoryID != "none") c.setParent(panels.categoryID).catch(err => { })
+                            if (panels.categoryID != "none") c.setParent(panels.categoryID).catch(err => { })
                         });
                     });
                 } else {
@@ -235,19 +238,20 @@ exports.run = async (client, guild, message, args) => {
                                 .setFooter(reactions.footer)
                                 .setDescription(panels.newTicket);
                             await c.send(embed).then(async (m) => {
-                                    tickets = new Tickets({
-                                        guildID: message.guild.id,
-                                        channelID: m.channel.id,
-                                        messageID: m.id,
-                                        userID: memberObj.id,
-                                        ticket: react.ticket,
-                                        ticketType: type,
-                                        ticketTopic: topic
-                                    });
-                                    await tickets.save().catch(e => console.log(e));
+                                tickets = new Tickets({
+                                    guildID: message.guild.id,
+                                    channelID: m.channel.id,
+                                    messageID: m.id,
+                                    userID: memberObj.id,
+                                    ticket: react.ticket,
+                                    ticketType: type,
+                                    ticketTopic: topic
+                                });
+                                await tickets.save().catch(e => console.log(e));
+                                m.pin().catch(err => { });
                                 m.react("🔒").catch(err => { })
                             });
-                            if(panels.categoryID != "none") c.setParent(panels.categoryID).catch(err => { })
+                            if (panels.categoryID != "none") c.setParent(panels.categoryID).catch(err => { })
                         });
                     });
                 }
@@ -279,18 +283,19 @@ exports.run = async (client, guild, message, args) => {
                                 .setFooter(reactions.footer)
                                 .setDescription(panels.newTicket);
                             await c.send(embed).then(async (m) => {
-                                    tickets = new Tickets({
-                                        guildID: message.guild.id,
-                                        channelID: m.channel.id,
-                                        messageID: m.id,
-                                        userID: memberObj.id,
-                                        ticket: react.ticket,
-                                        ticketType: panels.ticketType
-                                    });
-                                    await tickets.save().catch(e => console.log(e));
+                                tickets = new Tickets({
+                                    guildID: message.guild.id,
+                                    channelID: m.channel.id,
+                                    messageID: m.id,
+                                    userID: memberObj.id,
+                                    ticket: react.ticket,
+                                    ticketType: panels.ticketType
+                                });
+                                await tickets.save().catch(e => console.log(e));
+                                m.pin().catch(err => { });
                                 m.react("🔒").catch(err => { });
                             });
-                            if(panels.categoryID != "none") c.setParent(panels.categoryID).catch(err => { });
+                            if (panels.categoryID != "none") c.setParent(panels.categoryID).catch(err => { });
                         });
                     });
                 } else {
@@ -320,25 +325,26 @@ exports.run = async (client, guild, message, args) => {
                                 .setFooter(reactions.footer)
                                 .setDescription(panels.newTicket);
                             await c.send(embed).then(async (m) => {
-                                    tickets = new Tickets({
-                                        guildID: message.guild.id,
-                                        channelID: m.channel.id,
-                                        messageID: m.id,
-                                        userID: memberObj.id,
-                                        ticket: react.ticket,
-                                        ticketType: panels.ticketType
-                                    });
-                                    await tickets.save().catch(e => console.log(e));
+                                tickets = new Tickets({
+                                    guildID: message.guild.id,
+                                    channelID: m.channel.id,
+                                    messageID: m.id,
+                                    userID: memberObj.id,
+                                    ticket: react.ticket,
+                                    ticketType: panels.ticketType
+                                });
+                                await tickets.save().catch(e => console.log(e));
+                                m.pin().catch(err => { });
                                 m.react("🔒").catch(err => { });
                             });
-                            if(panels.categoryID != "none") c.setParent(panels.categoryID).catch(err => { });
+                            if (panels.categoryID != "none") c.setParent(panels.categoryID).catch(err => { });
                         });
                     });
                 }
             }
         });
     }
-    
+
 }
 
 module.exports.help = {

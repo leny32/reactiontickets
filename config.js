@@ -11,7 +11,7 @@ let config = {
     apiUrl: process.env.APIURL,
     storeapi: process.env.STOREAPI,
     genKey: process.env.GENKEY,
-    
+
 
     admins: ["506396083165855744", "561715927503339549"],
     prefix: process.env.PREFIX,

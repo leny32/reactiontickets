@@ -29,9 +29,9 @@ exports.run = async (client, guild, message, args) => {
 }
 
 module.exports.help = {
-    name: "generate",
-    aliases: ["newkey", "createkey", "generatekey", "generate", "mass"],
-    usage: "generate",
+    name: "mass",
+    aliases: ["gen"],
+    usage: "mass",
     description: "Generate a new premium key.",
     perms: 0
 };

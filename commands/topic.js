@@ -10,7 +10,7 @@ exports.run = async (client, guild, message, args) => {
         channelID: message.channel.id
     });
 
-    if (!ticket) return;
+    if (!ticket) return client.throw(message, "Wrong Usage", `${config.wrongUsage} \`${reactions.prefix}${this.help.usage}\``);
 
     let reactions = await Reactions.findOne({
         guildID: message.guild.id
@@ -21,12 +21,7 @@ exports.run = async (client, guild, message, args) => {
         ticketType: ticket.ticketType
     });
 
-    if (!panels && !panels.topic) return;
-
-    const embed = new Discord.MessageEmbed()
-    .setTitle("New Topic")
-    .setDescription(args.slice(0).join(" ").substring(0, 256))
-    .setFooter(reactions.footer);
+    if (!panels && !panels.topic) return client.throw(message, "Wrong Usage", `${config.wrongUsage} \`${reactions.prefix}${this.help.usage}\``);
 
     await Tickets.findOne({
         channelID: message.channel.id
@@ -35,14 +30,14 @@ exports.run = async (client, guild, message, args) => {
         ticket.ticketTopic = args.slice(0).join(" ").substring(0, 256);
         ticket.save().catch(e => console.log(e));
         message.delete().catch(err => { })
-        message.channel.send(embed).catch(err => { })
+        message.channel.setTopic(args.slice(0).join(" ").substring(0, 256)).catch(err => { })
     });
 }
 
 module.exports.help = {
     name: "topic",
     aliases: ["changetopic", "t"],
-    usage: "topic (newtopic)",
+    usage: "topic (newtopic) [Must be Ticket Channel]",
     description: "Change topic of a ticket.",
     perms: 0
 };

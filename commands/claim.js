@@ -16,7 +16,7 @@ exports.run = async (client, guild, message, args) => {
     });
 
     let premium = data.data;
-    if(premium) return message.channel.send("Get some manners, another premium lifetime is not good for me.");
+    if (premium) return message.channel.send("Get some manners, another premium lifetime is not good for me.");
 
     let key = args[0];
     if (!key) return message.reply("Please supply me with a valid key.").catch(err => { })
@@ -31,9 +31,9 @@ exports.run = async (client, guild, message, args) => {
     if (!enabled) return message.reply("This key does not exist or it is redeemed!").catch(err => { });
 
     const embed = new Discord.MessageEmbed()
-    .setTitle("Premium has been activated")
-    .setColor("GREEN")
-    .setFooter(reactions.footer)
+        .setTitle("Premium has been activated")
+        .setColor("GREEN")
+        .setFooter(reactions.footer)
     message.channel.send(embed).catch(err => { });
 }
 

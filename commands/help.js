@@ -8,12 +8,12 @@ exports.run = async (client, guild, message, args) => {
     });
 
     const embed = new Discord.MessageEmbed()
-    .setTitle("Help | Prefix " + reactions.prefix)
-    .setColor("GREEN")
-    .addField("General", "``help``, ``premium``, ``claim``, ``invite``")
-    .addField("Ticket", "``new``, ``close``, ``forcedelete``, ``topic``")
-    .addField("Configuration", "``setup``, ``prefix``, ``footer``, ``deletepanel``, ``listpanel``")
-    .setFooter(reactions.footer)
+        .setTitle("Help | Prefix " + reactions.prefix)
+        .setColor("GREEN")
+        .addField("General", "``help``, ``premium``, ``claim``, ``invite``")
+        .addField("Ticket", "``new``, ``close``, ``forceclose``, ``topic``")
+        .addField("Configuration", "``setup``, ``prefix``, ``footer``, ``deletepanel``, ``listpanel``")
+        .setFooter(reactions.footer)
     message.channel.send(embed).catch(err => { });
 }
 

@@ -21,35 +21,6 @@ exports.run = async (client, message) => {
 
     if (message.mentions.members.first() && message.mentions.members.first().id == client.user.id) message.channel.send(`The prefix for this server is \`${guild.prefix}\`\n> For more info please use \`${guild.prefix}info\``).catch(err => { })
 
-    let ticket = await Tickets.findOne({
-        channelID: message.channel.id
-    });
-
-    if (ticket && ticket.ticketTopic === "none") {
-        if (ticket.userID !== message.author.id) return;
-
-        let panel = await Panels.findOne({
-            guildID: message.guild.id,
-            ticketType: ticket.ticketType
-        });
-        if (panel && !panel.topic) return;
-
-        const embed = new Discord.MessageEmbed()
-            .setTitle("Topic")
-            .setDescription(message.content.substring(0, 256))
-            .setFooter(guild.footer);
-
-        await Tickets.findOne({
-            channelID: message.channel.id
-        }, async (err, ticket) => {
-            if (err) console.log(err);
-            ticket.ticketTopic = message.content.substring(0, 256);
-            ticket.save().catch(e => console.log(e));
-            message.delete();
-            message.channel.send(embed).catch(err => { })
-        });
-    }
-
 
     if (message.content.startsWith(guild.prefix)) {
 
@@ -89,5 +60,29 @@ exports.run = async (client, message) => {
 
         commandfile.run(client, guild, message, args);
         //client.channels.cache.get(config.channels.commandsLog).send(`${message.author.tag} \`[${message.author.id}]\` used **${cmd.slice(guild.prefix.length)}** in ${message.guild.name} \`[${message.guild.id}]\` \|\|${message.content}\|\|`)
+
+        let ticket = await Tickets.findOne({
+            channelID: message.channel.id
+        });
+
+        if (ticket && ticket.ticketTopic === "none") {
+            if (ticket.userID !== message.author.id) return;
+
+            let panel = await Panels.findOne({
+                guildID: message.guild.id,
+                ticketType: ticket.ticketType
+            });
+            if (panel && !panel.topic) return;
+
+            await Tickets.findOne({
+                channelID: message.channel.id
+            }, async (err, ticket) => {
+                if (err) console.log(err);
+                ticket.ticketTopic = message.content.substring(0, 256);
+                ticket.save().catch(e => console.log(e));
+                message.delete();
+                message.channel.setTopic(message.content.substring(0, 256)).catch(err => { })
+            });
+        }
     }
 }

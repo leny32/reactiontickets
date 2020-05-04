@@ -19,17 +19,17 @@ client.events = new Discord.Collection();
 
 client.clean = async (client, text) => {
     if (text && text.constructor.name == "Promise") text = await text;
-    if (typeof evaled !== "string") text = require("util").inspect(text, {depth: 0});
-  
+    if (typeof evaled !== "string") text = require("util").inspect(text, { depth: 0 });
+
     text = text.replace(/`/g, "`" + String.fromCharCode(8203))
         .replace(/@/g, "@" + String.fromCharCode(8203))
         .replace(client.token, "Unauthorized action");
-  
+
     return text;
 };
 
 
-client.throw = async (message,errorType ,errorMessage) => {
+client.throw = async (message, errorType, errorMessage) => {
     let embed = new Discord.MessageEmbed()
         .setTitle(`❌ | ${errorType}`)
         .setDescription(errorMessage)
@@ -38,7 +38,7 @@ client.throw = async (message,errorType ,errorMessage) => {
     message.channel.send(embed).catch(err => { })
 };
 
-fs.readdir(__dirname +"/commands/", (err, files) => {
+fs.readdir(__dirname + "/commands/", (err, files) => {
     if (err) return console.log(err);
     files.forEach(file => {
         if (!file.endsWith(".js")) return;
@@ -51,7 +51,7 @@ fs.readdir(__dirname +"/commands/", (err, files) => {
     });
 });
 
-fs.readdir(__dirname +'/events/', (err, files) => {
+fs.readdir(__dirname + '/events/', (err, files) => {
     if (err) console.log(err);
     files.forEach(file => {
         let eventFunc = require(`./events/${file}`);
@@ -64,7 +64,7 @@ setInterval(() => {
     this.postStats(client)
 }, 300000);
 
-module.exports.postStats = async function(client) {
+module.exports.postStats = async function (client) {
     let botid = 1
     let guild = client.guilds.cache.size
     let members = client.guilds.cache.reduce((prev, guild) => prev + guild.memberCount, 0)
