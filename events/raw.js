@@ -32,7 +32,7 @@ exports.run = async (client, event) => {
                 let channel = client.channels.cache.get(panel.channelID);
                 await channel.messages.fetch(panel.messageID).then(async (msg) => {
                     let user = msg.guild.members.cache.get(event.d.user_id);
-                    if (user.id !== client.user.id && !user.user.bot) {
+                    if (user && user.id !== client.user.id && !user.user.bot) {
                         let memberObj = msg.guild.members.cache.get(user.id);
                         let support = msg.guild.roles.cache.get(panel.supportID);
                         msg.reactions.cache.get("🎫").users.remove(memberObj);
@@ -356,7 +356,7 @@ exports.run = async (client, event) => {
                                     if (!panel.noDMTicket) {
                                         let endMessage = `Hey ${ticketOwner.username},
                                         
-                        Thank you for making a ticket with Reaction Tickets.`
+Thank you for making a ticket with Reaction Tickets.`
                                         try {
                                             if (panel.transcriptOnDelete) ticketOwner.send(endMessage, { files: [{ attachment: Buffer.from(mapped), name: `Transcript-${ticket.userID}.txt` }] }).catch(err => { console.log(err) })
                                             else ticketOwner.send(endMessage);
