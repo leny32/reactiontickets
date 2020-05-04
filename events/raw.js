@@ -353,12 +353,12 @@ exports.run = async (client, event) => {
                                         active: false
                                     });
                                     channel.delete().catch(err => { })
-                                    if (!panels.noDMTicket) {
+                                    if (!panel.noDMTicket) {
                                         let endMessage = `Hey ${ticketOwner.username},
                                         
                         Thank you for making a ticket with Reaction Tickets.`
                                         try {
-                                            if (panels.transcriptOnDelete) ticketOwner.send(endMessage, { files: [{ attachment: Buffer.from(mapped), name: `Transcript-${ticket.userID}.txt` }] }).catch(err => { console.log(err) })
+                                            if (panel.transcriptOnDelete) ticketOwner.send(endMessage, { files: [{ attachment: Buffer.from(mapped), name: `Transcript-${ticket.userID}.txt` }] }).catch(err => { console.log(err) })
                                             else ticketOwner.send(endMessage);
                                         } catch { }
                                     }
