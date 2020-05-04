@@ -111,7 +111,7 @@ exports.run = async (client, event) => {
                                                 ticket: react.ticket
                                             });
                                             await tickets.save().catch(e => console.log(e));
-                                            m.pin().catch(err => { });
+                                            await m.pin().catch(err => { }).then(() => { c.bulkDelete(1) });
                                             m.react("🔒").catch(err => { });
                                         });
                                         if (panel.categoryID != "none") c.setParent(panel.categoryID).catch(err => { })
@@ -153,7 +153,7 @@ exports.run = async (client, event) => {
                                                 ticket: react.ticket
                                             });
                                             await tickets.save().catch(e => console.log(e));
-                                            m.pin().catch(err => { });
+                                            await m.pin().catch(err => { }).then(() => { c.bulkDelete(1) });
                                             m.react("🔒");
                                         });
                                         if (panel.categoryID != "none") c.setParent(panel.categoryID).catch(err => { })

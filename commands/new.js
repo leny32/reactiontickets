@@ -85,7 +85,7 @@ exports.run = async (client, guild, message, args) => {
                                 ticketType: type
                             });
                             await tickets.save().catch(e => console.log(e));
-                            m.pin().catch(err => { });
+                            await m.pin().catch(err => { }).then(() => { c.bulkDelete(1) });
                             m.react("🔒").catch(err => { })
                         });
                         if (panels.categoryID != "none") c.setParent(panels.categoryID).catch(err => { })
@@ -127,7 +127,7 @@ exports.run = async (client, guild, message, args) => {
                                 ticketType: type
                             });
                             await tickets.save().catch(e => console.log(e));
-                            m.pin().catch(err => { });
+                            await m.pin().catch(err => { }).then(() => { c.bulkDelete(1) });
                             m.react("🔒").catch(err => { })
                         });
                         if (panels.categoryID != "none") c.setParent(panels.categoryID).catch(err => { })
@@ -205,7 +205,7 @@ exports.run = async (client, guild, message, args) => {
                                     ticketTopic: topic
                                 });
                                 await tickets.save().catch(e => console.log(e));
-                                m.pin().catch(err => { });
+                                await m.pin().catch(err => { }).then(() => { c.bulkDelete(1) });
                                 m.react("🔒").catch(err => { })
                             });
                             if (panels.categoryID != "none") c.setParent(panels.categoryID).catch(err => { })
@@ -248,7 +248,7 @@ exports.run = async (client, guild, message, args) => {
                                     ticketTopic: topic
                                 });
                                 await tickets.save().catch(e => console.log(e));
-                                m.pin().catch(err => { });
+                                await m.pin().catch(err => { }).then(() => { c.bulkDelete(1) });
                                 m.react("🔒").catch(err => { })
                             });
                             if (panels.categoryID != "none") c.setParent(panels.categoryID).catch(err => { })
@@ -292,7 +292,7 @@ exports.run = async (client, guild, message, args) => {
                                     ticketType: panels.ticketType
                                 });
                                 await tickets.save().catch(e => console.log(e));
-                                m.pin().catch(err => { });
+                                await m.pin().catch(err => { }).then(() => { c.bulkDelete(1) });
                                 m.react("🔒").catch(err => { });
                             });
                             if (panels.categoryID != "none") c.setParent(panels.categoryID).catch(err => { });
@@ -334,7 +334,7 @@ exports.run = async (client, guild, message, args) => {
                                     ticketType: panels.ticketType
                                 });
                                 await tickets.save().catch(e => console.log(e));
-                                m.pin().catch(err => { });
+                                await m.pin().catch(err => { }).then(() => { c.bulkDelete(1) });
                                 m.react("🔒").catch(err => { });
                             });
                             if (panels.categoryID != "none") c.setParent(panels.categoryID).catch(err => { });

@@ -36,7 +36,7 @@ exports.run = async (client, guild, message, args) => {
 
 module.exports.help = {
     name: "topic",
-    aliases: ["changetopic", "t"],
+    aliases: ["changetopic", "t", "newtopic"],
     usage: "topic (newtopic) [Must be Ticket Channel]",
     description: "Change topic of a ticket.",
     perms: 0
