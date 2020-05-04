@@ -10,15 +10,11 @@ exports.run = async (client, guild, message, args) => {
     });
     let info = infomation.data;
     const embedStats = new Discord.MessageEmbed()
-        .setTitle("Reaction Tickets - Statistics")
+        .setTitle("Support - Droplet")
+        .setURL("https://discord.gg/r4ZAVRF")
         .setColor("GREEN")
         .setFooter(guild.footer)
-        .addField("• Ram Usage", `${info.ram}GB`)
-        .addField("• Users", info.members)
-        .addField("• Servers", info.servers)
-        .addField("• Channels", info.channels)
-        .addField("• API Latency", `${Math.round(client.ws.ping)} ms`)
-        .addField("• Shard ID", message.guild.shardID)
+        .addField("Support Server", `[Click to join](https://discord.gg/r4ZAVRF)`)
 
     message.channel.send({ embed: embedStats }).catch(err => { });
 }
