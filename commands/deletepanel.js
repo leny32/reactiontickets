@@ -10,14 +10,14 @@ exports.run = async (client, guild, message, args) => {
     });
 
     let type = args.join(" ");
-    if (!type) return client.throw(message, "Wrong Usage", `${config.wrongUsage} \`${reactions.prefix}${this.help.usage}\``)
+    if (!type) return client.throw(message, "Wrong Usage", `${config.wrongUsage} \`${guild.prefix}${this.help.usage}\``)
 
     let panel = await Panels.findOne({
         guildID: message.guild.id,
         ticketType: type
     });
 
-    if (!panel) return client.throw(message, "Wrong Usage", `${config.wrongUsage} \`${reactions.prefix}${this.help.usage}\``);
+    if (!panel) return client.throw(message, "Wrong Usage", `${config.wrongUsage} \`${guild.prefix}${this.help.usage}\``);
 
     let channel = message.guild.channels.cache.get(panel.channelID)
 

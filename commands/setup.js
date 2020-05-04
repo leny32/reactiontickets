@@ -25,7 +25,7 @@ exports.run = async (client, guild, message, args) => {
     });
     if (panelCheck.length >= 2 && !premium) return message.channel.send("Premium has not been bought on this server yet, to open more than two ticket panel at a time, please buy premium.");
 
-    if (!args[0]) return client.throw(message, "Wrong Usage", `${config.wrongUsage} \`${reactions.prefix}${this.help.usage}\``);
+    if (!args[0]) return client.throw(message, "Wrong Usage", `${config.wrongUsage} \`${guild.prefix}${this.help.usage}\``);
     if (args[0].toLowerCase() == "advanced" && !premium) return message.channel.send("Premium has not been bought on this server yet, to use advanced setup, please buy premium.");
     let setupT = premium && args[0] && args[0].toLowerCase() == "advanced" ? "advanced" : "simple";
     let setupType = setupT.charAt(0).toUpperCase() + setupT.slice(1, 8);

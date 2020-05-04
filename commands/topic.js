@@ -10,7 +10,7 @@ exports.run = async (client, guild, message, args) => {
         channelID: message.channel.id
     });
 
-    if (!ticket) return client.throw(message, "Wrong Usage", `${config.wrongUsage} \`${reactions.prefix}${this.help.usage}\``);
+    if (!ticket) return client.throw(message, "Wrong Usage", `${config.wrongUsage} \`${guild.prefix}${this.help.usage}\``);
 
     let reactions = await Reactions.findOne({
         guildID: message.guild.id
@@ -21,7 +21,7 @@ exports.run = async (client, guild, message, args) => {
         ticketType: ticket.ticketType
     });
 
-    if (!panels && !panels.topic) return client.throw(message, "Wrong Usage", `${config.wrongUsage} \`${reactions.prefix}${this.help.usage}\``);
+    if (!panels && !panels.topic) return client.throw(message, "Wrong Usage", `${config.wrongUsage} \`${guold.prefix}${this.help.usage}\``);
 
     await Tickets.findOne({
         channelID: message.channel.id

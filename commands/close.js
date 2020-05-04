@@ -10,7 +10,7 @@ exports.run = async (client, guild, message, args) => {
         channelID: message.channel.id
     });
 
-    if (!ticket) return client.throw(message, "Wrong Usage", `${config.wrongUsage} \`${reactions.prefix}${this.help.usage}\``);
+    if (!ticket) return client.throw(message, "Wrong Usage", `${config.wrongUsage} \`${guild.prefix}${this.help.usage}\``);
 
     let panels = await Panels.findOne({
         guildID: message.guild.id,

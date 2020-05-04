@@ -48,7 +48,7 @@ exports.run = async (client, guild, message, args) => {
             .addField("Transcript on delete", panelOne.transcriptOnDelete, true)
         message.channel.send(panelEmbed);
     } else {
-        return client.throw(message, "Wrong Usage", `${config.wrongUsage} \`${reactions.prefix}${this.help.usage}\``);
+        return client.throw(message, "Wrong Usage", `${config.wrongUsage} \`${guild.prefix}${this.help.usage}\``);
     }
 }
 
