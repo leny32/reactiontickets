@@ -201,7 +201,7 @@ exports.run = async (client, guild, message, args) => {
                                     messageID: m.id,
                                     userID: memberObj.id,
                                     ticket: react.ticket,
-                                    ticketType: type,
+                                    ticketType: react.ticketType,
                                     ticketTopic: topic
                                 });
                                 await tickets.save().catch(e => console.log(e));
@@ -244,7 +244,7 @@ exports.run = async (client, guild, message, args) => {
                                     messageID: m.id,
                                     userID: memberObj.id,
                                     ticket: react.ticket,
-                                    ticketType: type,
+                                    ticketType: react.ticketType,
                                     ticketTopic: topic
                                 });
                                 await tickets.save().catch(e => console.log(e));
