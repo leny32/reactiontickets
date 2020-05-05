@@ -123,7 +123,7 @@ exports.run = async (client, guild, message, args) => {
                                 if (nameChecker) { cancelReason(`a panel named \`${type}\`, already exists`); return i = setupNumber; }
                                 embed.setTitle(type);
                                 embe.edit(embed).catch(err => { }); response.delete().catch(err => { }); tsg.delete().catch(err => { });
-                                if (setupType === "simple") i = 15;
+                                if (setupType.toLowerCase() === "simple") i = 15;
                             });
                         });
                     break;
