@@ -67,8 +67,8 @@ exports.run = async (client, guild, message, args) => {
                                 if (response.content.toLowerCase() == "cancel") { cancelReason(cancel); return i = setupNumber; }
                                 logID = response.mentions.channels.first() && response.mentions.channels.first().type === "text" ? response.mentions.channels.first().id : message.guild.channels.cache.get(response.content) && message.guild.channels.cache.get(response.content).type === "text" ? message.guild.channels.cache.get(response.content) : message.guild.channels.cache.find(c => c.name.toLowerCase() === response.content.toLowerCase()) ? message.guild.channels.cache.find(c => c.name.toLowerCase() === response.content.toLowerCase()).id : "none";
                                 if (!logID) logID = "none";
-                                if (logID !== "none" && !message.guild.channels.cache.get(logID).permissionsFor(message.guild.me).has("SEND_MESSAGES")) { logID = "none"; cancelReason("I'm missing the Send Messages permission in that channel"); return i = setupNumber; }
                                 if (logID === "none") lg = "none"; else lg = message.guild.channels.cache.get(channelID);
+                                if (lg !== "none" && !lg.permissionsFor(message.guild.me).has("SEND_MESSAGES")) { logID = "none"; cancelReason("I'm missing the Send Messages permission in that channel"); return i = setupNumber; }
                                 embed.addField("Ticket log channel", lg, true);
                                 embe.edit(embed).catch(err => { }); response.delete().catch(err => { }); tsg.delete().catch(err => { });
                             });
