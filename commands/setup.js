@@ -50,7 +50,7 @@ exports.run = async (client, guild, message, args) => {
                             await message.channel.awaitMessages(filter, { max: 1 }).then(async (res) => {
                                 const response = res.first();
                                 if (response.content.toLowerCase() == "cancel") { cancelReason(cancel); return i = setupNumber; }
-                                channelID = response.mentions.channels.first() && response.mentions.channels.first().type === "text" ? response.mentions.channels.first().id : message.guild.channels.cache.get(response.content) && message.guild.channels.cache.get(response.content).type === "text" ? message.guild.channels.cache.find(c => c.name.toLowerCase() === response.content.toLowerCase()).id : "none";
+                                channelID = response.mentions.channels.first() && response.mentions.channels.first().type === "text" ? response.mentions.channels.first().id : message.guild.channels.cache.get(response.content) && message.guild.channels.cache.get(response.content).type === "text" ? message.guild.channels.cache.get(response.content) : message.guild.channels.cache.find(c => c.name.toLowerCase() === response.content.toLowerCase()) ? message.guild.channels.cache.find(c => c.name.toLowerCase() === response.content.toLowerCase()).id : "none";
                                 if (channelID === "none") { cancelReason("couldn't find channel"); return i = setupNumber; }
                                 channel = message.guild.channels.cache.get(channelID);
                                 if (!channel.permissionsFor(message.guild.me).has("SEND_MESSAGES")) { channelID = ""; cancelReason("I'm missing the send messages permission in that channel"); return i = setupNumber; }
@@ -65,7 +65,7 @@ exports.run = async (client, guild, message, args) => {
                             await message.channel.awaitMessages(filter, { max: 1 }).then(res => {
                                 const response = res.first();
                                 if (response.content.toLowerCase() == "cancel") { cancelReason(cancel); return i = setupNumber; }
-                                logID = response.mentions.channels.first() && response.mentions.channels.first().type === "text" ? response.mentions.channels.first().id : message.guild.channels.cache.get(response.content) && message.guild.channels.cache.get(response.content).type === "text" ? message.guild.channels.cache.find(c => c.name.toLowerCase() === response.content.toLowerCase()).id : "none";
+                                logID = response.mentions.channels.first() && response.mentions.channels.first().type === "text" ? response.mentions.channels.first().id : message.guild.channels.cache.get(response.content) && message.guild.channels.cache.get(response.content).type === "text" ? message.guild.channels.cache.get(response.content) : message.guild.channels.cache.find(c => c.name.toLowerCase() === response.content.toLowerCase()) ? message.guild.channels.cache.find(c => c.name.toLowerCase() === response.content.toLowerCase()).id : "none";
                                 if (!logID) logID = "none";
                                 if (logID !== "none" && !message.guild.channels.cache.get(logID).permissionsFor(message.guild.me).has("SEND_MESSAGES")) { logID = "none"; cancelReason("I'm missing the Send Messages permission in that channel"); return i = setupNumber; }
                                 if (logID === "none") lg = "none"; else lg = message.guild.channels.cache.get(channelID);
