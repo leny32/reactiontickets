@@ -15,7 +15,7 @@ exports.run = async (client, guild, message, args) => {
 
     let panelOne = await Panels.findOne({
         guildID: message.guild.id,
-        ticketType: args[0]
+        ticketType: args.join(" ")
     });
 
     if (!args[0]) {
