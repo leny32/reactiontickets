@@ -34,8 +34,7 @@ exports.run = async (client, guild, message, args) => {
 
     let cancel = `the cancel command being issued`;
     let configMessage = `\n\n{member} = Username + discriminator\n{username} = Username\n{executor} = Username + discriminator\n{executorusername} = Username`
-    let messageID; let channelID; let channel; let lg; let noDMTicket; let supportID; let support; let logID; let categoryID; let openMsg; let newTicket; let closeMsg; let reopenMsg; let deleteMsg; let forcedeleteMsg; let pingOnTicket; let nameTicket; let topic; let transcriptOnDelete; let type;
-
+    let messageID; let channelID; let channel; let lg; let noDMTicket; let supportID; let support; let logID; let categoryID; let openTicket; let newTicket; let closeMsg; let reopenMsg; let deleteMsg; let forcedeleteMsg; let pingOnTicket; let nameTicket; let topic; let transcriptOnDelete; let type;
     let filter = msg => { return msg.author.id === message.author.id };
 
     const embed = new Discord.MessageEmbed().setTitle(`${setupType} Configuration`).setColor("ORANGE").setDescription(`Current configuration:`);
@@ -67,7 +66,7 @@ exports.run = async (client, guild, message, args) => {
                                 if (response.content.toLowerCase() == "cancel") { cancelReason(cancel); return i = setupNumber; }
                                 logID = response.mentions.channels.first() && response.mentions.channels.first().type === "text" ? response.mentions.channels.first().id : message.guild.channels.cache.get(response.content) && message.guild.channels.cache.get(response.content).type === "text" ? message.guild.channels.cache.get(response.content) : message.guild.channels.cache.find(c => c.name.toLowerCase() === response.content.toLowerCase()) ? message.guild.channels.cache.find(c => c.name.toLowerCase() === response.content.toLowerCase()).id : "none";
                                 if (!logID) logID = "none";
-                                if (logID === "none") lg = "none"; else lg = message.guild.channels.cache.get(channelID);
+                                if (logID === "none") lg = "none"; else lg = message.guild.channels.cache.get(logID);
                                 if (lg !== "none" && !lg.permissionsFor(message.guild.me).has("SEND_MESSAGES")) { logID = "none"; cancelReason("I'm missing the Send Messages permission in that channel"); return i = setupNumber; }
                                 embed.addField("Ticket log channel", lg, true);
                                 embe.edit(embed).catch(err => { }); response.delete().catch(err => { }); tsg.delete().catch(err => { });
@@ -224,7 +223,7 @@ exports.run = async (client, guild, message, args) => {
                         });
                     break;
                 case 15:
-                    await message.channel.send(`**Step 14**: What would you like the **delete** ticket message to be? (default/message) ${configMessage}`)
+                    await message.channel.send(`${step} What would you like the **delete** ticket message to be? (default/message) ${configMessage}`)
                         .then(async (tsg) => {
                             await message.channel.awaitMessages(filter, { max: 1 }).then(res => {
                                 const response = res.first();
@@ -236,7 +235,7 @@ exports.run = async (client, guild, message, args) => {
                         });
                     break;
                 case 16:
-                    await message.channel.send(`**Step 15**: What would you like the **forcefully deleted** ticket message to be? (default/message) ${configMessage}`)
+                    await message.channel.send(`${step} What would you like the **forcefully deleted** ticket message to be? (default/message) ${configMessage}`)
                         .then(async (tsg) => {
                             await message.channel.awaitMessages(filter, { max: 1 }).then(res => {
                                 const response = res.first();
@@ -249,10 +248,9 @@ exports.run = async (client, guild, message, args) => {
                     break;
                 case 17:
                     embed.setDescription("Final Configuration:").setColor("GREEN"); embe.edit(embed).then(async () => {
-                        if (!openMsg) openMsg = "React below to open a ticket.";
                         const newEmbed = new Discord.MessageEmbed()
                             .setTitle(`Open ${type}`)
-                            .setDescription(`${openMsg}\n\nBy opening a ticket, you agree that your conversation will be recorded for legal and quality purposes.`)
+                            .setDescription(`${openTicket}\n\nBy opening a ticket, you agree that your conversation will be recorded for legal and quality purposes.`)
                             .setFooter(reactions.footer);
                         await channel.send(newEmbed).catch(err => { }).then(async (m) => {
                             messageID = m.id;

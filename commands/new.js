@@ -6,6 +6,8 @@ const config = require("../config");
 
 exports.run = async (client, guild, message, args) => {
 
+    if (message.guild.id === "550516279652515880") return;
+
     let reactions = await Reactions.findOne({
         guildID: message.guild.id
     });
