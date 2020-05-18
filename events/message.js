@@ -39,7 +39,7 @@ exports.run = async (client, message) => {
 
             if (!current) client.limits.set(`${aName}-${message.author.id}`, 1);
             else {
-                if (current >= commandfile.limits.rateLimit) return;
+                if (current >= commandfile.limits.rateLimit) return message.channel.send("You're being ratelimited.");
                 client.limits.set(`${aName}-${message.author.id}`, current + 1);
             }
 
