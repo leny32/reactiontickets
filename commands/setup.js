@@ -63,7 +63,7 @@ exports.run = async (client, guild, message, args) => {
                 case 2:
                     await message.channel.send(`${step} Please provide a ticket log channel. (none/mention/id/name)\n(A ticket channel is where ticket-logs from tickets will be stored.)`)
                         .then(async (tsg) => {
-                            await message.channel.awaitMessages(filter, { max: 1 }).then(res => {
+                            await message.channel.awaitMessages(filter, { max: 1 }).then(async (res) => {
                                 const response = res.first();
                                 if (response.content.toLowerCase() == "cancel") { cancelReason(cancel); return i = setupNumber; }
                                 logID = response.mentions.channels.first() && response.mentions.channels.first().type === "text" ? response.mentions.channels.first().id : message.guild.channels.cache.get(response.content) && message.guild.channels.cache.get(response.content).type === "text" ? message.guild.channels.cache.get(response.content) : message.guild.channels.cache.find(c => c.name.toLowerCase() === response.content.toLowerCase()) ? message.guild.channels.cache.find(c => c.name.toLowerCase() === response.content.toLowerCase()).id : "none";
@@ -79,7 +79,7 @@ exports.run = async (client, guild, message, args) => {
                 case 3:
                     await message.channel.send(`${step} Please provide a category for where tickets should be placed. (none/id/name)`)
                         .then(async (tsg) => {
-                            await message.channel.awaitMessages(filter, { max: 1 }).then(res => {
+                            await message.channel.awaitMessages(filter, { max: 1 }).then(async (res) => {
                                 const response = res.first();
                                 if (response.content.toLowerCase() == "cancel") { cancelReason(cancel); return i = setupNumber; }
                                 categoryID = message.guild.channels.cache.get(response.content);
@@ -93,7 +93,7 @@ exports.run = async (client, guild, message, args) => {
                 case 4:
                     await message.channel.send(`${step} Please provide a support role, for which will have access to tickets. (mention/id/name)`)
                         .then(async (tsg) => {
-                            await message.channel.awaitMessages(filter, { max: 1 }).then(res => {
+                            await message.channel.awaitMessages(filter, { max: 1 }).then(async (res) => {
                                 const response = res.first();
                                 if (response.content.toLowerCase() == "cancel") { cancelReason(cancel); return i = setupNumber; }
                                 supportID = message.guild.roles.cache.get(response.content);
