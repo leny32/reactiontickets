@@ -52,6 +52,8 @@ exports.run = async (client, guild, message, args) => {
                                 channelID = response.mentions.channels.first() && response.mentions.channels.first().type === "text" ? response.mentions.channels.first().id : message.guild.channels.cache.get(response.content) && message.guild.channels.cache.get(response.content).type === "text" ? message.guild.channels.cache.get(response.content) : message.guild.channels.cache.find(c => c.name.toLowerCase() === response.content.toLowerCase()) ? message.guild.channels.cache.find(c => c.name.toLowerCase() === response.content.toLowerCase()).id : "none";
                                 if (channelID === "none") { cancelReason("couldn't find channel"); return i = setupNumber; }
                                 channel = message.guild.channels.cache.get(channelID);
+                                if (channel) { channel = channel } else { try { channel = await message.guild.channels.fetch(channelID) } catch (err) { } }
+                                if (!channel) channel = "none";
                                 if (!channel.permissionsFor(message.guild.me).has("SEND_MESSAGES")) { channelID = ""; cancelReason("I'm missing the send messages permission in that channel"); return i = setupNumber; }
                                 embed.addField("Ticket Channel", channel, true);
                                 embe.edit(embed).catch(err => { }); response.delete().catch(err => { }); tsg.delete().catch(err => { });
@@ -66,7 +68,8 @@ exports.run = async (client, guild, message, args) => {
                                 if (response.content.toLowerCase() == "cancel") { cancelReason(cancel); return i = setupNumber; }
                                 logID = response.mentions.channels.first() && response.mentions.channels.first().type === "text" ? response.mentions.channels.first().id : message.guild.channels.cache.get(response.content) && message.guild.channels.cache.get(response.content).type === "text" ? message.guild.channels.cache.get(response.content) : message.guild.channels.cache.find(c => c.name.toLowerCase() === response.content.toLowerCase()) ? message.guild.channels.cache.find(c => c.name.toLowerCase() === response.content.toLowerCase()).id : "none";
                                 if (!logID) logID = "none";
-                                if (logID === "none") lg = "none"; else lg = message.guild.channels.cache.get(logID);
+                                if (logID === "none") lg = "none"; else { if (lg = message.guild.channels.cache.get(logID)) lg = message.guild.channels.cache.get(logID); else { try { lg = await message.guild.channels.fetch(logID) } catch (err) { } } }
+                                if (!lg) lg = "none";
                                 if (lg !== "none" && !lg.permissionsFor(message.guild.me).has("SEND_MESSAGES")) { logID = "none"; cancelReason("I'm missing the Send Messages permission in that channel"); return i = setupNumber; }
                                 embed.addField("Ticket log channel", lg, true);
                                 embe.edit(embed).catch(err => { }); response.delete().catch(err => { }); tsg.delete().catch(err => { });
@@ -79,7 +82,9 @@ exports.run = async (client, guild, message, args) => {
                             await message.channel.awaitMessages(filter, { max: 1 }).then(res => {
                                 const response = res.first();
                                 if (response.content.toLowerCase() == "cancel") { cancelReason(cancel); return i = setupNumber; }
-                                categoryID = message.guild.channels.cache.get(response.content) && message.guild.channels.cache.get(response.content).type === "category" ? response.content : message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()) && message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()).type === "category" ? message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()).id : "none";
+                                categoryID = message.guild.channels.cache.get(response.content);
+                                if (!categoryID) { try { categoryID = await message.guild.channels.fetch(response.content) } catch (err) { } }
+                                categoryID = message.guild.channels.cache.get(response.content).type === "category" ? response.content : message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()) && message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()).type === "category" ? message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()).id : "none"
                                 embed.addField("Category ID", categoryID, true);
                                 embe.edit(embed).catch(err => { }); response.delete().catch(err => { }); tsg.delete().catch(err => { });
                             });
@@ -91,6 +96,8 @@ exports.run = async (client, guild, message, args) => {
                             await message.channel.awaitMessages(filter, { max: 1 }).then(res => {
                                 const response = res.first();
                                 if (response.content.toLowerCase() == "cancel") { cancelReason(cancel); return i = setupNumber; }
+                                supportID = message.guild.roles.cache.get(response.content);
+                                if (!supportID) { try { await message.guild.roles.fetch(response.content) } catch { } }
                                 supportID = response.mentions.roles.first() ? response.mentions.roles.first().id : message.guild.roles.cache.get(response.content) ? response.content : message.guild.roles.cache.find(r => r.name.toLowerCase() == response.content.toLowerCase()) ? message.guild.roles.cache.find(r => r.name.toLowerCase() == response.content.toLowerCase()).id : "none";
                                 if (supportID === "none") { cancelReason("couldn't find role"); return i = setupNumber; }
                                 support = message.guild.roles.cache.get(supportID);
