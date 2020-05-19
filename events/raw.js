@@ -331,7 +331,7 @@ exports.run = async (client, event) => {
                                 .addField("Ticket Opener", `<@${ticket.userID}> [${ticket.userID}]`)
                                 .addField("Deleted by", `${staff} [${staff.id}]`)
                                 .setFooter(reactions.footer)
-                            if (panel.topic) logEmbed.addField("Topic", ticket.ticketTopic)
+                            if (panel.topic && ticket.ticketTopic) logEmbed.addField("Topic", ticket.ticketTopic)
 
                             let logChannel = msg.guild.channels.cache.get(panel.logID);
                             if (logChannel) logChannel.send(logEmbed).catch(err => { })
