@@ -34,7 +34,7 @@ exports.run = async (client, guild, message, args) => {
 
     let cancel = `the cancel command being issued`;
     let configMessage = `\n\n{member} = Username + discriminator\n{username} = Username\n{executor} = Username + discriminator\n{executorusername} = Username`
-    let messageID; let channelID; let channel; let lg; let noDMTicket; let supportID; let support; let logID; let categoryID; let openTicket; let newTicket; let closeMsg; let reopenMsg; let deleteMsg; let forcedeleteMsg; let pingOnTicket; let nameTicket; let topic; let transcriptOnDelete; let type;
+    let messageID; let channelID; let channel; let lg; let noDMTicket; let supportID; let support; let logID; let categoryID; let openTicket = "To open a ticket, please react below"; let newTicket; let closeMsg; let reopenMsg; let deleteMsg; let forcedeleteMsg; let pingOnTicket; let nameTicket; let topic; let transcriptOnDelete; let type;
     let filter = msg => { return msg.author.id === message.author.id };
 
     const embed = new Discord.MessageEmbed().setTitle(`${setupType} Configuration`).setColor("ORANGE").setDescription(`Current configuration:`);
