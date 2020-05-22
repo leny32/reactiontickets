@@ -53,8 +53,8 @@ exports.run = async (client, guild, message, args) => {
                                 channel = message.guild.channels.cache.get(channelID);
                                 if (channel) { channel = channel } else { try { channel = await message.guild.channels.fetch(channelID) } catch (err) { } }
                                 if (!channel) channel = "none";
-                                if (!channel.permissionsFor(message.guild.me).has("SEND_MESSAGES")) { channelID = ""; cancelReason("I'm missing the send messages permission in that channel"); return i = setupNumber; }
                                 if (channelID === "none") { message.channel.send("Couldn't find channel, please retype."); return i = i - 1; }
+                                if (!channel.permissionsFor(message.guild.me).has("SEND_MESSAGES")) { channelID = ""; cancelReason("I'm missing the send messages permission in that channel"); return i = setupNumber; }
                                 embed.addField("Ticket Channel", channel, true);
                                 embe.edit(embed).catch(err => { }); response.delete().catch(err => { }); tsg.delete().catch(err => { });
                             });
