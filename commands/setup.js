@@ -37,7 +37,7 @@ exports.run = async (client, guild, message, args) => {
     let messageID; let channelID; let channel; let lg; let noDMTicket; let supportID; let support; let logID; let categoryID; let openTicket = "To open a ticket, please react below"; let newTicket; let closeMsg; let reopenMsg; let deleteMsg; let forcedeleteMsg; let pingOnTicket; let nameTicket; let topic; let transcriptOnDelete; let type;
     let filter = msg => { return msg.author.id === message.author.id };
 
-    const embed = new Discord.MessageEmbed().setTitle(`${setupType} Configuration`).setColor("ORANGE").setDescription(`Current configuration:`);
+    const embed = new Discord.MessageEmbed().setTitle(`${setupType} Configuration`).setColor("ORANGE").setDescription(`Current configuration:`).setFooter("To cancel type: cancel");
     message.channel.send(embed).catch(err => { }).then(async (embe) => {
         function cancelReason(reason) { embed.setTitle("Cancelled").setColor("RED"); embe.edit(embed).catch(err => { }); return message.channel.send(`The setup has been canceled due to, ${reason}.`).catch(err => { }); };
         for (let i = 1; i <= setupNumber; i++) {
@@ -54,7 +54,7 @@ exports.run = async (client, guild, message, args) => {
                                 if (channel) { channel = channel } else { try { channel = await message.guild.channels.fetch(channelID) } catch (err) { } }
                                 if (!channel) channel = "none";
                                 if (!channel.permissionsFor(message.guild.me).has("SEND_MESSAGES")) { channelID = ""; cancelReason("I'm missing the send messages permission in that channel"); return i = setupNumber; }
-                                if (channelID === "none") { cancelReason("couldn't find channel"); return i = setupNumber; }
+                                if (channelID === "none") { message.channel.send("Couldn't find channel, please retype."); return i = i - 1; }
                                 embed.addField("Ticket Channel", channel, true);
                                 embe.edit(embed).catch(err => { }); response.delete().catch(err => { }); tsg.delete().catch(err => { });
                             });
@@ -100,7 +100,7 @@ exports.run = async (client, guild, message, args) => {
                                 if (!supportID) { try { await message.guild.roles.fetch(response.content) } catch { } }
                                 supportID = response.mentions.roles.first() ? response.mentions.roles.first().id : message.guild.roles.cache.get(response.content) ? response.content : message.guild.roles.cache.find(r => r.name.toLowerCase() == response.content.toLowerCase()) ? message.guild.roles.cache.find(r => r.name.toLowerCase() == response.content.toLowerCase()).id : "none";
                                 support = message.guild.roles.cache.get(supportID);
-                                if (supportID === "none") { cancelReason("couldn't find role"); return i = setupNumber; }
+                                if (supportID === "none") { message.channel.send("Couldn't find role, please retype."); return i = i - 1; }
                                 embed.addField("Support role", support, true);
                                 embe.edit(embed).catch(err => { }); response.delete().catch(err => { }); tsg.delete().catch(err => { });
                             });
@@ -126,7 +126,7 @@ exports.run = async (client, guild, message, args) => {
                                 if (response.content.toLowerCase() == "cancel") { cancelReason(cancel); return i = setupNumber; }
                                 type = response.content.toLowerCase() == "default" || response.content.toLowerCase() == "d" ? "Ticket" : response.content;
                                 let nameChecker = await Panels.findOne({ guildID: message.guild.id, ticketType: type });
-                                if (nameChecker) { cancelReason(`a panel named \`${type}\`, already exists`); return i = setupNumber; }
+                                if (nameChecker) { cancelReason(`A panel named \`${type}\`, already exists, please choose another name.`); return i = i - 1; }
                                 embed.setTitle(type);
                                 embe.edit(embed).catch(err => { }); response.delete().catch(err => { }); tsg.delete().catch(err => { });
                                 if (setupType.toLowerCase() === "simple") return i = setupNumber - 1;
