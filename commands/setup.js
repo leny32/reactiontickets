@@ -53,7 +53,7 @@ exports.run = async (client, guild, message, args) => {
                                 channel = message.guild.channels.cache.get(channelID);
                                 if (channel) { channel = channel } else { try { channel = await message.guild.channels.fetch(channelID) } catch (err) { } }
                                 if (!channel) channel = "none";
-                                if (channelID === "none") { message.channel.send("Couldn't find channel, please retype."); return i = i - 1; }
+                                if (channelID === "none") return i = i - 1;
                                 if (!channel.permissionsFor(message.guild.me).has("SEND_MESSAGES")) { channelID = ""; cancelReason("I'm missing the send messages permission in that channel"); return i = setupNumber; }
                                 embed.addField("Ticket Channel", channel, true);
                                 embe.edit(embed).catch(err => { }); response.delete().catch(err => { }); tsg.delete().catch(err => { });
@@ -100,7 +100,7 @@ exports.run = async (client, guild, message, args) => {
                                 if (!supportID) { try { await message.guild.roles.fetch(response.content) } catch { } }
                                 supportID = response.mentions.roles.first() ? response.mentions.roles.first().id : message.guild.roles.cache.get(response.content) ? response.content : message.guild.roles.cache.find(r => r.name.toLowerCase() == response.content.toLowerCase()) ? message.guild.roles.cache.find(r => r.name.toLowerCase() == response.content.toLowerCase()).id : "none";
                                 support = message.guild.roles.cache.get(supportID);
-                                if (supportID === "none") { message.channel.send("Couldn't find role, please retype."); return i = i - 1; }
+                                if (supportID === "none") return i = i - 1;
                                 embed.addField("Support role", support, true);
                                 embe.edit(embed).catch(err => { }); response.delete().catch(err => { }); tsg.delete().catch(err => { });
                             });
