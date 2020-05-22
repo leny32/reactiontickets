@@ -26,7 +26,7 @@ exports.run = async (client, guild, message, args) => {
     if (panelCheck.length >= 2 && !premium) return message.channel.send("Premium has not been bought on this server yet, to open more than two ticket panel at a time, please buy premium.");
 
     if (premium && !args[0]) return client.throw(message, "Wrong Usage", `${config.wrongUsage} \`${guild.prefix}${this.help.usage}\``);
-    if (args[0].toLowerCase() == "advanced" && !premium) return message.channel.send("Premium has not been bought on this server yet, to use advanced setup, please buy premium.");
+    if (args[0] && args[0].toLowerCase() == "advanced" && !premium) return message.channel.send("Premium has not been bought on this server yet, to use advanced setup, please buy premium.");
     let setupT = premium && args[0] && args[0].toLowerCase() == "advanced" ? "advanced" : "simple";
     let setupType = setupT.charAt(0).toUpperCase() + setupT.slice(1, 8);
 
@@ -50,11 +50,11 @@ exports.run = async (client, guild, message, args) => {
                                 const response = res.first();
                                 if (response.content.toLowerCase() == "cancel") { cancelReason(cancel); return i = setupNumber; }
                                 channelID = response.mentions.channels.first() && response.mentions.channels.first().type === "text" ? response.mentions.channels.first().id : message.guild.channels.cache.get(response.content) && message.guild.channels.cache.get(response.content).type === "text" ? message.guild.channels.cache.get(response.content) : message.guild.channels.cache.find(c => c.name.toLowerCase() === response.content.toLowerCase()) ? message.guild.channels.cache.find(c => c.name.toLowerCase() === response.content.toLowerCase()).id : "none";
-                                if (channelID === "none") { cancelReason("couldn't find channel"); return i = setupNumber; }
                                 channel = message.guild.channels.cache.get(channelID);
                                 if (channel) { channel = channel } else { try { channel = await message.guild.channels.fetch(channelID) } catch (err) { } }
                                 if (!channel) channel = "none";
                                 if (!channel.permissionsFor(message.guild.me).has("SEND_MESSAGES")) { channelID = ""; cancelReason("I'm missing the send messages permission in that channel"); return i = setupNumber; }
+                                if (channelID === "none") { cancelReason("couldn't find channel"); return i = setupNumber; }
                                 embed.addField("Ticket Channel", channel, true);
                                 embe.edit(embed).catch(err => { }); response.delete().catch(err => { }); tsg.delete().catch(err => { });
                             });
@@ -99,8 +99,8 @@ exports.run = async (client, guild, message, args) => {
                                 supportID = message.guild.roles.cache.get(response.content);
                                 if (!supportID) { try { await message.guild.roles.fetch(response.content) } catch { } }
                                 supportID = response.mentions.roles.first() ? response.mentions.roles.first().id : message.guild.roles.cache.get(response.content) ? response.content : message.guild.roles.cache.find(r => r.name.toLowerCase() == response.content.toLowerCase()) ? message.guild.roles.cache.find(r => r.name.toLowerCase() == response.content.toLowerCase()).id : "none";
-                                if (supportID === "none") { cancelReason("couldn't find role"); return i = setupNumber; }
                                 support = message.guild.roles.cache.get(supportID);
+                                if (supportID === "none") { cancelReason("couldn't find role"); return i = setupNumber; }
                                 embed.addField("Support role", support, true);
                                 embe.edit(embed).catch(err => { }); response.delete().catch(err => { }); tsg.delete().catch(err => { });
                             });
