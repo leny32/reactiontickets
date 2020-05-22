@@ -84,7 +84,7 @@ exports.run = async (client, guild, message, args) => {
                                 if (response.content.toLowerCase() == "cancel") { cancelReason(cancel); return i = setupNumber; }
                                 categoryID = message.guild.channels.cache.get(response.content);
                                 if (!categoryID) { try { categoryID = await message.guild.channels.fetch(response.content) } catch (err) { } }
-                                categoryID = message.guild.channels.cache.get(response.content).type === "category" ? response.content : message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()) && message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()).type === "category" ? message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()).id : "none"
+                                categoryID = message.guild.channels.cache.get(response.content) && message.guild.channels.cache.get(response.content).type === "category" ? response.content : message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()) && message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()).type === "category" ? message.guild.channels.cache.find(c => c.name.toLowerCase() == response.content.toLowerCase()).id : "none"
                                 embed.addField("Category ID", categoryID, true);
                                 embe.edit(embed).catch(err => { }); response.delete().catch(err => { }); tsg.delete().catch(err => { });
                             });
