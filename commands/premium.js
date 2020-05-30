@@ -27,7 +27,7 @@ exports.run = async (client, guild, message, args) => {
 + more on it's way
     
 **Pricing**
-Premium can be bought for only $3/lifetime
+Premium can be bought for only $5/lifetime
     
 Purchase at [droplet.gg](https://store.droplet.gg/reactiontickets/)`)
         .setFooter(reactions.footer)
