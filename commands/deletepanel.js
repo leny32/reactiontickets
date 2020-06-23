@@ -36,7 +36,7 @@ exports.run = async (client, guild, message, args) => {
 module.exports.help = {
     name: "deletepanel",
     aliases: ["delpanel", "dpanel"],
-    usage: "deletepanel (type)",
+    usage: "deletepanel (panel name)",
     description: "Delete a reaction panel",
     perms: 2
 };
