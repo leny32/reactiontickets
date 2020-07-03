@@ -21,7 +21,7 @@ exports.run = async (client, message) => {
 
     if (message.mentions.members.first() && message.mentions.members.first().id == client.user.id) message.channel.send(`The prefix for this server is \`${guild.prefix}\`\n> For more info please use \`${guild.prefix}info\``).catch(err => { })
     
-    if (message.content.toLowerCase().startsWith(guild.prefix)) {
+    if (message.content.toLowerCase().startsWith(guild.prefix.toLowerCase())) {
 
         let messageArray = message.content.split(" ");
         let cmd = messageArray[0].toLowerCase();
