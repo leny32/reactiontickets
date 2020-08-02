@@ -18,7 +18,7 @@ exports.run = async (client, guild, message, args) => {
         }
     });
 
-    let premium = data.data;
+    let premium = data.data ? data.data : false;
 
     let panelCheck = await Panels.find({
         guildID: guildID
