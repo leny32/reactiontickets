@@ -12,14 +12,16 @@ exports.run = async (client, guild, message, args) => {
         guildID: message.guild.id
     });
 
-    let { data } = await axios.post(config.apiUrl + "premiumCheck", { "guildid": message.guild.id }, {
+    /*let { data } = await axios.post(config.apiUrl + "premiumCheck", { "guildid": message.guild.id }, {
         headers: {
             'Authorization': `Bearer ${config.storeapi}`
         }
     });
 
-    let premium = data.data ? data.data : false;
-
+    let premium = data.data;
+    */
+    let premium = false;
+    
     let panelCheck = await Panels.find({
         guildID: guildID
     });
