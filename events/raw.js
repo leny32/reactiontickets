@@ -54,8 +54,8 @@ exports.run = async (client, event) => {
                             })
                             let fucked = false;
                             for (let i = 0; i < coolTicket.length; i++) {
-                                if (coolTicket[i] && coolTicket[i].active) {
-                                    fucked = true
+                                if (coolTicket[i] && coolTicket[i].active && client.channels.cache.get(coolTicket[i].channelID)) {
+                                    fucked = true;
                                     memberObj.send("⛔ | You've already got a ticket opened.").catch(err => { })
                                     break;
                                 }
