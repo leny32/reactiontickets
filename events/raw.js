@@ -54,7 +54,11 @@ exports.run = async (client, event) => {
                             })
                             let fucked = false;
                             for (let i = 0; i < coolTicket.length; i++) {
-                                if (coolTicket[i] && coolTicket[i].active && client.channels.cache.get(coolTicket[i].channelID)) {
+                                if(!client.channels.cache.get(coolTicket[i].channelID)) {
+                                     await Tickets.findOneAndDelete({
+                                        channelID: coolTicket[i].channelID
+                                    });
+                                } else if (coolTicket[i] && coolTicket[i].active) {
                                     fucked = true;
                                     memberObj.send("⛔ | You've already got a ticket opened.").catch(err => { })
                                     break;
