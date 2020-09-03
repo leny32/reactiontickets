@@ -254,36 +254,35 @@ exports.run = async (client, guild, message, args) => {
                     break;
                 case 17:
                     embe.delete();
-                        const newEmbed = new Discord.MessageEmbed()
-                            .setTitle(`Open ${type}`)
-                            .setDescription(`${openTicket}\n\nBy opening a ticket, you agree that your conversation will be recorded for legal and quality purposes.`)
-                            .setFooter(reactions.footer);
-                        await channel.send(newEmbed).catch(err => { }).then(async (m) => {
-                            messageID = m.id;
-                            await m.react("🎫").catch(err => { });
-                        }).then(async () => {
-                            const newReaction = new Panels({
-                                guildID: guildID,
-                                channelID: channelID,
-                                messageID: messageID,
-                                supportID: supportID,
-                                categoryID: categoryID,
-                                logID: logID,
-                                ticketType: type,
-                                newTicket: newTicket,
-                                closeMsg: closeMsg,
-                                reopenMsg: reopenMsg,
-                                deleteMsg: deleteMsg,
-                                forcedeleteMsg: forcedeleteMsg,
-                                pingOnTicket: pingOnTicket,
-                                noDMTicket: noDMTicket,
-                                nameTicket: nameTicket,
-                                transcriptOnDelete: transcriptOnDelete,
-                                topic: topic
-                            });
-                            await newReaction.save().catch(e => console.log(e));
-                            return message.channel.send("Setup completed.");
+                    const newEmbed = new Discord.MessageEmbed()
+                        .setTitle(`Open ${type}`)
+                        .setDescription(`${openTicket}\n\nBy opening a ticket, you agree that your conversation will be recorded for legal and quality purposes.`)
+                        .setFooter(reactions.footer);
+                    await channel.send(newEmbed).catch(err => { }).then(async (m) => {
+                        messageID = m.id;
+                        await m.react("🎫").catch(err => { });
+                    }).then(async () => {
+                        const newReaction = new Panels({
+                            guildID: guildID,
+                            channelID: channelID,
+                            messageID: messageID,
+                            supportID: supportID,
+                            categoryID: categoryID,
+                            logID: logID,
+                            ticketType: type,
+                            newTicket: newTicket,
+                            closeMsg: closeMsg,
+                            reopenMsg: reopenMsg,
+                            deleteMsg: deleteMsg,
+                            forcedeleteMsg: forcedeleteMsg,
+                            pingOnTicket: pingOnTicket,
+                            noDMTicket: noDMTicket,
+                            nameTicket: nameTicket,
+                            transcriptOnDelete: transcriptOnDelete,
+                            topic: topic
                         });
+                        await newReaction.save().catch(e => console.log(e));
+                        return message.channel.send("Setup completed.");
                     });
                 break;
             }
