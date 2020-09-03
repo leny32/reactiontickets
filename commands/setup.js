@@ -253,7 +253,7 @@ exports.run = async (client, guild, message, args) => {
                         });
                     break;
                 case 17:
-                    embed.setDescription("Final Configuration:").setColor("GREEN"); embe.edit(embed).then(async () => {
+                    embe.delete();
                         const newEmbed = new Discord.MessageEmbed()
                             .setTitle(`Open ${type}`)
                             .setDescription(`${openTicket}\n\nBy opening a ticket, you agree that your conversation will be recorded for legal and quality purposes.`)
@@ -285,7 +285,7 @@ exports.run = async (client, guild, message, args) => {
                             return message.channel.send("Setup completed.");
                         });
                     });
-                    break;
+                break;
             }
         }
     });
