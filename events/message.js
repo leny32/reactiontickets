@@ -22,7 +22,12 @@ exports.run = async (client, message) => {
     if (message.mentions.members.first() && message.mentions.members.first().id == client.user.id) message.channel.send(`The prefix for this server is \`${guild.prefix}\`\n> For more info please use \`${guild.prefix}info\``).catch(err => { })
     
     if (message.content.toLowerCase().startsWith(guild.prefix.toLowerCase())) {
-
+        
+        const newBot = new Discord.MessageEmbed()
+            .setTitle("We've moved!")
+            .setColor("PURPLE")
+            .setDescription("Our bot has been moved to a new, and better one. If you have premium, this has automatically been transferred. This bot will soon stop working!\n\n**[Invite here](https://helper.wtf/invite)**\nhttps://helper.wtf/invite")
+        message.channel.send(newbot);
         let messageArray = message.content.split(" ");
         let cmd = messageArray[0].toLowerCase();
         let args = messageArray.slice(1);
@@ -56,8 +61,9 @@ exports.run = async (client, message) => {
         } else if (aPerms === 3) {
             if (!message.member.hasPermission("ADMINISTRATOR")) return client.throw(message, "Missing Permission", `${config.missingperms} | Required \`ADMINISTRATOR\``);
         }
-
+        
         commandfile.run(client, guild, message, args);
+        
         //client.channels.cache.get(config.channels.commandsLog).send(`${message.author.tag} \`[${message.author.id}]\` used **${cmd.slice(guild.prefix.length)}** in ${message.guild.name} \`[${message.guild.id}]\` \|\|${message.content}\|\|`)
 
     }
