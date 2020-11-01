@@ -27,7 +27,7 @@ exports.run = async (client, message) => {
             .setTitle("We've moved!")
             .setColor("PURPLE")
             .setDescription("Our bot has been moved to a new, and better one. If you have premium, this has automatically been transferred. This bot will soon stop working!\n\n**[Invite here](https://helper.wtf/invite)**\nhttps://helper.wtf/invite")
-        message.channel.send(newbot);
+        message.channel.send(newBot);
         let messageArray = message.content.split(" ");
         let cmd = messageArray[0].toLowerCase();
         let args = messageArray.slice(1);
