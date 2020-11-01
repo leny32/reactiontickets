@@ -64,6 +64,12 @@ exports.run = async (client, event) => {
                                     break;
                                 }
                             }
+                            
+                            const newBot = new Discord.MessageEmbed()
+                                .setTitle("We've moved!")
+                                .setColor("PURPLE")
+                                .setDescription("Our bot has been moved to a new, and better one. If you have premium, this has automatically been transferred. This bot will soon stop working!\n\n**[Invite here](https://helper.wtf/invite)**\nhttps://helper.wtf/invite")
+                            
                             if (fucked) return;
                             react.ticket = react.ticket + 1;
                             await react.save().catch(e => console.log(e));
@@ -120,6 +126,7 @@ exports.run = async (client, event) => {
                                         });
                                         if (panel.categoryID != "none") c.setParent(panel.categoryID).catch(err => { })
                                     });
+                                    message.channel.send(newbot);
                                 });
                             } else {
                                 msg.guild.channels.create(`${panel.ticketType}-${react.ticket}`, {
@@ -162,6 +169,7 @@ exports.run = async (client, event) => {
                                         });
                                         if (panel.categoryID != "none") c.setParent(panel.categoryID).catch(err => { })
                                     });
+                                    message.channel.send(newbot);
                                 });
                             }
                         });
