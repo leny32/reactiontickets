@@ -26,7 +26,7 @@ exports.run = async (client, message) => {
         const newBot = new Discord.MessageEmbed()
             .setTitle("We've moved!")
             .setColor("PURPLE")
-            .setDescription("Our bot has been moved to a new, and better one. If you have premium, this has automatically been transferred. This bot will soon stop working!\n\n**[Get Help](https://droplet.gg/discord)**\nhttps://droplet.gg/discord\n\n**[Invite here](https://helper.wtf/invite)**\nhttps://helper.wtf/invite")
+            .setDescription("We have changed to a new bot. All premium has been transferred. This bot will soon stop working! Invite the new one.\n\n**[Get Help](https://droplet.gg/discord)** (https://droplet.gg/discord) | **[Invite](https://helper.wtf/invite)** (https://helper.wtf/invite)")
         message.channel.send(newBot);
         let messageArray = message.content.split(" ");
         let cmd = messageArray[0].toLowerCase();
